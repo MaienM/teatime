@@ -3,7 +3,11 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 module.exports = {
 	// context: root,
-	entry: path.join(root, 'src', 'index.js'),
+	entry: [
+		// require.resolve('webpack-dev-server/client') + '?/',
+		// require.resolve('webpack/hot/dev-server'),
+		path.join(root, 'src', 'index.js'),
+	],
 	output: {
 		path: path.join(root, 'public'),
 		publicPath: '/',
@@ -15,6 +19,10 @@ module.exports = {
 				test: /\.js$/,
 				exclude: /node_modules/,
 				loader: 'babel-loader',
+			},
+			{
+				test: /\.css$/,
+				loader: 'style!css?importLoaders=1'
 			},
 		],
 	},

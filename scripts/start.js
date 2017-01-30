@@ -25,6 +25,7 @@ function startAppServer() {
 				colors: true,
 			},
 			noInfo: true,
+			// hot: true,
 		});
 		server.use('/', express.static(config.output.path));
 		server.listen(APP_PORT, () => {
@@ -46,13 +47,6 @@ function startGraphQLServer() {
 	});
 }
 
-function stopServer(server) {
-	if (server) {
-		return new Promise((resolve, reject) => resolve(server.close()));
-	}
-	return Promise.resolve();
-}
-
 function buildSchema() {
 	return new Promise((resolve, reject) => {
 		exec('npm run build-schema', (error, stdout) => {
@@ -65,29 +59,17 @@ function buildSchema() {
 	});
 }
 
-let appServer;
-let graphQLServer;
-function restart() {
-	// Shut down the servers
+// Compile the schema
+buildSchema().then((output) => {
+	console.log(output);
+
+	// Start the servers.
 	return Promise.all([
-		stopServer(appServer),
-		stopServer(graphQLServer),
-	]).then(() => {
-		// Compile the schema
-		return buildSchema();
-	}).then((output) => {
-		console.log(output);
-
-		// Start the servers.
-		return Promise.all([
-			startAppServer(),
-			startGraphQLServer(),
-		]);
-	}).then((servers) => {
-		// Store the new server instances
-		appServer = servers[0];
-		graphQLServer = servers[1];
-	});
-}
-
-restart();
+		startAppServer(),
+		startGraphQLServer(),
+	]);
+}).then(() => {
+	console.log('Ready!');
+}).catch((err) => {
+	console.error('Something went wrong', err);
+});
