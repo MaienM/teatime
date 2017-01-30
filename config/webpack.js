@@ -1,11 +1,12 @@
 const path = require('path');
+const webpack = require('webpack');
 
 const root = path.resolve(__dirname, '..');
 module.exports = {
 	// context: root,
 	entry: [
-		// require.resolve('webpack-dev-server/client') + '?/',
-		// require.resolve('webpack/hot/dev-server'),
+		require.resolve('webpack-dev-server/client') + '?/',
+		require.resolve('webpack/hot/dev-server'),
 		path.join(root, 'src', 'index.js'),
 	],
 	output: {
@@ -26,4 +27,7 @@ module.exports = {
 			},
 		],
 	},
+	plugins: [
+		new webpack.HotModuleReplacementPlugin(),
+	],
 };

@@ -25,7 +25,8 @@ function startAppServer() {
 				colors: true,
 			},
 			noInfo: true,
-			// hot: true,
+			hot: true,
+			// inline: true,
 		});
 		server.use('/', express.static(config.output.path));
 		server.listen(APP_PORT, () => {
