@@ -8,5 +8,5 @@ export default class extends Relay.Route {
 			}
 		`,
 	};
-	static routeName = 'AppHomeQuery';
+	static routeName = 'Query';
 }
