@@ -1,0 +1,1603 @@
+type Brand implements Node {
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  id: ID!
+  uuid: Uuid!
+  name: String!
+  url: String
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  # Reads and enables paginatation through a set of `Tea`.
+  teasByBrandUuid(
+    # The method to use when ordering `Tea`.
+    orderBy: TeasOrderBy = PRIMARY_KEY_ASC
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: TeaCondition
+  ): TeasConnection
+}
+
+# A condition to be used against `Brand` object types. All fields are tested for equality and combined with a logical ‘and.’
+input BrandCondition {
+  # Checks for equality with the object’s `uuid` field.
+  uuid: Uuid
+
+  # Checks for equality with the object’s `name` field.
+  name: String
+
+  # Checks for equality with the object’s `url` field.
+  url: String
+
+  # Checks for equality with the object’s `createdAt` field.
+  createdAt: Datetime
+
+  # Checks for equality with the object’s `updatedAt` field.
+  updatedAt: Datetime
+}
+
+input BrandInput {
+  uuid: Uuid!
+  name: String!
+  url: String
+  createdAt: Datetime!
+  updatedAt: Datetime!
+}
+
+# Represents an update to a `Brand`. Fields that are set will be updated.
+input BrandPatch {
+  uuid: Uuid
+  name: String
+  url: String
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+# A connection to a list of `Brand` values.
+type BrandsConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # The count of *all* `Brand` you could get from the connection.
+  totalCount: Int
+
+  # A list of edges which contains the `Brand` and cursor to aid in pagination.
+  edges: [BrandsEdge]
+
+  # A list of `Brand` objects.
+  nodes: [Brand!]
+}
+
+# A `Brand` edge in the connection.
+type BrandsEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
+
+  # The `Brand` at the end of the edge.
+  node: Brand!
+}
+
+# Methods to use when ordering `Brand`.
+enum BrandsOrderBy {
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  NATURAL
+  UUID_ASC
+  UUID_DESC
+  NAME_ASC
+  NAME_DESC
+  URL_ASC
+  URL_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+}
+
+# A connection to a list of `Category` values.
+type CategoriesConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # The count of *all* `Category` you could get from the connection.
+  totalCount: Int
+
+  # A list of edges which contains the `Category` and cursor to aid in pagination.
+  edges: [CategoriesEdge]
+
+  # A list of `Category` objects.
+  nodes: [Category!]
+}
+
+# A `Category` edge in the connection.
+type CategoriesEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
+
+  # The `Category` at the end of the edge.
+  node: Category!
+}
+
+# Methods to use when ordering `Category`.
+enum CategoriesOrderBy {
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  NATURAL
+  UUID_ASC
+  UUID_DESC
+  NAME_ASC
+  NAME_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+}
+
+type Category implements Node {
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  id: ID!
+  uuid: Uuid!
+  name: String!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+
+  # Reads and enables paginatation through a set of `Tea`.
+  teasByCategoryUuid(
+    # The method to use when ordering `Tea`.
+    orderBy: TeasOrderBy = PRIMARY_KEY_ASC
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: TeaCondition
+  ): TeasConnection
+}
+
+# A condition to be used against `Category` object types. All fields are tested
+# for equality and combined with a logical ‘and.’
+input CategoryCondition {
+  # Checks for equality with the object’s `uuid` field.
+  uuid: Uuid
+
+  # Checks for equality with the object’s `name` field.
+  name: String
+
+  # Checks for equality with the object’s `createdAt` field.
+  createdAt: Datetime
+
+  # Checks for equality with the object’s `updatedAt` field.
+  updatedAt: Datetime
+}
+
+input CategoryInput {
+  uuid: Uuid!
+  name: String!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+}
+
+# Represents an update to a `Category`. Fields that are set will be updated.
+input CategoryPatch {
+  uuid: Uuid
+  name: String
+  createdAt: Datetime
+  updatedAt: Datetime
+}
+
+# All input for the `createBrand` mutation.
+input CreateBrandInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The `Brand` to be created by this mutation.
+  brand: BrandInput!
+}
+
+# The output of our `createBrand` mutation.
+type CreateBrandPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Brand` that was created by this mutation.
+  brand: Brand
+
+  # An edge for our `Brand`. May be used by Relay 1.
+  brandEdge(
+    # The method to use when ordering `Brand`.
+    orderBy: BrandsOrderBy = PRIMARY_KEY_ASC
+  ): BrandsEdge
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `createCategory` mutation.
+input CreateCategoryInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The `Category` to be created by this mutation.
+  category: CategoryInput!
+}
+
+# The output of our `createCategory` mutation.
+type CreateCategoryPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Category` that was created by this mutation.
+  category: Category
+
+  # An edge for our `Category`. May be used by Relay 1.
+  categoryEdge(
+    # The method to use when ordering `Category`.
+    orderBy: CategoriesOrderBy = PRIMARY_KEY_ASC
+  ): CategoriesEdge
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `createPrice` mutation.
+input CreatePriceInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The `Price` to be created by this mutation.
+  price: PriceInput!
+}
+
+# The output of our `createPrice` mutation.
+type CreatePricePayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Price` that was created by this mutation.
+  price: Price
+
+  # An edge for our `Price`. May be used by Relay 1.
+  priceEdge(
+    # The method to use when ordering `Price`.
+    orderBy: PricesOrderBy = PRIMARY_KEY_ASC
+  ): PricesEdge
+
+  # Reads a single `Tea` that is related to this `Price`.
+  teaByTeaUuid: Tea
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `createSteepAdvice` mutation.
+input CreateSteepAdviceInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The `SteepAdvice` to be created by this mutation.
+  steepAdvice: SteepAdviceInput!
+}
+
+# The output of our `createSteepAdvice` mutation.
+type CreateSteepAdvicePayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `SteepAdvice` that was created by this mutation.
+  steepAdvice: SteepAdvice
+
+  # An edge for our `SteepAdvice`. May be used by Relay 1.
+  steepAdviceEdge(
+    # The method to use when ordering `SteepAdvice`.
+    orderBy: SteepAdvicesOrderBy = PRIMARY_KEY_ASC
+  ): SteepAdvicesEdge
+
+  # Reads a single `Tea` that is related to this `SteepAdvice`.
+  teaByTeaUuid: Tea
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `createTea` mutation.
+input CreateTeaInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The `Tea` to be created by this mutation.
+  tea: TeaInput!
+}
+
+# The output of our `createTea` mutation.
+type CreateTeaPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Tea` that was created by this mutation.
+  tea: Tea
+
+  # An edge for our `Tea`. May be used by Relay 1.
+  teaEdge(
+    # The method to use when ordering `Tea`.
+    orderBy: TeasOrderBy = PRIMARY_KEY_ASC
+  ): TeasEdge
+
+  # Reads a single `Brand` that is related to this `Tea`.
+  brandByBrandUuid: Brand
+
+  # Reads a single `Category` that is related to this `Tea`.
+  categoryByCategoryUuid: Category
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# A location in a connection that can be used for resuming pagination.
+scalar Cursor
+
+# A point in time as described by the [ISO
+# 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
+scalar Datetime
+
+# All input for the `deleteBrandByName` mutation.
+input DeleteBrandByNameInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  name: String!
+}
+
+# All input for the `deleteBrandByUuid` mutation.
+input DeleteBrandByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  uuid: Uuid!
+}
+
+# All input for the `deleteBrand` mutation.
+input DeleteBrandInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Brand` to be deleted.
+  id: ID!
+}
+
+# The output of our `deleteBrand` mutation.
+type DeleteBrandPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  brand: Brand
+  deletedBrandId: ID
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `deleteCategoryByName` mutation.
+input DeleteCategoryByNameInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  name: String!
+}
+
+# All input for the `deleteCategoryByUuid` mutation.
+input DeleteCategoryByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  uuid: Uuid!
+}
+
+# All input for the `deleteCategory` mutation.
+input DeleteCategoryInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Category` to be deleted.
+  id: ID!
+}
+
+# The output of our `deleteCategory` mutation.
+type DeleteCategoryPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  category: Category
+  deletedCategoryId: ID
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `deletePriceByUuid` mutation.
+input DeletePriceByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  uuid: Uuid!
+}
+
+# All input for the `deletePrice` mutation.
+input DeletePriceInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Price` to be deleted.
+  id: ID!
+}
+
+# The output of our `deletePrice` mutation.
+type DeletePricePayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  price: Price
+  deletedPriceId: ID
+
+  # Reads a single `Tea` that is related to this `Price`.
+  teaByTeaUuid: Tea
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `deleteSteepAdviceByUuid` mutation.
+input DeleteSteepAdviceByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  uuid: Uuid!
+}
+
+# All input for the `deleteSteepAdvice` mutation.
+input DeleteSteepAdviceInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `SteepAdvice` to be deleted.
+  id: ID!
+}
+
+# The output of our `deleteSteepAdvice` mutation.
+type DeleteSteepAdvicePayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  steepAdvice: SteepAdvice
+  deletedSteepAdviceId: ID
+
+  # Reads a single `Tea` that is related to this `SteepAdvice`.
+  teaByTeaUuid: Tea
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `deleteTeaByNameAndBrandUuid` mutation.
+input DeleteTeaByNameAndBrandUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  name: String!
+  brandUuid: Uuid!
+}
+
+# All input for the `deleteTeaByUuid` mutation.
+input DeleteTeaByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  uuid: Uuid!
+}
+
+# All input for the `deleteTea` mutation.
+input DeleteTeaInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Tea` to be deleted.
+  id: ID!
+}
+
+# The output of our `deleteTea` mutation.
+type DeleteTeaPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  tea: Tea
+  deletedTeaId: ID
+
+  # Reads a single `Brand` that is related to this `Tea`.
+  brandByBrandUuid: Brand
+
+  # Reads a single `Category` that is related to this `Tea`.
+  categoryByCategoryUuid: Category
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# range of numerics
+type FloatRange {
+  # The starting bound of our range.
+  start: FloatRangeBound
+
+  # The ending bound of our range.
+  end: FloatRangeBound
+}
+
+# The value at one end of a range. A range can either include this value, or not.
+type FloatRangeBound {
+  # The value at one end of our range.
+  value: Float!
+
+  # Whether or not the value of this bound is included in the range.
+  inclusive: Boolean!
+}
+
+# The value at one end of a range. A range can either include this value, or not.
+input FloatRangeBoundInput {
+  # The value at one end of our range.
+  value: Float!
+
+  # Whether or not the value of this bound is included in the range.
+  inclusive: Boolean!
+}
+
+# range of numerics
+input FloatRangeInput {
+  # The starting bound of our range.
+  start: FloatRangeBoundInput
+
+  # The ending bound of our range.
+  end: FloatRangeBoundInput
+}
+
+# range of integers
+type IntegerRange {
+  # The starting bound of our range.
+  start: IntegerRangeBound
+
+  # The ending bound of our range.
+  end: IntegerRangeBound
+}
+
+# The value at one end of a range. A range can either include this value, or not.
+type IntegerRangeBound {
+  # The value at one end of our range.
+  value: Int!
+
+  # Whether or not the value of this bound is included in the range.
+  inclusive: Boolean!
+}
+
+# The value at one end of a range. A range can either include this value, or not.
+input IntegerRangeBoundInput {
+  # The value at one end of our range.
+  value: Int!
+
+  # Whether or not the value of this bound is included in the range.
+  inclusive: Boolean!
+}
+
+# range of integers
+input IntegerRangeInput {
+  # The starting bound of our range.
+  start: IntegerRangeBoundInput
+
+  # The ending bound of our range.
+  end: IntegerRangeBoundInput
+}
+
+# The root mutation type which contains root level fields which mutate data.
+type Mutation {
+  # Creates a single `Brand`.
+  createBrand(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: CreateBrandInput!
+  ): CreateBrandPayload
+
+  # Updates a single `Brand` using its globally unique id and a patch.
+  updateBrand(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateBrandInput!
+  ): UpdateBrandPayload
+
+  # Updates a single `Brand` using a unique key and a patch.
+  updateBrandByName(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateBrandByNameInput!
+  ): UpdateBrandPayload
+
+  # Updates a single `Brand` using a unique key and a patch.
+  updateBrandByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateBrandByUuidInput!
+  ): UpdateBrandPayload
+
+  # Deletes a single `Brand` using its globally unique id.
+  deleteBrand(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteBrandInput!
+  ): DeleteBrandPayload
+
+  # Deletes a single `Brand` using a unique key.
+  deleteBrandByName(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteBrandByNameInput!
+  ): DeleteBrandPayload
+
+  # Deletes a single `Brand` using a unique key.
+  deleteBrandByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteBrandByUuidInput!
+  ): DeleteBrandPayload
+
+  # Creates a single `Category`.
+  createCategory(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: CreateCategoryInput!
+  ): CreateCategoryPayload
+
+  # Updates a single `Category` using its globally unique id and a patch.
+  updateCategory(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateCategoryInput!
+  ): UpdateCategoryPayload
+
+  # Updates a single `Category` using a unique key and a patch.
+  updateCategoryByName(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateCategoryByNameInput!
+  ): UpdateCategoryPayload
+
+  # Updates a single `Category` using a unique key and a patch.
+  updateCategoryByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateCategoryByUuidInput!
+  ): UpdateCategoryPayload
+
+  # Deletes a single `Category` using its globally unique id.
+  deleteCategory(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteCategoryInput!
+  ): DeleteCategoryPayload
+
+  # Deletes a single `Category` using a unique key.
+  deleteCategoryByName(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteCategoryByNameInput!
+  ): DeleteCategoryPayload
+
+  # Deletes a single `Category` using a unique key.
+  deleteCategoryByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteCategoryByUuidInput!
+  ): DeleteCategoryPayload
+
+  # Creates a single `Price`.
+  createPrice(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: CreatePriceInput!
+  ): CreatePricePayload
+
+  # Updates a single `Price` using its globally unique id and a patch.
+  updatePrice(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdatePriceInput!
+  ): UpdatePricePayload
+
+  # Updates a single `Price` using a unique key and a patch.
+  updatePriceByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdatePriceByUuidInput!
+  ): UpdatePricePayload
+
+  # Deletes a single `Price` using its globally unique id.
+  deletePrice(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeletePriceInput!
+  ): DeletePricePayload
+
+  # Deletes a single `Price` using a unique key.
+  deletePriceByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeletePriceByUuidInput!
+  ): DeletePricePayload
+
+  # Creates a single `SteepAdvice`.
+  createSteepAdvice(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: CreateSteepAdviceInput!
+  ): CreateSteepAdvicePayload
+
+  # Updates a single `SteepAdvice` using its globally unique id and a patch.
+  updateSteepAdvice(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateSteepAdviceInput!
+  ): UpdateSteepAdvicePayload
+
+  # Updates a single `SteepAdvice` using a unique key and a patch.
+  updateSteepAdviceByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateSteepAdviceByUuidInput!
+  ): UpdateSteepAdvicePayload
+
+  # Deletes a single `SteepAdvice` using its globally unique id.
+  deleteSteepAdvice(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteSteepAdviceInput!
+  ): DeleteSteepAdvicePayload
+
+  # Deletes a single `SteepAdvice` using a unique key.
+  deleteSteepAdviceByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteSteepAdviceByUuidInput!
+  ): DeleteSteepAdvicePayload
+
+  # Creates a single `Tea`.
+  createTea(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: CreateTeaInput!
+  ): CreateTeaPayload
+
+  # Updates a single `Tea` using its globally unique id and a patch.
+  updateTea(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateTeaInput!
+  ): UpdateTeaPayload
+
+  # Updates a single `Tea` using a unique key and a patch.
+  updateTeaByNameAndBrandUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateTeaByNameAndBrandUuidInput!
+  ): UpdateTeaPayload
+
+  # Updates a single `Tea` using a unique key and a patch.
+  updateTeaByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateTeaByUuidInput!
+  ): UpdateTeaPayload
+
+  # Deletes a single `Tea` using its globally unique id.
+  deleteTea(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteTeaInput!
+  ): DeleteTeaPayload
+
+  # Deletes a single `Tea` using a unique key.
+  deleteTeaByNameAndBrandUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteTeaByNameAndBrandUuidInput!
+  ): DeleteTeaPayload
+
+  # Deletes a single `Tea` using a unique key.
+  deleteTeaByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteTeaByUuidInput!
+  ): DeleteTeaPayload
+}
+
+# An object with a globally unique `ID`.
+interface Node {
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: Cursor
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: Cursor
+}
+
+type Price implements Node {
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  id: ID!
+  uuid: Uuid!
+  amount: Float!
+  weight: Int!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+  teaUuid: Uuid!
+
+  # Reads a single `Tea` that is related to this `Price`.
+  teaByTeaUuid: Tea
+}
+
+# A condition to be used against `Price` object types. All fields are tested for equality and combined with a logical ‘and.’
+input PriceCondition {
+  # Checks for equality with the object’s `uuid` field.
+  uuid: Uuid
+
+  # Checks for equality with the object’s `amount` field.
+  amount: Float
+
+  # Checks for equality with the object’s `weight` field.
+  weight: Int
+
+  # Checks for equality with the object’s `createdAt` field.
+  createdAt: Datetime
+
+  # Checks for equality with the object’s `updatedAt` field.
+  updatedAt: Datetime
+
+  # Checks for equality with the object’s `teaUuid` field.
+  teaUuid: Uuid
+}
+
+input PriceInput {
+  uuid: Uuid!
+  amount: Float!
+  weight: Int!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+  teaUuid: Uuid!
+}
+
+# Represents an update to a `Price`. Fields that are set will be updated.
+input PricePatch {
+  uuid: Uuid
+  amount: Float
+  weight: Int
+  createdAt: Datetime
+  updatedAt: Datetime
+  teaUuid: Uuid
+}
+
+# A connection to a list of `Price` values.
+type PricesConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # The count of *all* `Price` you could get from the connection.
+  totalCount: Int
+
+  # A list of edges which contains the `Price` and cursor to aid in pagination.
+  edges: [PricesEdge]
+
+  # A list of `Price` objects.
+  nodes: [Price!]
+}
+
+# A `Price` edge in the connection.
+type PricesEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
+
+  # The `Price` at the end of the edge.
+  node: Price!
+}
+
+# Methods to use when ordering `Price`.
+enum PricesOrderBy {
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  NATURAL
+  UUID_ASC
+  UUID_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+  WEIGHT_ASC
+  WEIGHT_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  TEA_UUID_ASC
+  TEA_UUID_DESC
+}
+
+# The root query type which gives access points into the data universe.
+type Query implements Node {
+  # Fetches an object given its globally unique `ID`.
+  node(
+    # The globally unique `ID`.
+    id: ID!
+  ): Node
+
+  # Reads and enables paginatation through a set of `Brand`.
+  allBrands(
+    # The method to use when ordering `Brand`.
+    orderBy: BrandsOrderBy = PRIMARY_KEY_ASC
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: BrandCondition
+  ): BrandsConnection
+
+  # Reads a single `Brand` using its globally unique `ID`.
+  brand(
+    # The globally unique `ID` to be used in selecting a single `Brand`.
+    id: ID!
+  ): Brand
+  brandByName(name: String!): Brand
+  brandByUuid(uuid: Uuid!): Brand
+
+  # Reads and enables paginatation through a set of `Category`.
+  allCategories(
+    # The method to use when ordering `Category`.
+    orderBy: CategoriesOrderBy = PRIMARY_KEY_ASC
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: CategoryCondition
+  ): CategoriesConnection
+
+  # Reads a single `Category` using its globally unique `ID`.
+  category(
+    # The globally unique `ID` to be used in selecting a single `Category`.
+    id: ID!
+  ): Category
+  categoryByName(name: String!): Category
+  categoryByUuid(uuid: Uuid!): Category
+
+  # Reads and enables paginatation through a set of `Price`.
+  allPrices(
+    # The method to use when ordering `Price`.
+    orderBy: PricesOrderBy = PRIMARY_KEY_ASC
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: PriceCondition
+  ): PricesConnection
+
+  # Reads a single `Price` using its globally unique `ID`.
+  price(
+    # The globally unique `ID` to be used in selecting a single `Price`.
+    id: ID!
+  ): Price
+  priceByUuid(uuid: Uuid!): Price
+
+  # Reads and enables paginatation through a set of `SteepAdvice`.
+  allSteepAdvices(
+    # The method to use when ordering `SteepAdvice`.
+    orderBy: SteepAdvicesOrderBy = PRIMARY_KEY_ASC
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: SteepAdviceCondition
+  ): SteepAdvicesConnection
+
+  # Reads a single `SteepAdvice` using its globally unique `ID`.
+  steepAdvice(
+    # The globally unique `ID` to be used in selecting a single `SteepAdvice`.
+    id: ID!
+  ): SteepAdvice
+  steepAdviceByUuid(uuid: Uuid!): SteepAdvice
+
+  # Reads and enables paginatation through a set of `Tea`.
+  allTeas(
+    # The method to use when ordering `Tea`.
+    orderBy: TeasOrderBy = PRIMARY_KEY_ASC
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: TeaCondition
+  ): TeasConnection
+
+  # Reads a single `Tea` using its globally unique `ID`.
+  tea(
+    # The globally unique `ID` to be used in selecting a single `Tea`.
+    id: ID!
+  ): Tea
+  teaByNameAndBrandUuid(name: String!, brandUuid: Uuid!): Tea
+  teaByUuid(uuid: Uuid!): Tea
+
+  # Exposes the root query type nested one level down. This is helpful for Relay 1
+  # which can only query top level fields if they are in a particular form.
+  query: Query!
+
+  # The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
+  id: ID!
+}
+
+type SteepAdvice implements Node {
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  id: ID!
+  uuid: Uuid!
+  amount: FloatRange!
+  time: IntegerRange!
+  temperature: IntegerRange!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+  teaUuid: Uuid!
+
+  # Reads a single `Tea` that is related to this `SteepAdvice`.
+  teaByTeaUuid: Tea
+}
+
+# A condition to be used against `SteepAdvice` object types. All fields are tested
+# for equality and combined with a logical ‘and.’
+input SteepAdviceCondition {
+  # Checks for equality with the object’s `uuid` field.
+  uuid: Uuid
+
+  # Checks for equality with the object’s `amount` field.
+  amount: FloatRangeInput
+
+  # Checks for equality with the object’s `time` field.
+  time: IntegerRangeInput
+
+  # Checks for equality with the object’s `temperature` field.
+  temperature: IntegerRangeInput
+
+  # Checks for equality with the object’s `createdAt` field.
+  createdAt: Datetime
+
+  # Checks for equality with the object’s `updatedAt` field.
+  updatedAt: Datetime
+
+  # Checks for equality with the object’s `teaUuid` field.
+  teaUuid: Uuid
+}
+
+input SteepAdviceInput {
+  uuid: Uuid!
+  amount: FloatRangeInput!
+  time: IntegerRangeInput!
+  temperature: IntegerRangeInput!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+  teaUuid: Uuid!
+}
+
+# Represents an update to a `SteepAdvice`. Fields that are set will be updated.
+input SteepAdvicePatch {
+  uuid: Uuid
+  amount: FloatRangeInput
+  time: IntegerRangeInput
+  temperature: IntegerRangeInput
+  createdAt: Datetime
+  updatedAt: Datetime
+  teaUuid: Uuid
+}
+
+# A connection to a list of `SteepAdvice` values.
+type SteepAdvicesConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # The count of *all* `SteepAdvice` you could get from the connection.
+  totalCount: Int
+
+  # A list of edges which contains the `SteepAdvice` and cursor to aid in pagination.
+  edges: [SteepAdvicesEdge]
+
+  # A list of `SteepAdvice` objects.
+  nodes: [SteepAdvice!]
+}
+
+# A `SteepAdvice` edge in the connection.
+type SteepAdvicesEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
+
+  # The `SteepAdvice` at the end of the edge.
+  node: SteepAdvice!
+}
+
+# Methods to use when ordering `SteepAdvice`.
+enum SteepAdvicesOrderBy {
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  NATURAL
+  UUID_ASC
+  UUID_DESC
+  AMOUNT_ASC
+  AMOUNT_DESC
+  TIME_ASC
+  TIME_DESC
+  TEMPERATURE_ASC
+  TEMPERATURE_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  TEA_UUID_ASC
+  TEA_UUID_DESC
+}
+
+type Tea implements Node {
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  id: ID!
+  uuid: Uuid!
+  name: String!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+  brandUuid: Uuid!
+  categoryUuid: Uuid!
+
+  # Reads a single `Brand` that is related to this `Tea`.
+  brandByBrandUuid: Brand
+
+  # Reads a single `Category` that is related to this `Tea`.
+  categoryByCategoryUuid: Category
+
+  # Reads and enables paginatation through a set of `Price`.
+  pricesByTeaUuid(
+    # The method to use when ordering `Price`.
+    orderBy: PricesOrderBy = PRIMARY_KEY_ASC
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: PriceCondition
+  ): PricesConnection
+
+  # Reads and enables paginatation through a set of `SteepAdvice`.
+  steepAdvicesByTeaUuid(
+    # The method to use when ordering `SteepAdvice`.
+    orderBy: SteepAdvicesOrderBy = PRIMARY_KEY_ASC
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: SteepAdviceCondition
+  ): SteepAdvicesConnection
+}
+
+# A condition to be used against `Tea` object types. All fields are tested for equality and combined with a logical ‘and.’
+input TeaCondition {
+  # Checks for equality with the object’s `uuid` field.
+  uuid: Uuid
+
+  # Checks for equality with the object’s `name` field.
+  name: String
+
+  # Checks for equality with the object’s `createdAt` field.
+  createdAt: Datetime
+
+  # Checks for equality with the object’s `updatedAt` field.
+  updatedAt: Datetime
+
+  # Checks for equality with the object’s `brandUuid` field.
+  brandUuid: Uuid
+
+  # Checks for equality with the object’s `categoryUuid` field.
+  categoryUuid: Uuid
+}
+
+input TeaInput {
+  uuid: Uuid!
+  name: String!
+  createdAt: Datetime!
+  updatedAt: Datetime!
+  brandUuid: Uuid!
+  categoryUuid: Uuid!
+}
+
+# Represents an update to a `Tea`. Fields that are set will be updated.
+input TeaPatch {
+  uuid: Uuid
+  name: String
+  createdAt: Datetime
+  updatedAt: Datetime
+  brandUuid: Uuid
+  categoryUuid: Uuid
+}
+
+# A connection to a list of `Tea` values.
+type TeasConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # The count of *all* `Tea` you could get from the connection.
+  totalCount: Int
+
+  # A list of edges which contains the `Tea` and cursor to aid in pagination.
+  edges: [TeasEdge]
+
+  # A list of `Tea` objects.
+  nodes: [Tea!]
+}
+
+# A `Tea` edge in the connection.
+type TeasEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
+
+  # The `Tea` at the end of the edge.
+  node: Tea!
+}
+
+# Methods to use when ordering `Tea`.
+enum TeasOrderBy {
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  NATURAL
+  UUID_ASC
+  UUID_DESC
+  NAME_ASC
+  NAME_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+  BRAND_UUID_ASC
+  BRAND_UUID_DESC
+  CATEGORY_UUID_ASC
+  CATEGORY_UUID_DESC
+}
+
+# All input for the `updateBrandByName` mutation.
+input UpdateBrandByNameInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  name: String!
+
+  # An object where the defined keys will be set on the `Brand` identified by our unique key.
+  brandPatch: BrandPatch!
+}
+
+# All input for the `updateBrandByUuid` mutation.
+input UpdateBrandByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  uuid: Uuid!
+
+  # An object where the defined keys will be set on the `Brand` identified by our unique key.
+  brandPatch: BrandPatch!
+}
+
+# All input for the `updateBrand` mutation.
+input UpdateBrandInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Brand` to be updated.
+  id: ID!
+
+  # An object where the defined keys will be set on the `Brand` identified by our globally unique `ID`.
+  brandPatch: BrandPatch!
+}
+
+# The output of our `updateBrand` mutation.
+type UpdateBrandPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  brand: Brand
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `updateCategoryByName` mutation.
+input UpdateCategoryByNameInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  name: String!
+
+  # An object where the defined keys will be set on the `Category` identified by our unique key.
+  categoryPatch: CategoryPatch!
+}
+
+# All input for the `updateCategoryByUuid` mutation.
+input UpdateCategoryByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  uuid: Uuid!
+
+  # An object where the defined keys will be set on the `Category` identified by our unique key.
+  categoryPatch: CategoryPatch!
+}
+
+# All input for the `updateCategory` mutation.
+input UpdateCategoryInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Category` to be updated.
+  id: ID!
+
+  # An object where the defined keys will be set on the `Category` identified by our globally unique `ID`.
+  categoryPatch: CategoryPatch!
+}
+
+# The output of our `updateCategory` mutation.
+type UpdateCategoryPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  category: Category
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `updatePriceByUuid` mutation.
+input UpdatePriceByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  uuid: Uuid!
+
+  # An object where the defined keys will be set on the `Price` identified by our unique key.
+  pricePatch: PricePatch!
+}
+
+# All input for the `updatePrice` mutation.
+input UpdatePriceInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Price` to be updated.
+  id: ID!
+
+  # An object where the defined keys will be set on the `Price` identified by our globally unique `ID`.
+  pricePatch: PricePatch!
+}
+
+# The output of our `updatePrice` mutation.
+type UpdatePricePayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  price: Price
+
+  # Reads a single `Tea` that is related to this `Price`.
+  teaByTeaUuid: Tea
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `updateSteepAdviceByUuid` mutation.
+input UpdateSteepAdviceByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  uuid: Uuid!
+
+  # An object where the defined keys will be set on the `SteepAdvice` identified by our unique key.
+  steepAdvicePatch: SteepAdvicePatch!
+}
+
+# All input for the `updateSteepAdvice` mutation.
+input UpdateSteepAdviceInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `SteepAdvice` to be updated.
+  id: ID!
+
+  # An object where the defined keys will be set on the `SteepAdvice` identified by our globally unique `ID`.
+  steepAdvicePatch: SteepAdvicePatch!
+}
+
+# The output of our `updateSteepAdvice` mutation.
+type UpdateSteepAdvicePayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  steepAdvice: SteepAdvice
+
+  # Reads a single `Tea` that is related to this `SteepAdvice`.
+  teaByTeaUuid: Tea
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `updateTeaByNameAndBrandUuid` mutation.
+input UpdateTeaByNameAndBrandUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  name: String!
+  brandUuid: Uuid!
+
+  # An object where the defined keys will be set on the `Tea` identified by our unique key.
+  teaPatch: TeaPatch!
+}
+
+# All input for the `updateTeaByUuid` mutation.
+input UpdateTeaByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  uuid: Uuid!
+
+  # An object where the defined keys will be set on the `Tea` identified by our unique key.
+  teaPatch: TeaPatch!
+}
+
+# All input for the `updateTea` mutation.
+input UpdateTeaInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Tea` to be updated.
+  id: ID!
+
+  # An object where the defined keys will be set on the `Tea` identified by our globally unique `ID`.
+  teaPatch: TeaPatch!
+}
+
+# The output of our `updateTea` mutation.
+type UpdateTeaPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  tea: Tea
+
+  # Reads a single `Brand` that is related to this `Tea`.
+  brandByBrandUuid: Brand
+
+  # Reads a single `Category` that is related to this `Tea`.
+  categoryByCategoryUuid: Category
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122).
+scalar Uuid
