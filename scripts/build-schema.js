@@ -5,8 +5,8 @@ const chalk = require('chalk');
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 const path = require('path');
-const env = process.env.NODE_ENV || 'development';
-const config = require(path.join(__dirname, '..', 'config', 'database.js'))[env];
+
+const config = require(path.join(__dirname, '..', 'config', 'database.js'));
 
 console.log(chalk.green('Generating schema from database...'));
 createPostGraphQLSchema(config.database, config.database.schema, config.postgraphql).then((schema) => {
