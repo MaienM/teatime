@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import { withRouter } from 'react-router';
 
 class TeaTable extends React.Component {
 	render() {
@@ -13,7 +14,7 @@ class TeaTable extends React.Component {
 				</thead>
 				<tbody>
 					{this.props.teas.map(tea =>
-						<tr key={tea.id}>
+						<tr key={tea.id} onClick={() => this.props.router.replace(`/tea/${tea.uuid}`)}>
 							<td>{tea.name}</td>
 							<td>{tea.brand.name}</td>
 						</tr>
@@ -24,4 +25,4 @@ class TeaTable extends React.Component {
 	}
 };
 
-export default TeaTable;
+export default withRouter(TeaTable);

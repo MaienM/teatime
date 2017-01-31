@@ -3,10 +3,6 @@ import Relay from 'react-relay';
 const BootstrapPagination = require('react-bootstrap').Pagination;
 
 class Pagination extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		const pages = Math.ceil(this.props.total / this.props.pageSize);
 		if (pages <= 1) return null;

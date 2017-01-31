@@ -1,14 +1,13 @@
 import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
-import Pagination from './Pagination';
+import PageControl from '../PageControl';
 import TeaTable from './TeaTable';
 
 class Teas extends React.Component {
-	onPageChange(page) {
-		this.props.relay.setVariables({
-			offset: (page - 1) * this.props.relay.variables.pageSize,
-		});
+	onPageChange(state) {
+		console.log(state);
+		this.props.relay.setVariables(_.pick(state, ['offset', 'pageSize']));
 	}
 
 	render() {
@@ -16,12 +15,14 @@ class Teas extends React.Component {
 			<div className="teas">
 				<h1>Tea</h1>
 				<TeaTable
-					teas={_.map(this.props.viewer.allTeas.edges, 'node')} />
-				<Pagination
-					page={Math.floor(this.props.relay.variables.offset / this.props.relay.variables.pageSize) + 1}
-					pageSize={this.props.relay.variables.pageSize}
+					teas={_.map(this.props.viewer.allTeas.edges, 'node')}
+				/>
+				<PageControl
+					initialOffset={this.props.relay.variables.offset}
+					initialPageSize={this.props.relay.variables.pageSize}
 					total={this.props.viewer.allTeas.totalCount}
-					onChange={this.onPageChange.bind(this)} />
+					onChange={this.onPageChange.bind(this)}
+				/>
 			</div>
 		);
 	}
@@ -39,6 +40,7 @@ export default Relay.createContainer(Teas, {
 					edges {
 						node {
 							id,
+							uuid,
 							name,
 							brand: brandByBrandUuid {
 								name
