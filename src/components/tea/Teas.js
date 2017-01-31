@@ -6,7 +6,6 @@ import TeaTable from './TeaTable';
 
 class Teas extends React.Component {
 	onPageChange(state) {
-		console.log(state);
 		this.props.relay.setVariables(_.pick(state, ['offset', 'pageSize']));
 	}
 

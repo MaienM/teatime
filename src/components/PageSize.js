@@ -20,11 +20,9 @@ class PageSize extends React.Component {
 	}
 
 	render() {
-		const pages = Math.ceil(this.props.total / this.props.pageSize) * 100;
-		// if (pages <= 1) return null;
 		return (
 			<FormGroup controlId="formControlsSelect">
-				<DropdownButton title={`Per page: ${this.state.pageSize}`} onSelect={this.onSelect.bind(this)}>
+				<DropdownButton id="pageSize" title={`Per page: ${this.state.pageSize}`} onSelect={this.onSelect.bind(this)}>
 					{_.map(
 						this.props.options,
 						(i) => <MenuItem key={i} eventKey={i} active={this.state.pageSize == i}>{i}</MenuItem>
