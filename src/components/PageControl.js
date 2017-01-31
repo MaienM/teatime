@@ -20,6 +20,7 @@ class PageControl extends React.Component {
 	}
 
 	calcState(page, size) {
+		page = Math.min(page, Math.ceil(this.props.total / size));
 		return {
 			offset: (page - 1) * size,
 			page: page,
