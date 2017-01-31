@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
+import Router from './components/Router';
 
 import './index.scss';
 
-// import 'bootstrap/dist/css/bootstrap.min.css'
+// Accept hot reloads
+if (module.hot) {
+	module.hot.accept();
+}
 
+// Render the router component
 ReactDOM.render(
-	<App />,
+	<Router />,
 	document.getElementById('root')
 );
