@@ -21,15 +21,13 @@ const routes = (
 		name="Home"
 		component={App}
 	>
-		<IndexRoute />
+		<IndexRoute breadcrumbIgnore />
 
 		// Tea
-		<Route
-			path="tea"
-			name="Tea"
-		>
+		<Route path="tea" name="Tea">
 			<IndexRoute queries={RootQuery}
 				component={Teas}
+				breadcrumbIgnore
 			/>
 			<Route queries={RootQuery}
 				path=":uuid"
@@ -38,25 +36,15 @@ const routes = (
 		</Route>
 
 		// Brand
-		<Route
-			path="brand"
-			name="Brand"
-		>
-			<IndexRoute />
-			<Route
-				path=":uuid"
-			/>
+		<Route path="brand" name="Brand">
+			<IndexRoute breadcrumbIgnore />
+			<Route path=":uuid" />
 		</Route>
 
 		// Categories
-		<Route
-			path="category"
-			name="Category"
-		>
-			<IndexRoute />
-			<Route
-				path=":uuid"
-			/>
+		<Route path="category" name="Category">
+			<IndexRoute breadcrumbIgnore />
+			<Route path=":uuid" />
 		</Route>
 	</Route>
 );
