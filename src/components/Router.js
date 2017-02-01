@@ -1,6 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
-import { Router, Route, IndexRoute, hashHistory, applyRouterMiddleware } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory, applyRouterMiddleware } from 'react-router';
 import useRelay from 'react-router-relay';
 
 import App from './App';
@@ -63,7 +63,7 @@ const routes = (
 
 export default () => (
 	<Router
-		history={hashHistory}
+		history={browserHistory}
 		render={applyRouterMiddleware(useRelay)}
 		environment={Relay.Store}
 		routes={routes}
