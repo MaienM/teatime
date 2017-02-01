@@ -13,12 +13,12 @@ class TeaTable extends React.Component {
 					</tr>
 				</thead>
 				<tbody>
-					{this.props.teas.map(tea =>
+					{this.props.teas.map((tea) => (
 						<tr key={tea.id} onClick={() => this.props.router.replace(`/tea/${tea.uuid}`)}>
 							<td>{tea.name}</td>
 							<td>{tea.brand.name}</td>
 						</tr>
-					)}
+					))}
 				</tbody>
 			</Table>
 		);

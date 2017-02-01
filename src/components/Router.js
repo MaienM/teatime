@@ -25,37 +25,37 @@ const routes = (
 
 		// Tea
 		<Route
-			path="/tea"
+			path="tea"
 			name="Tea"
 		>
 			<IndexRoute queries={RootQuery}
 				component={Teas}
 			/>
 			<Route queries={RootQuery}
-				path="/tea/:uuid"
+				path=":uuid"
 				component={Tea}
 			/>
 		</Route>
 
 		// Brand
 		<Route
-			path="/brand"
+			path="brand"
 			name="Brand"
 		>
 			<IndexRoute />
 			<Route
-				path="/brand/:uuid"
+				path=":uuid"
 			/>
 		</Route>
 
 		// Categories
 		<Route
-			path="/category"
+			path="category"
 			name="Category"
 		>
 			<IndexRoute />
 			<Route
-				path="/category/:uuid"
+				path=":uuid"
 			/>
 		</Route>
 	</Route>

@@ -4,12 +4,13 @@ import { Link } from 'react-router';
 
 class Tea extends React.Component {
 	render() {
+		const tea = this.props.viewer.tea;
 		return (
 			<div>
-				<h1>{this.props.viewer.tea.name}</h1>
+				<h1>{tea.name}</h1>
 				<h3>
-					<Link to={`/brand/${this.props.viewer.tea.brand.uuid}`}>
-						{this.props.viewer.tea.brand.name}
+					<Link to={`/brand/${tea.brand.uuid}`}>
+						{tea.brand.name}
 					</Link>
 				</h3>
 			</div>
