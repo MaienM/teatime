@@ -42,7 +42,6 @@ PageSize.propTypes = {
 PageSize.defaultProps = {
 	options: _.range(10, 51, 10),
 	initial: 10,
-	onChange: () => {},
 };
 
 export default PageSize;

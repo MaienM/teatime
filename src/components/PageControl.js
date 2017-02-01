@@ -73,7 +73,6 @@ PageControl.propTypes = {
 PageControl.defaultProps = {
 	initialPage: 1,
 	initialPageSize: 10,
-	onChange: () => {},
 };
 
 export default PageControl;
