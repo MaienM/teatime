@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
 import PageControl from '../PageControl';
-import TeaTable from './TeaTable';
+import Table from '../Table';
 
 class Teas extends React.Component {
 	onPageChange(state) {
@@ -13,8 +13,13 @@ class Teas extends React.Component {
 		return (
 			<div className="teas">
 				<h1>Tea</h1>
-				<TeaTable
-					teas={_.map(this.props.viewer.allTeas.edges, 'node')}
+				<Table
+					data={_.map(this.props.viewer.allTeas.edges, 'node')}
+					columns={{
+						Name: 'name',
+						Brand: 'brand.name',
+					}}
+					rowLink={(tea) => `/tea/${tea.uuid}`}
 				/>
 				<PageControl
 					initialOffset={this.props.relay.variables.offset}
