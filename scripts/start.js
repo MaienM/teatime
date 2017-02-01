@@ -30,9 +30,9 @@ function startAppServer() {
 function startGraphQLServer() {
 	return new Promise((resolve, reject) => {
 		const config = require(path.join(root, 'config', 'database.js'));
-		const graphQLApp = express();
-		graphQLApp.use(postgraphql(config.database, config.database.schema, config.postgraphql));
-		const server = graphQLApp.listen(GRAPHQL_PORT, () => {
+		const server = express();
+		server.use(postgraphql(config.database, config.database.schema, config.postgraphql));
+		server.listen(GRAPHQL_PORT, () => {
 			console.log(`GraphQL server is now running on http://localhost:${GRAPHQL_PORT}`);
 			resolve(server);
 		});

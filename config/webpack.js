@@ -44,6 +44,7 @@ module.exports = {
 	devServer: {
 		contentBase: contentBase,
 		publicPath: publicPath,
+		historyApiFallback: true,
 		hot: true,
 		stats: {
 			colors: true,
