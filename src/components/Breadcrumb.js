@@ -1,16 +1,10 @@
 import React from 'react';
-import { Breadcrumb } from 'react-bootstrap';
+import { withRouter } from 'react-router';
+import Breadcrumbs from 'react-breadcrumbs';
 
-export default () => (
-	<Breadcrumb>
-		<Breadcrumb.Item href="#">
-			Home
-		</Breadcrumb.Item>
-		<Breadcrumb.Item href="#">
-			Tea
-		</Breadcrumb.Item>
-		<Breadcrumb.Item active>
-			Earl Grey
-		</Breadcrumb.Item>
-	</Breadcrumb>
-);
+export default withRouter((props) => (
+	<Breadcrumbs
+		routes={props.routes}
+		params={props.params}
+	/>
+));

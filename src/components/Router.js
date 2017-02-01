@@ -7,22 +7,6 @@ import App from './App';
 import Teas from './tea/Teas';
 import Tea from './tea/Tea';
 
-const Blank = Relay.createContainer(() => null, {
-	fragments: {
-		viewer: () => Relay.QL`
-			fragment on Query {
-				allTeas(first: 10) {
-					edges {
-						node {
-							id,
-						}
-					}
-				}
-			}
-		`
-	},
-});
-
 const RootQuery = {
 	viewer: () => Relay.QL`
 		query {
@@ -32,38 +16,48 @@ const RootQuery = {
 };
 
 const routes = (
-	<Route path="/" component={App}>
+	<Route
+		path="/"
+		name="Home"
+		component={App}
+	>
 		<IndexRoute />
 
 		// Tea
-		<Route name="Tea" queries={RootQuery}
+		<Route
 			path="/tea"
-			component={Teas}
-		/>
-		<Route name="Tea" queries={RootQuery}
-			path="/tea/:uuid"
-			component={Tea}
-		/>
+			name="Tea"
+		>
+			<IndexRoute queries={RootQuery}
+				component={Teas}
+			/>
+			<Route queries={RootQuery}
+				path="/tea/:uuid"
+				component={Tea}
+			/>
+		</Route>
 
 		// Brand
-		<Route name="Brand" queries={RootQuery}
+		<Route
 			path="/brand"
-			component={Blank}
-		/>
-		<Route name="Brand" queries={RootQuery}
-			path="/brand/:uuid"
-			component={Blank}
-		/>
+			name="Brand"
+		>
+			<IndexRoute />
+			<Route
+				path="/brand/:uuid"
+			/>
+		</Route>
 
 		// Categories
-		<Route name="Route" queries={RootQuery}
+		<Route
 			path="/category"
-			component={Blank}
-		/>
-		<Route name="Route" queries={RootQuery}
-			path="/category/:uuid"
-			component={Blank}
-		/>
+			name="Category"
+		>
+			<IndexRoute />
+			<Route
+				path="/category/:uuid"
+			/>
+		</Route>
 	</Route>
 );
 
