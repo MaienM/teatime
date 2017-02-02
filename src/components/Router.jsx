@@ -16,48 +16,30 @@ const RootQuery = {
 };
 
 const routes = (
-	<Route
-		path="/"
-		name="Home"
-		component={App}
-	>
+	<Route path="/" name="Home" component={App}>
 		<IndexRoute breadcrumbIgnore />
 
-		// Tea
+		{/* Tea */}
 		<Route path="tea" name="Tea">
-			<IndexRoute queries={RootQuery}
-				component={Teas}
-				breadcrumbIgnore
-			/>
-			<Route
-				path="new"
-				name="New"
-			/>
-			<Route
-				path=":uuid"
-				name="Unknown"
-			>
-				<IndexRoute queries={RootQuery}
-					component={Tea}
-					breadcrumbIgnore
-				/>
-				<Route
-					path="edit"
-					name="Edit"
-				/>
+			<IndexRoute component={Teas} queries={RootQuery} breadcrumbIgnore />
+			<Route path="new" name="New" />
+			<Route path=":uuid" name="Unknown" >
+				<IndexRoute component={Tea} queries={RootQuery} breadcrumbIgnore />
+				<Route path="edit" name="Edit" />
+				<Route path="delete" name="Delete" />
 			</Route>
 		</Route>
 
-		// Brand
+		{/* Brand */}
 		<Route path="brand" name="Brand">
 			<IndexRoute breadcrumbIgnore />
-			<Route path=":uuid" />
+			<Route path=":uuid" name="Unknown" />
 		</Route>
 
-		// Categories
+		{/* Categories */}
 		<Route path="category" name="Category">
 			<IndexRoute breadcrumbIgnore />
-			<Route path=":uuid" />
+			<Route path=":uuid" name="Unknown" />
 		</Route>
 	</Route>
 );

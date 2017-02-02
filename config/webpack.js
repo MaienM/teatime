@@ -9,21 +9,25 @@ module.exports = {
 	entry: [
 		require.resolve('webpack/hot/only-dev-server'),
 		require.resolve('webpack-dev-server/client') + '?/',
-		path.join(root, 'src', 'index.js'),
+		path.join(root, 'src', 'index.jsx'),
 	],
 	output: {
 		path: contentBase,
 		publicPath: publicPath,
 		filename: 'app.js',
 	},
+	resolve: {
+		extensions: ['', '.js', '.jsx'],
+	},
 	module: {
 		loaders: [
 			{
-				test: /\.js$/,
+				test: /\.jsx?$/,
 				exclude: /node_modules/,
 				loaders: [
 					'react-hot-loader',
 					'babel-loader',
+					'eslint-loader',
 				],
 			},
 			{

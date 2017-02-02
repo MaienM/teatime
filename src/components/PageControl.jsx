@@ -1,5 +1,4 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
 import Pagination from './Pagination';
 import PageSize from './PageSize';
 
@@ -12,20 +11,14 @@ class PageControl extends React.Component {
 		if (props.initialOffset) {
 			this.state = this.calcState(
 				Math.floor(props.initialOffset / props.initialPageSize),
-				props.initialPageSize
+				props.initialPageSize,
 			);
 		} else {
 			this.state = this.calcState(props.initialPage, props.initialPageSize);
 		}
-	}
 
-	calcState(page, size) {
-		page = Math.min(page, Math.ceil(this.props.total / size));
-		return {
-			offset: (page - 1) * size,
-			page: page,
-			pageSize: size,
-		};
+		this.onPageChange = this.onPageChange.bind(this);
+		this.onSizeChange = this.onSizeChange.bind(this);
 	}
 
 	onChange(page, size) {
@@ -42,6 +35,15 @@ class PageControl extends React.Component {
 		this.onChange(Math.floor(this.state.offset / size) + 1, size);
 	}
 
+	calcState(page, size) {
+		const realPage = Math.min(page, Math.ceil(this.props.total / size));
+		return {
+			offset: (realPage - 1) * size,
+			page: realPage,
+			pageSize: size,
+		};
+	}
+
 	render() {
 		return (
 			<div className="tt-pagination">
@@ -49,12 +51,12 @@ class PageControl extends React.Component {
 					page={this.state.page}
 					pageSize={this.state.pageSize}
 					total={this.props.total}
-					onChange={this.onPageChange.bind(this)}
+					onChange={this.onPageChange}
 				/>
 				<PageSize
 					initial={this.state.pageSize}
-					options={this.state.pageSizes}
-					onChange={this.onSizeChange.bind(this)}
+					options={this.props.pageSizes}
+					onChange={this.onSizeChange}
 				/>
 			</div>
 		);
@@ -71,8 +73,10 @@ PageControl.propTypes = {
 };
 
 PageControl.defaultProps = {
+	initialOffset: undefined,
 	initialPage: 1,
 	initialPageSize: 10,
+	pageSizes: undefined,
 };
 
 export default PageControl;

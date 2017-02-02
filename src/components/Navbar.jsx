@@ -1,12 +1,12 @@
 import React from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap';
+import { IndexLinkContainer } from 'react-router-bootstrap';
 
 export default () => (
 	<Navbar>
 		<Navbar.Header>
 			<Navbar.Brand>
-				<a href="#">Tea Time</a>
+				Tea Time
 			</Navbar.Brand>
 		</Navbar.Header>
 		<Nav>

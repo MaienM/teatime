@@ -11,9 +11,15 @@ const root = path.join(__dirname, '..');
 const APP_PORT = 3000;
 const GRAPHQL_PORT = 8080;
 
+function loadConfig(name) {
+	const configPath = path.join(root, 'config', name);
+	delete require.cache[configPath];
+	return require(configPath);
+}
+
 function startAppServer() {
 	return new Promise((resolve, reject) => {
-		const config = require(path.join(root, 'config', 'webpack.js'));
+		const config = loadConfig('webpack.js');
 		const server = new WebpackDevServer(webpack(config), _.merge({}, config.devServer, {
 			proxy: {
 				'/graphql': `http://localhost:${GRAPHQL_PORT}`,
@@ -29,12 +35,12 @@ function startAppServer() {
 
 function startGraphQLServer() {
 	return new Promise((resolve, reject) => {
-		const config = require(path.join(root, 'config', 'database.js'));
+		const config = loadConfig('database.js');
 		const server = express();
 		server.use(postgraphql(config.database, config.database.schema, config.postgraphql));
-		server.listen(GRAPHQL_PORT, () => {
+		const instance = server.listen(GRAPHQL_PORT, () => {
 			console.log(`GraphQL server is now running on http://localhost:${GRAPHQL_PORT}`);
-			resolve(server);
+			resolve(instance);
 		});
 	});
 }

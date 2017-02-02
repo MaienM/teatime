@@ -1,18 +1,19 @@
 import React from 'react';
-import Relay from 'react-relay';
-const BootstrapPagination = require('react-bootstrap').Pagination;
+import { Pagination as BootstrapPagination } from 'react-bootstrap';
 
 class Pagination extends React.Component {
 	render() {
 		const pages = Math.ceil(this.props.total / this.props.pageSize);
 		if (pages <= 1) return null;
-		return <BootstrapPagination
-			items={pages}
-			activePage={this.props.page}
-			onSelect={this.props.onChange}
-			maxButtons={5}
-			first last prev next boundaryLinks
-		/>
+		return (
+			<BootstrapPagination
+				items={pages}
+				activePage={this.props.page}
+				onSelect={this.props.onChange}
+				maxButtons={5}
+				first last prev next boundaryLinks
+			/>
+		);
 	}
 }
 

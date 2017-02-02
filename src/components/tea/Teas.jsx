@@ -7,6 +7,12 @@ import PageControl from '../PageControl';
 import Table from '../Table';
 
 class Teas extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.onPageChange = this.onPageChange.bind(this);
+	}
+
 	onPageChange(state) {
 		this.props.relay.setVariables(_.pick(state, ['offset', 'pageSize']));
 	}
@@ -30,7 +36,7 @@ class Teas extends React.Component {
 					initialOffset={this.props.relay.variables.offset}
 					initialPageSize={this.props.relay.variables.pageSize}
 					total={this.props.viewer.allTeas.totalCount}
-					onChange={this.onPageChange.bind(this)}
+					onChange={this.onPageChange}
 				/>
 			</div>
 		);

@@ -12,5 +12,5 @@ if (module.hot) {
 // Render the router component
 ReactDOM.render(
 	<Router />,
-	document.getElementById('root')
+	document.getElementById('root'),
 );

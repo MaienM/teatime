@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import React from 'react';
-import Relay from 'react-relay';
 import { FormGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 
 class PageSize extends React.Component {
@@ -10,11 +9,13 @@ class PageSize extends React.Component {
 		this.state = {
 			pageSize: props.initial,
 		};
+
+		this.onSelect = this.onSelect.bind(this);
 	}
 
 	onSelect(pageSize) {
 		this.setState({
-			pageSize: pageSize,
+			pageSize,
 		});
 		this.props.onChange(pageSize);
 	}
@@ -22,10 +23,10 @@ class PageSize extends React.Component {
 	render() {
 		return (
 			<FormGroup controlId="formControlsSelect">
-				<DropdownButton id="pageSize" title={`Per page: ${this.state.pageSize}`} onSelect={this.onSelect.bind(this)}>
+				<DropdownButton id="pageSize" title={`Per page: ${this.state.pageSize}`} onSelect={this.onSelect}>
 					{_.map(
 						this.props.options,
-						(i) => <MenuItem key={i} eventKey={i} active={this.state.pageSize == i}>{i}</MenuItem>
+						(i) => <MenuItem key={i} eventKey={i} active={this.state.pageSize === i}>{i}</MenuItem>,
 					)}
 				</DropdownButton>
 			</FormGroup>
