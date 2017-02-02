@@ -29,10 +29,23 @@ const routes = (
 				component={Teas}
 				breadcrumbIgnore
 			/>
-			<Route queries={RootQuery}
-				path=":uuid"
-				component={Tea}
+			<Route
+				path="new"
+				name="New"
 			/>
+			<Route
+				path=":uuid"
+				name="Unknown"
+			>
+				<IndexRoute queries={RootQuery}
+					component={Tea}
+					breadcrumbIgnore
+				/>
+				<Route
+					path="edit"
+					name="Edit"
+				/>
+			</Route>
 		</Route>
 
 		// Brand

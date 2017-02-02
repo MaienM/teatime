@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
+import { PageHeader } from 'react-bootstrap';
+import HeaderButtons from '../HeaderButtons';
 import PageControl from '../PageControl';
 import Table from '../Table';
 
@@ -12,7 +14,10 @@ class Teas extends React.Component {
 	render() {
 		return (
 			<div className="teas">
-				<h1>Tea</h1>
+				<PageHeader>
+					Tea
+					<HeaderButtons create="/tea/new" />
+				</PageHeader>
 				<Table
 					data={_.map(this.props.viewer.allTeas.edges, 'node')}
 					columns={{
