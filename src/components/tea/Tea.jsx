@@ -1,16 +1,12 @@
 import React from 'react';
 import Relay from 'react-relay';
-import { withRouter, Link } from 'react-router';
+import { Link } from 'react-router';
 import { PageHeader } from 'react-bootstrap';
 import HeaderButtons from '../HeaderButtons';
 
 function Tea(props) {
 	// Get the tea object
 	const tea = props.viewer.tea;
-
-	// Set the route name, for the breadcrumb
-	const route = props.route;
-	route.name = tea.name;
 
 	return (
 		<div>
@@ -27,7 +23,7 @@ function Tea(props) {
 	);
 }
 
-export default Relay.createContainer(withRouter(Tea), {
+export default Relay.createContainer(Tea, {
 	initialVariables: {
 		uuid: null,
 	},
