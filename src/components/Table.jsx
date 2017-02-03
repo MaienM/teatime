@@ -3,6 +3,7 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import { Table as BootstrapTable } from 'react-bootstrap';
 
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 function Table(props) {
 	return (
 		<BootstrapTable striped hover={props.rowLink !== undefined}>
@@ -28,6 +29,7 @@ function Table(props) {
 		</BootstrapTable>
 	);
 }
+/* eslint-enable jsx-a11y/no-static-element-interactions */
 
 const columnKeyDef = React.PropTypes.oneOfType([
 	React.PropTypes.arrayOf(React.PropTypes.string),
