@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const root = path.resolve(__dirname, '..');
 const contentBase = path.join(root, 'public');
 const publicPath = '/';
+
 module.exports = {
 	// context: root,
 	entry: [

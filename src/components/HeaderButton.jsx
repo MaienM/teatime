@@ -6,7 +6,6 @@ import { browserHistory } from 'react-router';
 const actionPropType = React.PropTypes.oneOfType([
 	React.PropTypes.func,
 	React.PropTypes.string,
-	React.PropTypes.bool,
 ]);
 
 function HeaderButton(props) {
