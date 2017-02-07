@@ -13,11 +13,14 @@ function Tea(props) {
 			<PageHeader>
 				{tea.name}&nbsp;
 				<small>
-					<Link to={`/brand/${tea.brand.uuid}`}>
+					by <Link to={`/brand/${tea.brand.uuid}`}>
 						{tea.brand.name}
 					</Link>
 				</small>
-				<HeaderButtons update={`/tea/${tea.uuid}/edit`} />
+				<HeaderButtons
+					update={`/tea/${tea.uuid}/edit`}
+					delete={`/tea/${tea.uuid}/delete`}
+				/>
 			</PageHeader>
 		</div>
 	);
