@@ -1,3 +1,5 @@
+const _ = require('lodash');
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -41,6 +43,35 @@ module.exports = {
 				],
 			},
 		],
+	},
+	eslint: {
+		outputReport: {
+			filePath: path.join(root, 'clang.txt'),
+			// Custom formatter function that writes in a vim quickfix compatible format
+			formatter: (args) => {
+				const errors = _(args).map(function(file) {
+					return _.map(file.messages, function(message) {
+						return [
+							path.relative(root, file.filePath),
+							':',
+							message.line,
+							':',
+							message.column,
+							': ',
+							message.message,
+							' [',
+							message.ruleId,
+							']',
+						].join('');
+					});
+				}).flatten().value();
+				const output = errors.join('\n');
+
+				// We directly write because webpack doesn't actually write files in dev-server mode
+				fs.writeFileSync(path.join(root, 'clang.txt'), output);
+				return output;
+			}
+		},
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
