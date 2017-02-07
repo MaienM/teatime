@@ -1,21 +1,25 @@
 {
-	"extends": "airbnb",
-	"env": {
-		"browser": true,
+	'extends': 'airbnb',
+	'env': {
+		'browser': true,
 	},
-	"rules": {
+	'rules': {
 		// Tabs for indentation
-		"indent": ["error", "tab"],
-		"no-tabs": 0,
-		"react/jsx-indent": [2, "tab"],
-		"react/jsx-indent-props": [2, "tab"],
-		"max-len": [2, 120],
+		'indent': ['error', 'tab'],
+		'no-tabs': 'off',
+		'react/jsx-indent': ['error', 'tab'],
+		'react/jsx-indent-props': ['error', 'tab'],
+		'max-len': ['error', 120],
 
 		// Ignore provided prop types, no point in defining those everywhere
-		"react/prop-types": [2, {
-			"ignore": ["viewer", "route", "routes", "router", "params", "relay"],
+		'react/prop-types': ['error', {
+			'ignore': ['viewer', 'route', 'routes', 'router', 'params', 'relay'],
 		}],
 
-		"arrow-parens": [2, "always"],
+		// Consistency, even if there is only one param
+		'arrow-parens': ['error', 'always'],
+
+		// Avoid directly mutating the state
+		'react/no-direct-mutation-state': 'error',
 	},
 }
