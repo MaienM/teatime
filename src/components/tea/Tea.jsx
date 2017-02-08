@@ -38,9 +38,9 @@ export default Relay.createContainer(Tea, {
 					name,
 					brand: brandByBrandUuid {
 						uuid,
-						name
-					}
-				}
+						name,
+					},
+				},
 			}
 		`,
 	},

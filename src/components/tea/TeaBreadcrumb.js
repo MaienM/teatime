@@ -18,7 +18,7 @@ export default Relay.createContainer(withRouter(TeaBreadcrumb), {
 			fragment on Query {
 				tea: teaByUuid(uuid: $uuid) {
 					name,
-				}
+				},
 			}
 		`,
 	},

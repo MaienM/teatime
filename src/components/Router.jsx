@@ -11,7 +11,7 @@ import TeaBreadcrumb from './tea/TeaBreadcrumb';
 const RootQuery = {
 	viewer: () => Relay.QL`
 		query {
-			query
+			query,
 		}
 	`,
 };
