@@ -600,6 +600,43 @@ input FloatRangeInput {
   end: FloatRangeBoundInput
 }
 
+# All input for the `genRandomBytes` mutation.
+input GenRandomBytesInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  arg0: Int!
+}
+
+# The output of our `genRandomBytes` mutation.
+type GenRandomBytesPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  string: String
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `genRandomUuid` mutation.
+input GenRandomUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+}
+
+# The output of our `genRandomUuid` mutation.
+type GenRandomUuidPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  uuid: Uuid
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
 # range of integers
 type IntegerRange {
   # The starting bound of our range.
@@ -636,8 +673,20 @@ input IntegerRangeInput {
   end: IntegerRangeBoundInput
 }
 
+# A JavaScript object encoded in the JSON format as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar Json
+
 # The root mutation type which contains root level fields which mutate data.
 type Mutation {
+  genRandomBytes(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: GenRandomBytesInput!
+  ): GenRandomBytesPayload
+  genRandomUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: GenRandomUuidInput!
+  ): GenRandomUuidPayload
+
   # Creates a single `Brand`.
   createBrand(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -651,15 +700,15 @@ type Mutation {
   ): UpdateBrandPayload
 
   # Updates a single `Brand` using a unique key and a patch.
-  updateBrandByName(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateBrandByNameInput!
-  ): UpdateBrandPayload
-
-  # Updates a single `Brand` using a unique key and a patch.
   updateBrandByUuid(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateBrandByUuidInput!
+  ): UpdateBrandPayload
+
+  # Updates a single `Brand` using a unique key and a patch.
+  updateBrandByName(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateBrandByNameInput!
   ): UpdateBrandPayload
 
   # Deletes a single `Brand` using its globally unique id.
@@ -669,15 +718,15 @@ type Mutation {
   ): DeleteBrandPayload
 
   # Deletes a single `Brand` using a unique key.
-  deleteBrandByName(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteBrandByNameInput!
-  ): DeleteBrandPayload
-
-  # Deletes a single `Brand` using a unique key.
   deleteBrandByUuid(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteBrandByUuidInput!
+  ): DeleteBrandPayload
+
+  # Deletes a single `Brand` using a unique key.
+  deleteBrandByName(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteBrandByNameInput!
   ): DeleteBrandPayload
 
   # Creates a single `Category`.
@@ -693,15 +742,15 @@ type Mutation {
   ): UpdateCategoryPayload
 
   # Updates a single `Category` using a unique key and a patch.
-  updateCategoryByName(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateCategoryByNameInput!
-  ): UpdateCategoryPayload
-
-  # Updates a single `Category` using a unique key and a patch.
   updateCategoryByUuid(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateCategoryByUuidInput!
+  ): UpdateCategoryPayload
+
+  # Updates a single `Category` using a unique key and a patch.
+  updateCategoryByName(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateCategoryByNameInput!
   ): UpdateCategoryPayload
 
   # Deletes a single `Category` using its globally unique id.
@@ -711,15 +760,15 @@ type Mutation {
   ): DeleteCategoryPayload
 
   # Deletes a single `Category` using a unique key.
-  deleteCategoryByName(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteCategoryByNameInput!
-  ): DeleteCategoryPayload
-
-  # Deletes a single `Category` using a unique key.
   deleteCategoryByUuid(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteCategoryByUuidInput!
+  ): DeleteCategoryPayload
+
+  # Deletes a single `Category` using a unique key.
+  deleteCategoryByName(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteCategoryByNameInput!
   ): DeleteCategoryPayload
 
   # Creates a single `Price`.
@@ -795,15 +844,15 @@ type Mutation {
   ): UpdateTeaPayload
 
   # Updates a single `Tea` using a unique key and a patch.
-  updateTeaByNameAndBrandUuid(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateTeaByNameAndBrandUuidInput!
-  ): UpdateTeaPayload
-
-  # Updates a single `Tea` using a unique key and a patch.
   updateTeaByUuid(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateTeaByUuidInput!
+  ): UpdateTeaPayload
+
+  # Updates a single `Tea` using a unique key and a patch.
+  updateTeaByNameAndBrandUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateTeaByNameAndBrandUuidInput!
   ): UpdateTeaPayload
 
   # Deletes a single `Tea` using its globally unique id.
@@ -813,15 +862,15 @@ type Mutation {
   ): DeleteTeaPayload
 
   # Deletes a single `Tea` using a unique key.
-  deleteTeaByNameAndBrandUuid(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteTeaByNameAndBrandUuidInput!
-  ): DeleteTeaPayload
-
-  # Deletes a single `Tea` using a unique key.
   deleteTeaByUuid(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteTeaByUuidInput!
+  ): DeleteTeaPayload
+
+  # Deletes a single `Tea` using a unique key.
+  deleteTeaByNameAndBrandUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteTeaByNameAndBrandUuidInput!
   ): DeleteTeaPayload
 }
 
@@ -950,6 +999,106 @@ type Query implements Node {
     # The globally unique `ID`.
     id: ID!
   ): Node
+  akeys(arg0: String!): [String]
+  avals(arg0: String!): [String]
+  crypt(arg0: String!, arg1: String!): String
+  dearmor(arg0: String!): String
+  decrypt(arg0: String!, arg1: String!, arg2: String!): String
+  decryptIv(arg0: String!, arg1: String!, arg2: String!, arg3: String!): String
+  defined(arg0: String!, arg1: String!): Boolean
+  encrypt(arg0: String!, arg1: String!, arg2: String!): String
+  encryptIv(arg0: String!, arg1: String!, arg2: String!, arg3: String!): String
+  exist(arg0: String!, arg1: String!): Boolean
+  existsAll(arg0: String!, arg1: [String]!): Boolean
+  existsAny(arg0: String!, arg1: [String]!): Boolean
+  fetchval(arg0: String!, arg1: String!): String
+  ghstoreCompress(arg0: String!): String
+  ghstoreConsistent(arg0: String!, arg1: String!, arg2: Int!, arg3: Float!, arg4: String!): Boolean
+  ghstoreDecompress(arg0: String!): String
+  ghstoreIn(arg0: String!): String
+  ghstoreOut(arg0: String!): String
+  ghstorePenalty(arg0: String!, arg1: String!, arg2: String!): String
+  ghstorePicksplit(arg0: String!, arg1: String!): String
+  ghstoreSame(arg0: String!, arg1: String!, arg2: String!): String
+  ghstoreUnion(arg0: String!, arg1: String!): String
+  ginConsistentHstore(arg0: String!, arg1: Int!, arg2: String!, arg3: Int!, arg4: String!, arg5: String!): Boolean
+  ginExtractHstore(arg0: String!, arg1: String!): String
+  ginExtractHstoreQuery(arg0: String!, arg1: String!, arg2: Int!, arg3: String!, arg4: String!): String
+  hsConcat(arg0: String!, arg1: String!): String
+  hsContained(arg0: String!, arg1: String!): Boolean
+  hsContains(arg0: String!, arg1: String!): Boolean
+  hstoreCmp(arg0: String!, arg1: String!): Int
+  hstoreEq(arg0: String!, arg1: String!): Boolean
+  hstoreGe(arg0: String!, arg1: String!): Boolean
+  hstoreGt(arg0: String!, arg1: String!): Boolean
+  hstoreHash(arg0: String!): Int
+  hstoreIn(arg0: String!): String
+  hstoreLe(arg0: String!, arg1: String!): Boolean
+  hstoreLt(arg0: String!, arg1: String!): Boolean
+  hstoreNe(arg0: String!, arg1: String!): Boolean
+  hstoreOut(arg0: String!): String
+  hstoreRecv(arg0: String!): String
+  hstoreSend(arg0: String!): String
+  hstoreToArray(arg0: String!): [String]
+  hstoreToJson(arg0: String!): Json
+  hstoreToJsonLoose(arg0: String!): Json
+  hstoreToJsonb(arg0: String!): Json
+  hstoreToJsonbLoose(arg0: String!): Json
+  hstoreToMatrix(arg0: String!): [String]
+  hstoreVersionDiag(arg0: String!): Int
+  isdefined(arg0: String!, arg1: String!): Boolean
+  isexists(arg0: String!, arg1: String!): Boolean
+  pgpKeyId(arg0: String!): String
+  populateRecord(arg0: String, arg1: String): String
+
+  # Reads and enables paginatation through a set of `String`.
+  skeys(
+    # The method to use when ordering `String`.
+    orderBy: SkeysOrderBy = NATURAL
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+    arg0: String!
+  ): SkeysConnection
+  slice(arg0: String!, arg1: [String]!): String
+  sliceArray(arg0: String!, arg1: [String]!): [String]
+
+  # Reads and enables paginatation through a set of `String`.
+  svals(
+    # The method to use when ordering `String`.
+    orderBy: SvalsOrderBy = NATURAL
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+    arg0: String!
+  ): SvalsConnection
+  tconvert(arg0: String, arg1: String): String
 
   # Reads and enables paginatation through a set of `Brand`.
   allBrands(
@@ -981,8 +1130,8 @@ type Query implements Node {
     # The globally unique `ID` to be used in selecting a single `Brand`.
     id: ID!
   ): Brand
-  brandByName(name: String!): Brand
   brandByUuid(uuid: Uuid!): Brand
+  brandByName(name: String!): Brand
 
   # Reads and enables paginatation through a set of `Category`.
   allCategories(
@@ -1014,8 +1163,8 @@ type Query implements Node {
     # The globally unique `ID` to be used in selecting a single `Category`.
     id: ID!
   ): Category
-  categoryByName(name: String!): Category
   categoryByUuid(uuid: Uuid!): Category
+  categoryByName(name: String!): Category
 
   # Reads and enables paginatation through a set of `Price`.
   allPrices(
@@ -1111,8 +1260,8 @@ type Query implements Node {
     # The globally unique `ID` to be used in selecting a single `Tea`.
     id: ID!
   ): Tea
-  teaByNameAndBrandUuid(name: String!, brandUuid: Uuid!): Tea
   teaByUuid(uuid: Uuid!): Tea
+  teaByNameAndBrandUuid(name: String!, brandUuid: Uuid!): Tea
 
   # Exposes the root query type nested one level down. This is helpful for Relay 1
   # which can only query top level fields if they are in a particular form.
@@ -1120,6 +1269,35 @@ type Query implements Node {
 
   # The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
   id: ID!
+}
+
+# A connection to a list of `String` values.
+type SkeysConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # The count of *all* `String` you could get from the connection.
+  totalCount: Int
+
+  # A list of edges which contains the `String` and cursor to aid in pagination.
+  edges: [SkeysEdge]
+
+  # A list of `String` objects.
+  nodes: [String]
+}
+
+# A `String` edge in the connection.
+type SkeysEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
+
+  # The `String` at the end of the edge.
+  node: String
+}
+
+# Methods to use when ordering `String`.
+enum SkeysOrderBy {
+  NATURAL
 }
 
 type SteepAdvice implements Node {
@@ -1226,6 +1404,35 @@ enum SteepAdvicesOrderBy {
   UPDATED_AT_DESC
   TEA_UUID_ASC
   TEA_UUID_DESC
+}
+
+# A connection to a list of `String` values.
+type SvalsConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # The count of *all* `String` you could get from the connection.
+  totalCount: Int
+
+  # A list of edges which contains the `String` and cursor to aid in pagination.
+  edges: [SvalsEdge]
+
+  # A list of `String` objects.
+  nodes: [String]
+}
+
+# A `String` edge in the connection.
+type SvalsEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
+
+  # The `String` at the end of the edge.
+  node: String
+}
+
+# Methods to use when ordering `String`.
+enum SvalsOrderBy {
+  NATURAL
 }
 
 type Tea implements Node {

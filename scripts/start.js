@@ -52,18 +52,6 @@ function stopServer(server) {
 	return Promise.resolve();
 }
 
-function buildSchema() {
-	return new Promise((resolve, reject) => {
-		exec('npm run build-schema', (error, stdout) => {
-			if (error) {
-				reject(error);
-			} else {
-				resolve(stdout);
-			}
-		});
-	});
-}
-
 let appServer;
 let graphQLServer;
 function restart() {
@@ -72,11 +60,6 @@ function restart() {
 		stopServer(appServer && appServer.listeningApp),
 		stopServer(graphQLServer),
 	]).then(() => {
-		// Compile the schema
-		return buildSchema();
-	}).then((output) => {
-		console.log(output);
-
 		// Start the servers.
 		return Promise.all([
 			startAppServer(),

@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Manage your tea collection",
   "scripts": {
-    "build-schema": "node ./scripts/build-schema.js",
     "start": "babel-node ./scripts/start.js"
   },
   "repository": {
@@ -29,7 +28,7 @@
     "bootstrap": "^3.3.7",
     "express": "^4.14.1",
     "lodash": "^4.17.4",
-    "postgraphql": "^2.6.0",
+    "postgraphql": "^3.0.0",
     "rc-pagination": "^1.6.9",
     "rc-select": "^6.7.1",
     "react": "^15.4.2",
@@ -47,6 +46,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
+    "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
     "babel-preset-react-native": "^1.9.1",
     "babel-relay-plugin": "^0.10.0",

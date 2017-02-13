@@ -1,3 +1,6 @@
+const path = require('path');
+const root = path.resolve(__dirname, '..');
+
 module.exports = {
 	database: {
 		user: process.env.POSTGRES_ENV_POSTGRES_USER,
@@ -10,5 +13,7 @@ module.exports = {
 	postgraphql: {
 		classicIds: true,
 		graphiql: true,
+		exportJsonSchemaPath: path.join(root, 'data', 'schema.json'),
+		exportGqlSchemaPath: path.join(root, 'data', 'schema.graphql'),
 	},
 };
