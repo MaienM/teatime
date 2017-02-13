@@ -6,7 +6,7 @@ import useRelay from 'react-router-relay';
 import App from './App';
 import Teas from './tea/Teas';
 import Tea from './tea/Tea';
-import TeaBreadcrumb from './tea/TeaBreadcrumb';
+import TeaDelete from './tea/TeaDelete';
 
 const RootQuery = {
 	viewer: () => Relay.QL`
@@ -24,10 +24,10 @@ const routes = (
 		<Route path="tea" name="Tea">
 			<IndexRoute component={Teas} queries={RootQuery} breadcrumbIgnore />
 			<Route path="new" name="New" />
-			<Route path=":uuid" name="Unknown" component={TeaBreadcrumb} queries={RootQuery}>
-				<IndexRoute component={Tea} queries={RootQuery} breadcrumbIgnore />
+			<Route path=":uuid" name="Unknown" component={Tea} queries={RootQuery}>
+				<IndexRoute breadcrumbIgnore />
 				<Route path="edit" name="Edit" />
-				<Route path="delete" name="Delete" />
+				<Route path="delete" name="Delete" component={TeaDelete} queries={RootQuery} />
 			</Route>
 		</Route>
 

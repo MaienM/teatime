@@ -1,4 +1,5 @@
 {
+	'parser': 'babel-eslint',
 	'extends': 'airbnb',
 	'env': {
 		'browser': true,
@@ -21,5 +22,16 @@
 
 		// Avoid directly mutating the state
 		'react/no-direct-mutation-state': 'error',
+
+		// Allow relay mutation methods to not use this
+		'class-methods-use-this': ['error', {
+			'exceptMethods': [
+				'getMutation',
+				'getVariables',
+				'getFatQuery',
+				'getConfigs',
+				'getOptimisticResponse',
+			],
+		}],
 	},
 }

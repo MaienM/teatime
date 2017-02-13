@@ -5,8 +5,11 @@ import { PageHeader } from 'react-bootstrap';
 import HeaderButtons from '../HeaderButtons';
 
 function Tea(props) {
-	// Get the tea object
 	const tea = props.viewer.tea;
+
+	// Set the route name
+	const route = props.route;
+	route.name = tea.name;
 
 	return (
 		<div>
@@ -17,14 +20,25 @@ function Tea(props) {
 						{tea.brand.name}
 					</Link>
 				</small>
-				<HeaderButtons
-					update={`/tea/${tea.uuid}/edit`}
-					delete={`/tea/${tea.uuid}/delete`}
-				/>
+				{props.children == null &&
+					<HeaderButtons
+						update={`/tea/${tea.uuid}/edit`}
+						delete={`/tea/${tea.uuid}/delete`}
+					/>
+				}
 			</PageHeader>
+			{props.children}
 		</div>
 	);
 }
+
+Tea.propTypes = {
+	children: React.PropTypes.element,
+};
+
+Tea.defaultProps = {
+	children: undefined,
+};
 
 export default Relay.createContainer(Tea, {
 	initialVariables: {
