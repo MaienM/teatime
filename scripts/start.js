@@ -24,6 +24,7 @@ function startAppServer() {
 			proxy: {
 				'/graphql': `http://localhost:${GRAPHQL_PORT}`,
 				'/graphiql': `http://localhost:${GRAPHQL_PORT}`,
+				'/_postgraphql': `http://localhost:${GRAPHQL_PORT}`,
 			},
 		}));
 		server.listen(APP_PORT, () => {
