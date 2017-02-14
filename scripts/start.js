@@ -7,19 +7,21 @@ const { postgraphql } = require('postgraphql');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
-const root = path.join(__dirname, '..');
 const APP_PORT = 3000;
 const GRAPHQL_PORT = 8080;
 
-function loadConfig(name) {
-	const configPath = path.join(root, 'config', name);
+const ROOT = path.resolve(__dirname, '..');
+const CONFIG_APP = path.join(ROOT, 'config', 'webpack.js');
+const CONFIG_DB = path.join(ROOT, 'config', 'database.js');
+
+function loadConfig(configPath) {
 	delete require.cache[configPath];
 	return require(configPath);
 }
 
 function startAppServer() {
 	return new Promise((resolve, reject) => {
-		const config = loadConfig('webpack.js');
+		const config = loadConfig(CONFIG_APP);
 		const server = new WebpackDevServer(webpack(config), _.merge({}, config.devServer, {
 			proxy: {
 				'/graphql': `http://localhost:${GRAPHQL_PORT}`,
@@ -36,7 +38,7 @@ function startAppServer() {
 
 function startGraphQLServer() {
 	return new Promise((resolve, reject) => {
-		const config = loadConfig('database.js');
+		const config = loadConfig(CONFIG_DB);
 		const server = express();
 		server.use(postgraphql(config.database, config.database.schema, config.postgraphql));
 		const instance = server.listen(GRAPHQL_PORT, () => {
@@ -54,32 +56,56 @@ function stopServer(server) {
 }
 
 let appServer;
-let graphQLServer;
-function restart() {
-	// Shut down the servers
-	return Promise.all([
-		stopServer(appServer && appServer.listeningApp),
-		stopServer(graphQLServer),
-	]).then(() => {
-		// Start the servers.
-		return Promise.all([
-			startAppServer(),
-			startGraphQLServer(),
-		]);
-	}).then((servers) => {
-		// Store the new server instances
-		appServer = servers[0];
-		graphQLServer = servers[1];
-		console.log('Ready!');
-	}).catch((err) => {
-		console.error(err);
-		process.exit(1);
-	});
+function restartApp() {
+	return stopServer(appServer && appServer.listeningApp)
+		.then(() => startAppServer())
+		.then((server) => {
+			appServer = server;
+		}).catch((err) => {
+			console.error(err);
+			process.exit(1);
+		});
 }
 
-const watcher = chokidar.watch(path.join(root, 'config', '{database,webpack}.js'));
-watcher.on('change', (path) => {
+let graphQLServer;
+function restartGraphQL() {
+	return stopServer(graphQLServer)
+		.then(() => startGraphQLServer())
+		.then((server) => {
+			graphQLServer = server;
+		}).catch((err) => {
+			console.error(err);
+			process.exit(1);
+		});
+}
+
+const watcherOptions = {
+	awaitWriteFinish: true,
+};
+
+// Restart the app server on config and/or schema changes
+const appWatcher = chokidar.watch(CONFIG_APP, watcherOptions);
+appWatcher.on('add change', (path) => {
 	console.log(`${path} changed, restarting.`);
-	restart();
+	restartApp()
+		.then(() => { console.log('Ready!'); });
 });
-restart();
+
+// Restart the graphql server on config changes
+const gqlWatcher = chokidar.watch(CONFIG_DB, watcherOptions);
+gqlWatcher.on('change', (path) => {
+	console.log(`${path} changed, restarting.`);
+
+	// Redo the watch list for the app
+	appWatcher.unwatch('*');
+	appWatcher.add([CONFIG_APP, loadConfig(CONFIG_DB).postgraphql.exportJsonSchemaPath]);
+
+	// Restart the graphql server
+	restartGraphQL()
+		.then(() => { console.log('Ready!'); });
+});
+
+// Start the servers
+restartGraphQL()
+	.then(() => restartApp())
+	.then(() => { console.log('Ready!'); });

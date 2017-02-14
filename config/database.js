@@ -13,6 +13,7 @@ module.exports = {
 	postgraphql: {
 		classicIds: true,
 		graphiql: true,
+		watchPg: true,
 		exportJsonSchemaPath: path.join(root, 'data', 'schema.json'),
 		exportGqlSchemaPath: path.join(root, 'data', 'schema.graphql'),
 	},
