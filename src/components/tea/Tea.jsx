@@ -2,7 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
 import { PageHeader } from 'react-bootstrap';
-import HeaderButtons from '../HeaderButtons';
+import HeaderButtons, { HeaderButton } from '../HeaderButtons';
 
 function Tea(props) {
 	const tea = props.viewer.tea;
@@ -13,20 +13,24 @@ function Tea(props) {
 
 	return (
 		<div>
-			<PageHeader>
-				{tea.name}&nbsp;
-				<small>
-					by <Link to={`/brand/${tea.brand.uuid}`}>
-						{tea.brand.name}
-					</Link>
-				</small>
-				{props.children == null &&
-					<HeaderButtons
-						update={`/tea/${tea.uuid}/edit`}
-						delete={`/tea/${tea.uuid}/delete`}
-					/>
-				}
-			</PageHeader>
+			{props.body ? props.body : (
+				<PageHeader>
+					{tea.name}&nbsp;
+					<small>
+						by <Link to={`/brand/${tea.brand.uuid}`}>
+							{tea.brand.name}
+						</Link>
+					</small>
+					{props.children == null &&
+						<HeaderButtons
+							update={`/tea/${tea.uuid}/edit`}
+							delete={`/tea/${tea.uuid}/delete`}
+						>
+							<HeaderButton action={`/tea/${tea.uuid}/print`} glyph="print">Print</HeaderButton>
+						</HeaderButtons>
+					}
+				</PageHeader>
+			)}
 			{props.children}
 		</div>
 	);

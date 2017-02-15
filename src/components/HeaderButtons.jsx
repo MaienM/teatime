@@ -1,14 +1,14 @@
 import React from 'react';
 import { ButtonGroup } from 'react-bootstrap';
-import { HeaderButton, actionPropType } from './HeaderButton';
+import HeaderButton, { actionPropType } from './HeaderButton';
 
 function HeaderButtons(props) {
 	return (
 		<ButtonGroup className="pull-right">
+			{props.children}
 			{props.create && <HeaderButton action={props.create} glyph="plus">New</HeaderButton>}
 			{props.update && <HeaderButton action={props.update} glyph="edit">Edit</HeaderButton>}
 			{props.delete && <HeaderButton action={props.delete} glyph="trash">Remove</HeaderButton>}
-			{props.children}
 		</ButtonGroup>
 	);
 }
@@ -28,3 +28,4 @@ HeaderButtons.defaultProps = {
 };
 
 export default HeaderButtons;
+export { HeaderButton };

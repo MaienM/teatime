@@ -37,4 +37,4 @@ HeaderButton.defaultProps = {
 };
 
 export default HeaderButton;
-export { HeaderButton, actionPropType };
+export { actionPropType };

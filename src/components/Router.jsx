@@ -7,6 +7,7 @@ import App from './App';
 import Teas from './tea/Teas';
 import Tea from './tea/Tea';
 import TeaDelete from './tea/TeaDelete';
+import TeaPrint from './tea/TeaPrint';
 
 const RootQuery = {
 	viewer: () => Relay.QL`
@@ -28,6 +29,7 @@ const routes = (
 				<IndexRoute breadcrumbIgnore />
 				<Route path="edit" name="Edit" />
 				<Route path="delete" name="Delete" component={TeaDelete} queries={RootQuery} />
+				<Route path="print" name="Print" component={TeaPrint} queries={RootQuery} />
 			</Route>
 		</Route>
 
