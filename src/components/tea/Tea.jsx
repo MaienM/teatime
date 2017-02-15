@@ -38,10 +38,12 @@ function Tea(props) {
 
 Tea.propTypes = {
 	children: React.PropTypes.element,
+	body: React.PropTypes.element,
 };
 
 Tea.defaultProps = {
 	children: undefined,
+	body: undefined,
 };
 
 export default Relay.createContainer(Tea, {
@@ -63,3 +65,4 @@ export default Relay.createContainer(Tea, {
 		`,
 	},
 });
+
