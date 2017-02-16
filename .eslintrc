@@ -29,6 +29,19 @@
 		// Allow relay mutation methods to not use this
 		'class-methods-use-this': ['error', {
 			'exceptMethods': [
+				// React
+				'render',
+				'getInitialState',
+				'getDefaultProps',
+				'getChildContext',
+				'componentWillMount',
+				'componentDidMount',
+				'componentWillReceiveProps',
+				'shouldComponentUpdate',
+				'componentWillUpdate',
+				'componentDidUpdate',
+				'componentWillUnmount',
+				// Relay
 				'getMutation',
 				'getVariables',
 				'getFatQuery',

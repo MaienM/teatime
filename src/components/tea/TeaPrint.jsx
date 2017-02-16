@@ -1,47 +1,35 @@
 import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
-import { Alert, Col, ControlLabel, Button, Form, FormGroup, FormControl } from 'react-bootstrap';
-
-// URL of the blog post with information about this library, and the install link
-const INSTALL_URL = 'http://developers.dymo.com/2015/09/24/dymo-label-framework-javascript-library-2-0-open-beta-2/';
+import { Col, ControlLabel, Button, Form, FormGroup, FormControl } from 'react-bootstrap';
+import Select from '../Select';
+import Dymo, { DymoStatus, DymoLabel, DymoLabelPreview } from '../../dymo';
 
 class TeaPrint extends React.Component {
-	// Init the dymo framework
-	static initFramework() {
-		return new Promise((resolve, reject) => {
-			// Check the environment
-			const dymoResult = dymo.label.framework.checkEnvironment();
-			if (!dymoResult.isBrowserSupported) {
-				return reject('Not supported on this browser, sorry!');
-			} else if (!dymoResult.isFrameworkInstalled) {
-				return reject(`Dymo framework is not installed, please install from ${INSTALL_URL} and try again`);
-			} else if (dymo.label.framework.init && !dymoResult.isWebServicePresent) {
-				return reject('Dymo service is not running, please start it.');
-			}
-
-			// Init the framework
-			if (dymo.label.framework.init) {
-				dymo.label.framework.init(() => {
-					resolve();
-				});
-			} else {
-				resolve();
-			}
-			return null;
-		});
-	}
-
 	constructor(props) {
 		super(props);
 
+		// Create the framework
+		const dymo = new Dymo();
+
+		// Create + initialize the label
+		const tea = props.viewer.tea;
+		const label = new DymoLabel();
+		label.setData({
+			TEXT_TEA: tea.name,
+			TEXT_BRAND: tea.brand.name,
+			TEXT_CATEGORY: tea.category.name,
+			TEXT_URL: `/tea/${tea.uuid}`,
+		});
+
+		// Set the state
 		this.state = {
-			error: null,
-			valid: false,
-			preview: null,
 			printers: null,
-			printer: null,
-			label: props.viewer.labels.edges[0],
+			currentPrinter: null,
+			labels: _.map(props.viewer.labels.edges, 'node'),
+			currentLabel: props.viewer.labels.edges[0].node,
+			dymo,
+			label,
 		};
 
 		this.onPrinterChange = this.onPrinterChange.bind(this);
@@ -51,111 +39,55 @@ class TeaPrint extends React.Component {
 
 	componentDidMount() {
 		// Init the framework
-		TeaPrint.initFramework()
-			// Get the printers
-			.then(() => dymo.label.framework.getLabelWriterPrintersAsync())
-			.then((printers) => {
-				// Store the printers
-				this.setState({
-					printers,
-					printer: printers[0],
-				});
-			})
-			.catch((err) => {
-				// Something failed, so set the error
-				this.setState({
-					error: err,
-				});
+		this.state.dymo.init().then(() => {
+			const dymo = this.state.dymo;
+			this.setState({
+				dymo,
+				printers: dymo.printers,
+				currentPrinter: dymo.printers[0],
 			});
-	}
-
-	componentDidUpdate() {
-		if (!this.state.preview) {
-			this.updatePreview();
-		}
-	}
-
-	onPrinterChange(event) {
-		this.setState({
-			printer: _.find(this.state.printers, ['name', event.target.value]),
-			preview: null,
 		});
 	}
 
-	onLabelChange(event) {
+	componentWillUpdate(nextProps, nextState) {
+		nextState.label.setXML(_.get(nextState.currentLabel, 'xml', null));
+	}
+
+	onPrinterChange(item) {
 		this.setState({
-			label: _.find(this.props.viewer.labels.edges, ['node.uuid', event.target.value]),
-			preview: null,
+			currentPrinter: _.get(item, 'data'),
+		});
+	}
+
+	onLabelChange(item) {
+		this.setState({
+			currentLabel: _.get(item, 'data'),
 		});
 	}
 
 	onPrintClick() {
-		const label = this.getLabel();
-		if (label && this.state.printer) {
+		const label = this.state.label;
+		if (label && label.valid && this.state.printer) {
 			label.print(this.state.printer.name);
-		}
-	}
-
-	getLabel() {
-		if (!this.state.label) {
-			return null;
-		}
-
-		const tea = this.props.viewer.tea;
-		const label = dymo.label.framework.openLabelXml(this.state.label.node.xml);
-		label.setObjectText('TEXT_TEA', tea.name);
-		label.setObjectText('TEXT_BRAND', tea.brand.name);
-		label.setObjectText('TEXT_CATEGORY', tea.category.name);
-		label.setObjectText('TEXT_URL', `/tea/${tea.uuid}`);
-		return label;
-	}
-
-	updatePreview() {
-		try {
-			const label = this.getLabel();
-			if (!label) {
-				this.setState({
-					valid: false,
-					preview: <span>No label</span>,
-				});
-				return;
-			}
-
-			// Render the preview
-			const data = label.render();
-			this.setState({
-				valid: true,
-				preview: <img alt="Label preview" src={`data:image/png;base64,${data}`} />,
-			});
-		} catch (err) {
-			this.setState({
-				valid: false,
-				preview: <span>Invalid label</span>,
-			});
 		}
 	}
 
 	render() {
 		return (
 			<div>
-				{/* Errors */}
-				{this.state.error && <Alert bsStyle="danger">{this.state.error}</Alert>}
+				{/* Framework status */}
+				<DymoStatus dymo={this.state.dymo} />
 
 				<Form horizontal>
 					{/* Printer */}
 					<FormGroup controlId="formControlsPrinter">
 						<Col componentClass={ControlLabel} sm={2}>Printer</Col>
 						<Col sm={10}>
-							<FormControl
-								componentClass="select"
-								placeholder="select"
-								value={_.get(this.state.printer, 'name', '')}
+							<Select
+								options={_.map(this.state.printers, (p) => ({ key: p.name, label: p.name, data: p }))}
+								value={_.get(this.state.printer, 'name')}
 								onChange={this.onPrinterChange}
-							>
-								{_.map(this.state.printers, (printer) => (
-									<option value={printer.name} key={printer.name}>{printer.name}</option>
-								))}
-							</FormControl>
+							/>
 						</Col>
 					</FormGroup>
 
@@ -163,16 +95,11 @@ class TeaPrint extends React.Component {
 					<FormGroup controlId="formControlsLabel">
 						<Col componentClass={ControlLabel} sm={2}>Label</Col>
 						<Col sm={10}>
-							<FormControl
-								componentClass="select"
-								placeholder="select"
-								value={_.get(this.state.label, 'node.uuid', '')}
+							<Select
+								options={_.map(this.state.labels, (l) => ({ key: l.uuid, label: l.name, data: l }))}
+								value={_.get(this.state.label, 'uuid')}
 								onChange={this.onLabelChange}
-							>
-								{_.map(this.props.viewer.labels.edges, (label) => (
-									<option value={label.node.uuid} key={label.node.uuid}>{label.node.name}</option>
-								))}
-							</FormControl>
+							/>
 						</Col>
 					</FormGroup>
 
@@ -181,7 +108,10 @@ class TeaPrint extends React.Component {
 						<Col componentClass={ControlLabel} sm={2}>Preview</Col>
 						<Col sm={10}>
 							<FormControl.Static>
-								{this.state.preview}
+								{this.state.dymo.valid ?
+									<DymoLabelPreview label={this.state.label} /> :
+									<span>Unavailable</span>
+								}
 							</FormControl.Static>
 						</Col>
 					</FormGroup>
@@ -190,7 +120,7 @@ class TeaPrint extends React.Component {
 					<FormGroup>
 						<Col sm={2} />
 						<Col sm={10}>
-							<Button disabled={!this.state.valid} onClick={this.onPrintClick}>
+							<Button disabled={!this.state.label.isValid()} onClick={this.onPrintClick}>
 								Print
 							</Button>
 						</Col>

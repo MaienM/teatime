@@ -48,6 +48,7 @@
     "babel-cli": "^6.22.2",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
+    "babel-polyfill": "^6.23.0",
     "babel-preset-react-native": "^1.9.1",
     "babel-relay-plugin": "^0.10.0",
     "babel-relay-plugin-loader": "^0.10.0",

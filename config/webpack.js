@@ -10,6 +10,7 @@ const publicPath = '/';
 module.exports = {
 	// context: root,
 	entry: [
+		require.resolve('babel-polyfill'),
 		require.resolve('webpack/hot/only-dev-server'),
 		require.resolve('webpack-dev-server/client') + '?/',
 		path.join(root, 'src', 'index.jsx'),
