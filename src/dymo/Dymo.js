@@ -5,6 +5,11 @@ function isEnvironmentValid(environment) {
 
 class Dymo {
 	constructor() {
+		if (Dymo.instance) {
+			return Dymo.instance;
+		}
+		Dymo.instance = this;
+
 		this.initialized = false;
 		this.environment = null;
 		this.valid = false;
@@ -12,6 +17,11 @@ class Dymo {
 	}
 
 	async init() {
+		// Prevent reinitialisation
+		if (this.initialized) {
+			return this;
+		}
+
 		// Check the environment
 		this.environment = dymo.label.framework.checkEnvironment();
 		if (!isEnvironmentValid(this.environment)) {

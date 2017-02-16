@@ -2,8 +2,40 @@ import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
 import { Col, ControlLabel, Button, Form, FormGroup, FormControl } from 'react-bootstrap';
+import wrap from 'wrap-ansi';
 import Select from '../Select';
 import Dymo, { DymoStatus, DymoLabel, DymoLabelPreview } from '../../dymo';
+
+function getDimensions(text) {
+	const lines = _.split(text, '\n');
+	return [_.maxBy(lines, 'length').length, lines.length];
+}
+
+/**
+ * Attempts to wrap the text as to fit in the given width/lines.
+ *
+ * If it is not possible to do so, it will make the lines longer and/or add more lines in a way that keeps the original
+ * "aspect ratio" of width:height as closely as possible, so that when the font size is decreased the area used will be
+ * as close to the original as possible.
+ */
+function wrapTextScaling(text, width, height) {
+	// First just attempt a regular wrap, without any fancy extras
+	const simpleLines = wrap(text, width);
+	if (_.split(simpleLines, '\n').length <= height) {
+		return simpleLines;
+	}
+
+	// That didn't work, so calculate the ratio, make a bunch of attempts, and return the one closest to the ratio
+	const desiredRatio = width / height;
+	return _(_.range(width, text.length))
+		.map((w) => wrap(text, w))
+		.sortBy((t) => {
+			const diff = _.divide(...getDimensions(t)) - desiredRatio;
+			// Prefer going above rather than below the ratio, because text is taller than it is wide
+			return diff > 0 ? diff : diff * -2.4;
+		})
+		.head();
+}
 
 class TeaPrint extends React.Component {
 	constructor(props) {
@@ -16,7 +48,11 @@ class TeaPrint extends React.Component {
 		const tea = props.viewer.tea;
 		const label = new DymoLabel();
 		label.setData({
-			TEXT_TEA: tea.name,
+			TEXT_TEA: (lbl) => {
+				const origText = lbl.label.getObjectText('TEXT_TEA');
+				const dimensions = getDimensions(origText);
+				return wrapTextScaling(tea.name, ...dimensions);
+			},
 			TEXT_BRAND: tea.brand.name,
 			TEXT_CATEGORY: tea.category.name,
 			TEXT_URL: `/tea/${tea.uuid}`,

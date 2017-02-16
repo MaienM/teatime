@@ -43,7 +43,8 @@
     "react-router-relay": "^0.13.5",
     "react-select": "^1.0.0-rc.3",
     "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2"
+    "webpack-dev-server": "^1.16.2",
+    "wrap-ansi": "^2.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",

@@ -24,7 +24,13 @@ class DymoLabel {
 			this.label = dymo.label.framework.openLabelXml(this.xml);
 
 			// Set the label data
-			_.map(this.data, (value, key) => this.label.setObjectText(key, value));
+			_.map(this.data, (value, key) => {
+				if (_.isFunction(value)) {
+					this.label.setObjectText(key, value(this));
+				} else {
+					this.label.setObjectText(key, value);
+				}
+			});
 
 			// Render the preview.
 			this.preview = this.label.render();
