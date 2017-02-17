@@ -1,0 +1,8 @@
+// Override some styles of react-select to fit in our theme
+.Select-control {
+	height: 45px;
+
+	.Select-value {
+		line-height: 45px !important;
+	}
+}
