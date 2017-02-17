@@ -1,17 +1,22 @@
 import _ from 'lodash';
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
+// import ReactSelect from 'react-select';
 
 class Select extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			selected: this.props.value,
+			selected: this.props.value || (this.props.allowEmpty ? null : _.get(this.props.options, '[0].key')),
 		};
-		this.broadcastChange(this.props.value);
 
 		this.onChange = this.onChange.bind(this);
+	}
+
+	componentDidMount() {
+		// Broadcast a change for the initial value
+		this.broadcastChange(this.state.selected);
 	}
 
 	onChange(event) {
@@ -56,7 +61,7 @@ Select.propTypes = {
 
 Select.defaultProps = {
 	value: undefined,
-	allowEmpty: true,
+	allowEmpty: false,
 };
 
 export default Select;
