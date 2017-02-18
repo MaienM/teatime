@@ -17,7 +17,7 @@ class Select extends React.Component {
 		super(props);
 
 		this.state = {
-			value: null,
+			value: null, // Set in componentWillMount
 			isLoading: false,
 		};
 
@@ -29,6 +29,7 @@ class Select extends React.Component {
 		this.onBlur = this.onBlur.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.doSearch = this.doSearch.bind(this);
+		this.transformItem = this.transformItem.bind(this);
 	}
 
 	componentWillMount() {
@@ -49,7 +50,7 @@ class Select extends React.Component {
 
 	onChange(value) {
 		this.setState({ value });
-		this.props.onChange(value.key ? value : null);
+		this.props.onChange(value);
 	}
 
 	doSearch(search) {
@@ -59,13 +60,25 @@ class Select extends React.Component {
 		this.search(search);
 	}
 
+	transformItem(item) {
+		return {
+			value: _.get(item, this.props.keyProp, ''),
+			label: _.get(item, this.props.labelProp, ''),
+			item,
+		};
+	}
+
 	render() {
+		const options = _.clone(this.props.options);
+		if (this.props.allowEmpty) {
+			options.shift(null);
+		}
+
 		return (
 			<ReactSelect
 				// Values
-				options={_.concat(this.props.allowEmpty ? [{ key: null, label: '' }] : [], this.props.options)}
-				value={this.state.value}
-				valueKey="key"
+				options={_.map(options, this.transformItem)}
+				value={this.transformItem(this.state.value)}
 
 				// Filtering
 				matchProp="label"
@@ -84,21 +97,35 @@ class Select extends React.Component {
 	}
 }
 
-const optionPropType = React.PropTypes.shape({
-	key: React.PropTypes.string.isRequired,
-	label: React.PropTypes.string.isRequired,
-});
-
 Select.propTypes = {
-	options: React.PropTypes.arrayOf(optionPropType).isRequired,
-	value: optionPropType,
+	options: (props, ...args) => (
+		React.PropTypes.arrayOf(React.PropTypes.shape({
+			[props.keyProp]: React.PropTypes.string.isRequired,
+			[props.labelProp]: React.PropTypes.string.isRequired,
+		})).isRequired(props, ...args)
+	),
+	value: (props, ...args) => {
+		let propType = React.PropTypes.shape({
+			[props.keyProp]: React.PropTypes.string.isRequired,
+			[props.labelProp]: React.PropTypes.string.isRequired,
+		});
+		if (!props.allowEmpty) {
+			propType = propType.isRequired;
+		}
+		return propType(props, ...args);
+	},
+	keyProp: React.PropTypes.string,
+	labelProp: React.PropTypes.string,
 	onChange: React.PropTypes.func.isRequired,
 	onSearch: React.PropTypes.func,
 	allowEmpty: React.PropTypes.bool,
 };
 
 Select.defaultProps = {
+	options: null, // Is required, but eslint doesn't detect that because it's a custom validator
 	value: null,
+	keyProp: 'uuid',
+	labelProp: 'name',
 	onSearch: null,
 	allowEmpty: false,
 };

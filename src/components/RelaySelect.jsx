@@ -10,12 +10,7 @@ class RelaySelect extends React.Component {
 			value: this.props.value,
 		};
 
-		this.onChange = this.onChange.bind(this);
 		this.onSearch = this.onSearch.bind(this);
-	}
-
-	onChange(item) {
-		this.props.onChange(_.get(item, 'node', null));
 	}
 
 	onSearch(query) {
@@ -24,21 +19,16 @@ class RelaySelect extends React.Component {
 		});
 	}
 
-	transformNode(node) {
-		return {
-			key: node[this.props.keyProp],
-			label: node[this.props.labelProp],
-			node,
-		};
-	}
-
 	render() {
 		return (
 			<Select
-				options={_.map(this.props.connection.edges, (e) => this.transformNode(e.node))}
-				value={this.transformNode(this.state.value)}
-				onChange={this.onChange}
+				options={_.map(this.props.connection.edges, 'node')}
 				onSearch={this.onSearch}
+
+				value={this.props.value}
+				keyProp={this.props.keyProp}
+				labelProp={this.props.labelProp}
+				onChange={this.props.onChange}
 			/>
 		);
 	}
@@ -58,21 +48,24 @@ RelaySelect.propTypes = {
 			})).isRequired,
 		}).isRequired(props, ...args)
 	),
-	value: (props, ...args) => (
-		React.PropTypes.shape({
-			[props.keyProp]: React.PropTypes.string.isRequired,
-			[props.labelProp]: React.PropTypes.string.isRequired,
-		}).isRequired(props, ...args)
-	),
-	searchVariable: React.PropTypes.string.isRequired,
-	keyProp: React.PropTypes.string.isRequired,
-	labelProp: React.PropTypes.string.isRequired,
-	onChange: React.PropTypes.func.isRequired,
+	searchVariable: React.PropTypes.string,
+
+	// Passed onto Select
+	value: Select.propTypes.value,
+	keyProp: Select.propTypes.keyProp,
+	labelProp: Select.propTypes.labelProp,
+	onChange: Select.propTypes.onChange,
 };
 
 RelaySelect.defaultProps = {
 	connection: null, // Is required, but eslint doesn't detect that because it's a custom validator
-	value: null, // Same as above
+	searchVariable: null,
+
+	// Passed onto Select
+	value: Select.defaultProps.value,
+	keyProp: Select.defaultProps.keyProp,
+	labelProp: Select.defaultProps.labelProp,
+	onChange: Select.defaultProps.onChange,
 };
 
 export default RelaySelect;

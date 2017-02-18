@@ -61,8 +61,6 @@ class TeaForm extends React.Component {
 								relay={this.props.relay}
 								connection={this.props.viewer.brands}
 								value={this.state.brand}
-								keyProp="uuid"
-								labelProp="name"
 								searchVariable="brand"
 								onChange={this.onBrandChange}
 							/>
@@ -76,8 +74,6 @@ class TeaForm extends React.Component {
 								relay={this.props.relay}
 								connection={this.props.viewer.categories}
 								value={this.state.category}
-								keyProp="uuid"
-								labelProp="name"
 								searchVariable="category"
 								onChange={this.onCategoryChange}
 							/>
