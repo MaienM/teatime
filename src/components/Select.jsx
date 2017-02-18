@@ -34,7 +34,9 @@ class Select extends React.Component {
 
 	componentWillMount() {
 		// Set + broadcast the initial value
-		this.onChange(this.props.value || (this.props.allowEmpty || this.props.options[0]) || null);
+		const value = this.props.value || (this.props.allowEmpty || this.props.options[0]) || null;
+		this.setState({ value });
+		this.props.onChange(value);
 	}
 
 	componentWillReceiveProps() {
@@ -49,8 +51,11 @@ class Select extends React.Component {
 	}
 
 	onChange(value) {
-		this.setState({ value });
-		this.props.onChange(value);
+		const item = value && value.item;
+		this.setState({
+			value: item,
+		});
+		this.props.onChange(item);
 	}
 
 	doSearch(search) {
@@ -104,16 +109,12 @@ Select.propTypes = {
 			[props.labelProp]: React.PropTypes.string.isRequired,
 		})).isRequired(props, ...args)
 	),
-	value: (props, ...args) => {
-		let propType = React.PropTypes.shape({
+	value: (props, ...args) => (
+		React.PropTypes.shape({
 			[props.keyProp]: React.PropTypes.string.isRequired,
 			[props.labelProp]: React.PropTypes.string.isRequired,
-		});
-		if (!props.allowEmpty) {
-			propType = propType.isRequired;
-		}
-		return propType(props, ...args);
-	},
+		})(props, ...args)
+	),
 	keyProp: React.PropTypes.string,
 	labelProp: React.PropTypes.string,
 	onChange: React.PropTypes.func.isRequired,
