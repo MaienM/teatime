@@ -59,6 +59,10 @@ class Select extends React.Component {
 	}
 
 	doSearch(search) {
+		if (!this.search) {
+			return;
+		}
+
 		this.setState({
 			isLoading: true,
 		});
@@ -74,8 +78,8 @@ class Select extends React.Component {
 	}
 
 	render() {
-		const options = _.clone(this.props.options);
-		if (this.props.allowEmpty) {
+		const options = _.clone(this.props.options || []);
+		if (this.props.allowEmpty || options.length === 0) {
 			options.shift(null);
 		}
 

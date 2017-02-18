@@ -4,6 +4,7 @@ import Relay from 'react-relay';
 import { Col, ControlLabel, Button, Form, FormGroup, FormControl } from 'react-bootstrap';
 import wrap from 'wrap-ansi';
 import Select from 'components/Select';
+import RelaySelect from 'components/RelaySelect';
 import Dymo, { DymoStatus, DymoLabel, DymoLabelPreview } from 'helpers/dymo';
 
 function getDimensions(text) {
@@ -63,48 +64,45 @@ class TeaPrint extends React.Component {
 			printers: null,
 			currentPrinter: null,
 			labels: _.map(props.viewer.labels.edges, 'node'),
-			currentLabel: props.viewer.labels.edges[0].node,
+			currentLabel: null,
 			dymo,
 			label,
 		};
+
+		// Init the framework
+		dymo.init().then(() => {
+			this.setState({
+				dymo,
+				printers: dymo.printers,
+				currentPrinter: null,
+			});
+		});
 
 		this.onPrinterChange = this.onPrinterChange.bind(this);
 		this.onLabelChange = this.onLabelChange.bind(this);
 		this.onPrintClick = this.onPrintClick.bind(this);
 	}
 
-	componentDidMount() {
-		// Init the framework
-		this.state.dymo.init().then(() => {
-			const dymo = this.state.dymo;
-			this.setState({
-				dymo,
-				printers: dymo.printers,
-				currentPrinter: dymo.printers[0],
-			});
-		});
-	}
-
 	componentWillUpdate(nextProps, nextState) {
 		nextState.label.setXML(_.get(nextState.currentLabel, 'xml', null));
 	}
 
-	onPrinterChange(item) {
+	onPrinterChange(printer) {
 		this.setState({
-			currentPrinter: _.get(item, 'data'),
+			currentPrinter: printer,
 		});
 	}
 
-	onLabelChange(item) {
+	onLabelChange(label) {
 		this.setState({
-			currentLabel: _.get(item, 'data'),
+			currentLabel: label,
 		});
 	}
 
 	onPrintClick() {
 		const label = this.state.label;
-		if (label && label.valid && this.state.printer) {
-			label.print(this.state.printer.name);
+		if (label && label.valid && this.state.currentPrinter) {
+			label.print(this.state.currentPrinter.name);
 		}
 	}
 
@@ -114,54 +112,60 @@ class TeaPrint extends React.Component {
 				{/* Framework status */}
 				<DymoStatus dymo={this.state.dymo} />
 
-				<Form horizontal>
-					{/* Printer */}
-					<FormGroup controlId="formControlsPrinter">
-						<Col componentClass={ControlLabel} sm={2}>Printer</Col>
-						<Col sm={10}>
-							<Select
-								options={_.map(this.state.printers, (p) => ({ key: p.name, label: p.name, data: p }))}
-								value={_.get(this.state.printer, 'name')}
-								onChange={this.onPrinterChange}
-							/>
-						</Col>
-					</FormGroup>
+				{this.state.dymo.initialized && (
+					<Form horizontal>
+						{/* Printer */}
+						<FormGroup controlId="formControlsPrinter">
+							<Col componentClass={ControlLabel} sm={2}>Printer</Col>
+							<Col sm={10}>
+								<Select
+									options={this.state.printers}
+									value={this.state.currentPrinter}
+									keyProp="name"
+									labelProp="name"
+									onChange={this.onPrinterChange}
+								/>
+							</Col>
+						</FormGroup>
 
-					{/* Label */}
-					<FormGroup controlId="formControlsLabel">
-						<Col componentClass={ControlLabel} sm={2}>Label</Col>
-						<Col sm={10}>
-							<Select
-								options={_.map(this.state.labels, (l) => ({ key: l.uuid, label: l.name, data: l }))}
-								value={_.get(this.state.label, 'uuid')}
-								onChange={this.onLabelChange}
-							/>
-						</Col>
-					</FormGroup>
+						{/* Label */}
+						<FormGroup controlId="formControlsLabel">
+							<Col componentClass={ControlLabel} sm={2}>Label</Col>
+							<Col sm={10}>
+								<RelaySelect
+									relay={this.props.relay}
+									connection={this.props.viewer.labels}
+									value={this.state.currentLabel}
+									searchVariable="label"
+									onChange={this.onLabelChange}
+								/>
+							</Col>
+						</FormGroup>
 
-					{/* Preview */}
-					<FormGroup>
-						<Col componentClass={ControlLabel} sm={2}>Preview</Col>
-						<Col sm={10}>
-							<FormControl.Static>
-								{this.state.dymo.valid ?
-									<DymoLabelPreview label={this.state.label} /> :
-									<span>Unavailable</span>
-								}
-							</FormControl.Static>
-						</Col>
-					</FormGroup>
+						{/* Preview */}
+						<FormGroup>
+							<Col componentClass={ControlLabel} sm={2}>Preview</Col>
+							<Col sm={10}>
+								<FormControl.Static>
+									{this.state.dymo.valid ?
+										<DymoLabelPreview label={this.state.label} /> :
+										<span>Unavailable</span>
+									}
+								</FormControl.Static>
+							</Col>
+						</FormGroup>
 
-					{/* Print */}
-					<FormGroup>
-						<Col sm={2} />
-						<Col sm={10}>
-							<Button disabled={!this.state.label.isValid()} onClick={this.onPrintClick}>
-								Print
-							</Button>
-						</Col>
-					</FormGroup>
-				</Form>
+						{/* Print */}
+						<FormGroup>
+							<Col sm={2} />
+							<Col sm={10}>
+								<Button disabled={!this.state.label.isValid()} onClick={this.onPrintClick}>
+									Print
+								</Button>
+							</Col>
+						</FormGroup>
+					</Form>
+				)}
 			</div>
 		);
 	}
@@ -170,6 +174,7 @@ class TeaPrint extends React.Component {
 export default Relay.createContainer(TeaPrint, {
 	initialVariables: {
 		uuid: null,
+		label: '',
 	},
 	fragments: {
 		viewer: () => Relay.QL`
