@@ -1,15 +1,7 @@
-import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
 import { Col, PageHeader, Form, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
-import Select from 'components/Select';
-
-function edgesToOptions(edges) {
-	return _.map(edges, (edge) => ({
-		key: edge.node.uuid,
-		label: edge.node.name,
-	}));
-}
+import RelaySelect from 'components/RelaySelect';
 
 class TeaForm extends React.Component {
 	constructor(props) {
@@ -20,7 +12,6 @@ class TeaForm extends React.Component {
 			name: tea.name,
 			brand: tea.brand,
 			category: tea.category,
-			isLoading: false,
 		};
 
 		this.onNameChange = this.onNameChange.bind(this);
@@ -36,29 +27,13 @@ class TeaForm extends React.Component {
 
 	onBrandChange(brand) {
 		this.setState({
-			brand: {
-				uuid: brand.key,
-				name: brand.label,
-			},
+			brand,
 		});
 	}
 
 	onCategoryChange(category) {
 		this.setState({
-			category: {
-				uuid: category.key,
-				name: category.label,
-			},
-		});
-	}
-
-	setRelayVariables(variables) {
-		this.props.relay.setVariables(variables, (event) => {
-			if (event.done || event.error) {
-				this.setState({
-					isLoading: false,
-				});
-			}
+			category,
 		});
 	}
 
@@ -82,12 +57,14 @@ class TeaForm extends React.Component {
 					<FormGroup>
 						<Col componentClass={ControlLabel} sm={2}>Brand</Col>
 						<Col sm={10}>
-							<Select
-								options={edgesToOptions(this.props.viewer.brands.edges)}
-								value={{ key: this.state.brand.uuid, label: this.state.brand.name }}
+							<RelaySelect
+								relay={this.props.relay}
+								connection={this.props.viewer.brands}
+								value={this.state.brand}
+								keyProp="uuid"
+								labelProp="name"
+								searchVariable="brand"
 								onChange={this.onBrandChange}
-								onSearch={(s) => this.props.relay.setVariables({ brand: s })}
-								isLoading={this.state.isLoading}
 							/>
 						</Col>
 					</FormGroup>
@@ -95,12 +72,14 @@ class TeaForm extends React.Component {
 					<FormGroup>
 						<Col componentClass={ControlLabel} sm={2}>Category</Col>
 						<Col sm={10}>
-							<Select
-								options={edgesToOptions(this.props.viewer.categories.edges)}
-								value={{ key: this.state.category.uuid, label: this.state.category.name }}
+							<RelaySelect
+								relay={this.props.relay}
+								connection={this.props.viewer.categories}
+								value={this.state.category}
+								keyProp="uuid"
+								labelProp="name"
+								searchVariable="category"
 								onChange={this.onCategoryChange}
-								onSearch={(s) => this.props.relay.setVariables({ category: s })}
-								isLoading={this.state.isLoading}
 							/>
 						</Col>
 					</FormGroup>

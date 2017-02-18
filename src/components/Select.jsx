@@ -36,13 +36,11 @@ class Select extends React.Component {
 		this.onChange(this.props.value || (this.props.allowEmpty || this.props.options[0]) || null);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentWillReceiveProps() {
 		// Finish loading
-		if (!nextProps.isLoading) {
-			this.setState({
-				isLoading: false,
-			});
-		}
+		this.setState({
+			isLoading: false,
+		});
 	}
 
 	onBlur() {
@@ -96,14 +94,12 @@ Select.propTypes = {
 	value: optionPropType,
 	onChange: React.PropTypes.func.isRequired,
 	onSearch: React.PropTypes.func,
-	isLoading: React.PropTypes.bool,
 	allowEmpty: React.PropTypes.bool,
 };
 
 Select.defaultProps = {
 	value: null,
 	onSearch: null,
-	isLoading: false,
 	allowEmpty: false,
 };
 
