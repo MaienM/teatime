@@ -2,7 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
 import { PageHeader } from 'react-bootstrap';
-import HeaderButtons, { HeaderButton } from '../HeaderButtons';
+import HeaderButtons, { HeaderButton } from 'components/HeaderButtons';
 
 function Tea(props) {
 	const tea = props.viewer.tea;

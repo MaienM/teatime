@@ -2,9 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
 import { PageHeader } from 'react-bootstrap';
-import HeaderButtons from '../HeaderButtons';
-import PageControl from '../PageControl';
-import Table from '../Table';
+import HeaderButtons from 'components/HeaderButtons';
+import PageControl from 'components/PageControl';
+import Table from 'components/Table';
 
 class Teas extends React.Component {
 	constructor(props) {

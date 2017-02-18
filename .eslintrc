@@ -7,6 +7,13 @@
 	'globals': {
 		'dymo': true,
 	},
+	'settings': {
+		'import/resolver': {
+			'webpack': {
+				'config': 'config/webpack.js',
+			},
+		},
+	},
 	'rules': {
 		// Tabs for indentation
 		'indent': ['error', 'tab'],

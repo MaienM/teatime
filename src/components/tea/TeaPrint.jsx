@@ -3,8 +3,8 @@ import React from 'react';
 import Relay from 'react-relay';
 import { Col, ControlLabel, Button, Form, FormGroup, FormControl } from 'react-bootstrap';
 import wrap from 'wrap-ansi';
-import Select from '../Select';
-import Dymo, { DymoStatus, DymoLabel, DymoLabelPreview } from '../../dymo';
+import Select from 'components/Select';
+import Dymo, { DymoStatus, DymoLabel, DymoLabelPreview } from 'helpers/dymo';
 
 function getDimensions(text) {
 	const lines = _.split(text, '\n');

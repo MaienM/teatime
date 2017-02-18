@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
 import { Col, PageHeader, Form, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
-import Select from '../Select';
+import Select from 'components/Select';
 
 const relayQueue = [];
 function relaySetVariablesAsync(relay, variables) {

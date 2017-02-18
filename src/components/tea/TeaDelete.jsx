@@ -2,7 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import { Button, Modal } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
-import TeaDeleteMutation from '../../mutations/TeaDeleteMutation';
+import TeaDeleteMutation from 'mutations/TeaDeleteMutation';
 
 class TeaDelete extends React.Component {
 	static doCancel() {

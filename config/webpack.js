@@ -4,6 +4,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const root = path.resolve(__dirname, '..');
+const sourceBase = path.join(root, 'src');
 const contentBase = path.join(root, 'public');
 const publicPath = '/';
 
@@ -13,7 +14,7 @@ module.exports = {
 		require.resolve('babel-polyfill'),
 		require.resolve('webpack/hot/only-dev-server'),
 		require.resolve('webpack-dev-server/client') + '?/',
-		path.join(root, 'src', 'index.jsx'),
+		path.join(sourceBase, 'index.jsx'),
 	],
 	output: {
 		path: contentBase,
@@ -22,6 +23,7 @@ module.exports = {
 	},
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
+		root: [sourceBase],
 	},
 	module: {
 		loaders: [
