@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 import ReactSelect from 'react-select';
-import debouncePromise from 'debounce-promise';
 
 import 'react-select/dist/react-select.min.css';
 import './Select.scss';
@@ -18,18 +17,13 @@ class Select extends React.Component {
 		super(props);
 
 		this.state = {
-			selected: null,
-			selectedSearch: '',
-			options: [],
-			search: '',
+			value: null,
 			isLoading: false,
 		};
 
 		// Get the search function
-		if (_.isFunction(props.data)) {
-			this.search = debouncePromise(props.data, 250);
-		} else {
-			this.search = () => Promise.resolve(props.data);
+		if (props.onSearch) {
+			this.search = _.debounce(props.onSearch, 250);
 		}
 
 		this.onBlur = this.onBlur.bind(this);
@@ -38,60 +32,48 @@ class Select extends React.Component {
 	}
 
 	componentWillMount() {
-		// Load the initial options
-		this.doSearch(_.get(this.props.value, 'label', '')).then((options) => {
-			// Get the selected option
-			let selected = _.find(options, ['key', _.get(this.props.value, 'key', null)]);
-			if (!this.props.allowEmpty && !selected) {
-				selected = options[0];
-			}
-			this.onChange(selected);
-		});
+		// Set + broadcast the initial value
+		this.onChange(this.props.value || (this.props.allowEmpty || this.props.options[0]) || null);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		// Finish loading
+		if (!nextProps.isLoading) {
+			this.setState({
+				isLoading: false,
+			});
+		}
 	}
 
 	onBlur() {
 		this.doSearch(this.state.selectedSearch);
 	}
 
-	onChange(option) {
-		this.setState({
-			selected: option.key,
-			selectedSearch: this.state.search,
-		});
-		this.props.onChange(option.key ? option : null);
+	onChange(value) {
+		this.setState({ value });
+		this.props.onChange(value.key ? value : null);
 	}
 
-	async doSearch(search) {
+	doSearch(search) {
 		this.setState({
 			isLoading: true,
 		});
-
-		// Load the options
-		const options = await this.search(search);
-
-		this.setState({
-			options,
-			search,
-			isLoading: false,
-		});
-
-		// Return the new options
-		return options;
+		this.search(search);
 	}
 
 	render() {
 		return (
 			<ReactSelect
 				// Values
-				options={_.concat(this.props.allowEmpty ? [{ key: null, label: '' }] : [], this.state.options)}
-				value={this.state.selected}
+				options={_.concat(this.props.allowEmpty ? [{ key: null, label: '' }] : [], this.props.options)}
+				value={this.state.value}
 				valueKey="key"
 
 				// Filtering
 				matchProp="label"
-				filterOptions={_.identity}
-				onInputChange={this.doSearch}
-				isLoading={this.state.isLoading}
+				filterOptions={this.search && _.identity}
+				onInputChange={this.search && this.doSearch}
+				isLoading={this.search && this.state.isLoading}
 
 				// Selecting
 				onChange={this.onChange}
@@ -110,17 +92,18 @@ const optionPropType = React.PropTypes.shape({
 });
 
 Select.propTypes = {
-	data: React.PropTypes.oneOfType([
-		React.PropTypes.arrayOf(optionPropType),
-		React.PropTypes.func,
-	]).isRequired,
+	options: React.PropTypes.arrayOf(optionPropType).isRequired,
 	value: optionPropType,
 	onChange: React.PropTypes.func.isRequired,
+	onSearch: React.PropTypes.func,
+	isLoading: React.PropTypes.bool,
 	allowEmpty: React.PropTypes.bool,
 };
 
 Select.defaultProps = {
 	value: null,
+	onSearch: null,
+	isLoading: false,
 	allowEmpty: false,
 };
 

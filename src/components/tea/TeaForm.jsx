@@ -4,28 +4,6 @@ import Relay from 'react-relay';
 import { Col, PageHeader, Form, FormControl, FormGroup, ControlLabel } from 'react-bootstrap';
 import Select from 'components/Select';
 
-const relayQueue = [];
-function relaySetVariablesAsync(relay, variables) {
-	return new Promise((resolve, reject) => {
-		relay.setVariables(variables, (event) => {
-			if (event.aborted) {
-				// If aborted, the next callback's result also is this result, so store the methods for later use
-				relayQueue.push([resolve, reject]);
-			} else if (event.done) {
-				// Done, so resolve all queued promises
-				relayQueue.push([resolve, reject]);
-				_.each(relayQueue, ([res, rej]) => res());
-				_.pull(relayQueue, ...relayQueue);
-			} else if (event.error) {
-				// Failed, so reject all queued promises
-				relayQueue.push([resolve, reject]);
-				_.each(relayQueue, ([res, rej]) => rej(event.error));
-				_.pull(relayQueue, ...relayQueue);
-			}
-		});
-	});
-}
-
 function edgesToOptions(edges) {
 	return _.map(edges, (edge) => ({
 		key: edge.node.uuid,
@@ -42,13 +20,12 @@ class TeaForm extends React.Component {
 			name: tea.name,
 			brand: tea.brand,
 			category: tea.category,
+			isLoading: false,
 		};
 
 		this.onNameChange = this.onNameChange.bind(this);
 		this.onBrandChange = this.onBrandChange.bind(this);
 		this.onCategoryChange = this.onCategoryChange.bind(this);
-		this.loadBrandOptions = this.loadBrandOptions.bind(this);
-		this.loadCategoryOptions = this.loadCategoryOptions.bind(this);
 	}
 
 	onNameChange(event) {
@@ -75,14 +52,14 @@ class TeaForm extends React.Component {
 		});
 	}
 
-	async loadBrandOptions(search) {
-		await relaySetVariablesAsync(this.props.relay, { brand: search });
-		return edgesToOptions(this.props.viewer.brands.edges);
-	}
-
-	async loadCategoryOptions(search) {
-		await relaySetVariablesAsync(this.props.relay, { category: search });
-		return edgesToOptions(this.props.viewer.categories.edges);
+	setRelayVariables(variables) {
+		this.props.relay.setVariables(variables, (event) => {
+			if (event.done || event.error) {
+				this.setState({
+					isLoading: false,
+				});
+			}
+		});
 	}
 
 	render() {
@@ -106,12 +83,11 @@ class TeaForm extends React.Component {
 						<Col componentClass={ControlLabel} sm={2}>Brand</Col>
 						<Col sm={10}>
 							<Select
-								data={this.loadBrandOptions}
-								value={{
-									key: _.get(this.state, 'brand.uuid'),
-									label: _.get(this.state, 'brand.name'),
-								}}
+								options={edgesToOptions(this.props.viewer.brands.edges)}
+								value={{ key: this.state.brand.uuid, label: this.state.brand.name }}
 								onChange={this.onBrandChange}
+								onSearch={(s) => this.props.relay.setVariables({ brand: s })}
+								isLoading={this.state.isLoading}
 							/>
 						</Col>
 					</FormGroup>
@@ -120,12 +96,11 @@ class TeaForm extends React.Component {
 						<Col componentClass={ControlLabel} sm={2}>Category</Col>
 						<Col sm={10}>
 							<Select
-								data={this.loadCategoryOptions}
-								value={{
-									key: _.get(this.state, 'category.uuid'),
-									label: _.get(this.state, 'category.name'),
-								}}
+								options={edgesToOptions(this.props.viewer.categories.edges)}
+								value={{ key: this.state.category.uuid, label: this.state.category.name }}
 								onChange={this.onCategoryChange}
+								onSearch={(s) => this.props.relay.setVariables({ category: s })}
+								isLoading={this.state.isLoading}
 							/>
 						</Col>
 					</FormGroup>
