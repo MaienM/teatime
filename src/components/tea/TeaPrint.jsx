@@ -112,7 +112,7 @@ class TeaPrint extends React.Component {
 				{/* Framework status */}
 				<DymoStatus dymo={this.state.dymo} />
 
-				{this.state.dymo.initialized && (
+				{this.state.dymo.valid && (
 					<Form horizontal>
 						{/* Printer */}
 						<FormGroup controlId="formControlsPrinter">
