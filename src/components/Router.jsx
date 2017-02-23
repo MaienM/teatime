@@ -25,7 +25,7 @@ const routes = (
 		{/* Tea */}
 		<Route path="tea" name="Tea">
 			<IndexRoute component={Teas} queries={RootQuery} breadcrumbIgnore />
-			<Route path="new" name="New" />
+			<Route path="new" name="New" component={TeaForm} queries={RootQuery} />
 			<Route path=":uuid" name="Unknown" component={Tea} queries={RootQuery}>
 				<IndexRoute breadcrumbIgnore />
 				<Route path="edit" name="Edit" components={{ body: TeaForm }} queries={{ body: RootQuery }} />
