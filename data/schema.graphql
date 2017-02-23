@@ -1,10 +1,21 @@
+# The brands of tea
 type Brand implements Node {
   # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   id: ID!
+
+  # The unique identifier of the brand
   uuid: Uuid!
+
+  # The name of the brand
   name: String!
+
+  # The url of the website of the brand, if any
   url: String
+
+  # When the brand was added to the database
   createdAt: Datetime!
+
+  # When the brand was last modified in the database
   updatedAt: Datetime!
 
   # Reads and enables paginatation through a set of `Tea`.
@@ -51,20 +62,39 @@ input BrandCondition {
   updatedAt: Datetime
 }
 
+# The brands of tea
 input BrandInput {
-  uuid: Uuid!
+  # The unique identifier of the brand
+  uuid: Uuid
+
+  # The name of the brand
   name: String!
+
+  # The url of the website of the brand, if any
   url: String
-  createdAt: Datetime!
-  updatedAt: Datetime!
+
+  # When the brand was added to the database
+  createdAt: Datetime
+
+  # When the brand was last modified in the database
+  updatedAt: Datetime
 }
 
 # Represents an update to a `Brand`. Fields that are set will be updated.
 input BrandPatch {
+  # The unique identifier of the brand
   uuid: Uuid
+
+  # The name of the brand
   name: String
+
+  # The url of the website of the brand, if any
   url: String
+
+  # When the brand was added to the database
   createdAt: Datetime
+
+  # When the brand was last modified in the database
   updatedAt: Datetime
 }
 
@@ -148,12 +178,21 @@ enum CategoriesOrderBy {
   UPDATED_AT_DESC
 }
 
+# The categories of tea
 type Category implements Node {
   # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   id: ID!
+
+  # The unique identifier of the category
   uuid: Uuid!
+
+  # The name of the category
   name: String!
+
+  # When the category was added to the database
   createdAt: Datetime!
+
+  # When the category was last modified in the database
   updatedAt: Datetime!
 
   # Reads and enables paginatation through a set of `Tea`.
@@ -198,18 +237,33 @@ input CategoryCondition {
   updatedAt: Datetime
 }
 
+# The categories of tea
 input CategoryInput {
-  uuid: Uuid!
+  # The unique identifier of the category
+  uuid: Uuid
+
+  # The name of the category
   name: String!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+
+  # When the category was added to the database
+  createdAt: Datetime
+
+  # When the category was last modified in the database
+  updatedAt: Datetime
 }
 
 # Represents an update to a `Category`. Fields that are set will be updated.
 input CategoryPatch {
+  # The unique identifier of the category
   uuid: Uuid
+
+  # The name of the category
   name: String
+
+  # When the category was added to the database
   createdAt: Datetime
+
+  # When the category was last modified in the database
   updatedAt: Datetime
 }
 
@@ -293,7 +347,7 @@ type CreateLabelPayload {
   # An edge for our `Label`. May be used by Relay 1.
   labelEdge(
     # The method to use when ordering `Label`.
-    orderBy: LabelsOrderBy = NATURAL
+    orderBy: LabelsOrderBy = PRIMARY_KEY_ASC
   ): LabelsEdge
 
   # Our root query field type. Allows us to run any query from our mutation payload.
@@ -411,6 +465,8 @@ input DeleteBrandByNameInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The name of the brand
   name: String!
 }
 
@@ -419,6 +475,8 @@ input DeleteBrandByUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The unique identifier of the brand
   uuid: Uuid!
 }
 
@@ -449,6 +507,8 @@ input DeleteCategoryByNameInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The name of the category
   name: String!
 }
 
@@ -457,6 +517,8 @@ input DeleteCategoryByUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The unique identifier of the category
   uuid: Uuid!
 }
 
@@ -482,11 +544,68 @@ type DeleteCategoryPayload {
   query: Query
 }
 
+# All input for the `deleteLabelByName` mutation.
+input DeleteLabelByNameInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The name of the label template
+  name: String!
+}
+
+# All input for the `deleteLabelByUuid` mutation.
+input DeleteLabelByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The unique identifier of the label template
+  uuid: Uuid!
+}
+
+# All input for the `deleteLabel` mutation.
+input DeleteLabelInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Label` to be deleted.
+  id: ID!
+}
+
+# The output of our `deleteLabel` mutation.
+type DeleteLabelPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  label: Label
+  deletedLabelId: ID
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `deletePriceByAmountAndTeaUuid` mutation.
+input DeletePriceByAmountAndTeaUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The amount of tea you get for this price, in grams
+  amount: Int!
+
+  # The unique identifier of the tea that this price is for
+  teaUuid: Uuid!
+}
+
 # All input for the `deletePriceByUuid` mutation.
 input DeletePriceByUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The unique identifier of the price
   uuid: Uuid!
 }
 
@@ -515,11 +634,26 @@ type DeletePricePayload {
   query: Query
 }
 
+# All input for the `deleteSteepAdviceByNameAndTeaUuid` mutation.
+input DeleteSteepAdviceByNameAndTeaUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The name of the steep advice
+  name: String!
+
+  # The unique identifier of the tea that this steep advice is for
+  teaUuid: Uuid!
+}
+
 # All input for the `deleteSteepAdviceByUuid` mutation.
 input DeleteSteepAdviceByUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The unique identifier of the steep advice
   uuid: Uuid!
 }
 
@@ -553,7 +687,11 @@ input DeleteTeaByNameAndBrandUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The name of the tea
   name: String!
+
+  # The unique identifier of the brand of the tea
   brandUuid: Uuid!
 }
 
@@ -562,6 +700,8 @@ input DeleteTeaByUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The unique identifier of the tea
   uuid: Uuid!
 }
 
@@ -760,14 +900,24 @@ input IntegerRangeInput {
   end: IntegerRangeBoundInput
 }
 
-# A JavaScript object encoded in the JSON format as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-scalar Json
+# The label templates
+type Label implements Node {
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  id: ID!
 
-type Label {
+  # The unique identifier of the label template
   uuid: Uuid!
+
+  # The name of the label template
   name: String!
+
+  # The XML template
   xml: String!
+
+  # When the label template was added to the database
   createdAt: Datetime!
+
+  # When the label template was last modified in the database
   updatedAt: Datetime!
 }
 
@@ -789,12 +939,40 @@ input LabelCondition {
   updatedAt: Datetime
 }
 
+# The label templates
 input LabelInput {
-  uuid: Uuid!
+  # The unique identifier of the label template
+  uuid: Uuid
+
+  # The name of the label template
   name: String!
+
+  # The XML template
   xml: String!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+
+  # When the label template was added to the database
+  createdAt: Datetime
+
+  # When the label template was last modified in the database
+  updatedAt: Datetime
+}
+
+# Represents an update to a `Label`. Fields that are set will be updated.
+input LabelPatch {
+  # The unique identifier of the label template
+  uuid: Uuid
+
+  # The name of the label template
+  name: String
+
+  # The XML template
+  xml: String
+
+  # When the label template was added to the database
+  createdAt: Datetime
+
+  # When the label template was last modified in the database
+  updatedAt: Datetime
 }
 
 # A connection to a list of `Label` values.
@@ -823,6 +1001,8 @@ type LabelsEdge {
 
 # Methods to use when ordering `Label`.
 enum LabelsOrderBy {
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
   NATURAL
   UUID_ASC
   UUID_DESC
@@ -850,6 +1030,10 @@ type Mutation {
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: SetLimitInput!
   ): SetLimitPayload
+  updateUpdatedAt(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateUpdatedAtInput!
+  ): UpdateUpdatedAtPayload
 
   # Creates a single `Brand`.
   createBrand(
@@ -941,6 +1125,42 @@ type Mutation {
     input: CreateLabelInput!
   ): CreateLabelPayload
 
+  # Updates a single `Label` using its globally unique id and a patch.
+  updateLabel(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateLabelInput!
+  ): UpdateLabelPayload
+
+  # Updates a single `Label` using a unique key and a patch.
+  updateLabelByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateLabelByUuidInput!
+  ): UpdateLabelPayload
+
+  # Updates a single `Label` using a unique key and a patch.
+  updateLabelByName(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateLabelByNameInput!
+  ): UpdateLabelPayload
+
+  # Deletes a single `Label` using its globally unique id.
+  deleteLabel(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteLabelInput!
+  ): DeleteLabelPayload
+
+  # Deletes a single `Label` using a unique key.
+  deleteLabelByUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteLabelByUuidInput!
+  ): DeleteLabelPayload
+
+  # Deletes a single `Label` using a unique key.
+  deleteLabelByName(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteLabelByNameInput!
+  ): DeleteLabelPayload
+
   # Creates a single `Price`.
   createPrice(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -959,6 +1179,12 @@ type Mutation {
     input: UpdatePriceByUuidInput!
   ): UpdatePricePayload
 
+  # Updates a single `Price` using a unique key and a patch.
+  updatePriceByAmountAndTeaUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdatePriceByAmountAndTeaUuidInput!
+  ): UpdatePricePayload
+
   # Deletes a single `Price` using its globally unique id.
   deletePrice(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -969,6 +1195,12 @@ type Mutation {
   deletePriceByUuid(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeletePriceByUuidInput!
+  ): DeletePricePayload
+
+  # Deletes a single `Price` using a unique key.
+  deletePriceByAmountAndTeaUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeletePriceByAmountAndTeaUuidInput!
   ): DeletePricePayload
 
   # Creates a single `SteepAdvice`.
@@ -989,6 +1221,12 @@ type Mutation {
     input: UpdateSteepAdviceByUuidInput!
   ): UpdateSteepAdvicePayload
 
+  # Updates a single `SteepAdvice` using a unique key and a patch.
+  updateSteepAdviceByNameAndTeaUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateSteepAdviceByNameAndTeaUuidInput!
+  ): UpdateSteepAdvicePayload
+
   # Deletes a single `SteepAdvice` using its globally unique id.
   deleteSteepAdvice(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -999,6 +1237,12 @@ type Mutation {
   deleteSteepAdviceByUuid(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteSteepAdviceByUuidInput!
+  ): DeleteSteepAdvicePayload
+
+  # Deletes a single `SteepAdvice` using a unique key.
+  deleteSteepAdviceByNameAndTeaUuid(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteSteepAdviceByNameAndTeaUuidInput!
   ): DeleteSteepAdvicePayload
 
   # Creates a single `Tea`.
@@ -1065,15 +1309,28 @@ type PageInfo {
   endCursor: Cursor
 }
 
+# The prices of the teas
 type Price implements Node {
   # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   id: ID!
+
+  # The unique identifier of the price
   uuid: Uuid!
-  amount: Float!
-  weight: Int!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+
+  # The price, in euro
+  price: Float!
+
+  # The amount of tea you get for this price, in grams
+  amount: Int!
+
+  # The unique identifier of the tea that this price is for
   teaUuid: Uuid!
+
+  # When the price was added to the database
+  createdAt: Datetime!
+
+  # When the price was last modified in the database
+  updatedAt: Datetime!
 
   # Reads a single `Tea` that is related to this `Price`.
   teaByTeaUuid: Tea
@@ -1084,39 +1341,62 @@ input PriceCondition {
   # Checks for equality with the object’s `uuid` field.
   uuid: Uuid
 
-  # Checks for equality with the object’s `amount` field.
-  amount: Float
+  # Checks for equality with the object’s `price` field.
+  price: Float
 
-  # Checks for equality with the object’s `weight` field.
-  weight: Int
+  # Checks for equality with the object’s `amount` field.
+  amount: Int
+
+  # Checks for equality with the object’s `teaUuid` field.
+  teaUuid: Uuid
 
   # Checks for equality with the object’s `createdAt` field.
   createdAt: Datetime
 
   # Checks for equality with the object’s `updatedAt` field.
   updatedAt: Datetime
-
-  # Checks for equality with the object’s `teaUuid` field.
-  teaUuid: Uuid
 }
 
+# The prices of the teas
 input PriceInput {
-  uuid: Uuid!
-  amount: Float!
-  weight: Int!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+  # The unique identifier of the price
+  uuid: Uuid
+
+  # The price, in euro
+  price: Float!
+
+  # The amount of tea you get for this price, in grams
+  amount: Int!
+
+  # The unique identifier of the tea that this price is for
   teaUuid: Uuid!
+
+  # When the price was added to the database
+  createdAt: Datetime
+
+  # When the price was last modified in the database
+  updatedAt: Datetime
 }
 
 # Represents an update to a `Price`. Fields that are set will be updated.
 input PricePatch {
+  # The unique identifier of the price
   uuid: Uuid
-  amount: Float
-  weight: Int
-  createdAt: Datetime
-  updatedAt: Datetime
+
+  # The price, in euro
+  price: Float
+
+  # The amount of tea you get for this price, in grams
+  amount: Int
+
+  # The unique identifier of the tea that this price is for
   teaUuid: Uuid
+
+  # When the price was added to the database
+  createdAt: Datetime
+
+  # When the price was last modified in the database
+  updatedAt: Datetime
 }
 
 # A connection to a list of `Price` values.
@@ -1150,16 +1430,16 @@ enum PricesOrderBy {
   NATURAL
   UUID_ASC
   UUID_DESC
+  PRICE_ASC
+  PRICE_DESC
   AMOUNT_ASC
   AMOUNT_DESC
-  WEIGHT_ASC
-  WEIGHT_DESC
+  TEA_UUID_ASC
+  TEA_UUID_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
-  TEA_UUID_ASC
-  TEA_UUID_DESC
 }
 
 # The root query type which gives access points into the data universe.
@@ -1169,21 +1449,15 @@ type Query implements Node {
     # The globally unique `ID`.
     id: ID!
   ): Node
-  akeys(arg0: String!): [String]
-  avals(arg0: String!): [String]
   crypt(arg0: String!, arg1: String!): String
   dearmor(arg0: String!): String
   decrypt(arg0: String!, arg1: String!, arg2: String!): String
   decryptIv(arg0: String!, arg1: String!, arg2: String!, arg3: String!): String
-  defined(arg0: String!, arg1: String!): Boolean
   encrypt(arg0: String!, arg1: String!, arg2: String!): String
   encryptIv(arg0: String!, arg1: String!, arg2: String!, arg3: String!): String
-  exist(arg0: String!, arg1: String!): Boolean
-  existsAll(arg0: String!, arg1: [String]!): Boolean
-  existsAny(arg0: String!, arg1: [String]!): Boolean
-  fetchval(arg0: String!, arg1: String!): String
 
-  # Reads and enables paginatation through a set of `Brand`.
+  # Get the brands for the autocompletion, based on the search term.This doesn't
+  # filter out values, but rather orders them from most to least likely.
   getBrandsForAutocomplete(
     # The method to use when ordering `Brand`.
     orderBy: GetBrandsForAutocompleteOrderBy = NATURAL
@@ -1206,7 +1480,8 @@ type Query implements Node {
     search: String
   ): GetBrandsForAutocompleteConnection
 
-  # Reads and enables paginatation through a set of `Category`.
+  # Get the categories for the autocompletion, based on the search term. This
+  # doesn't filter out values, but rather orders them from most to least likely.
   getCategoriesForAutocomplete(
     # The method to use when ordering `Category`.
     orderBy: GetCategoriesForAutocompleteOrderBy = NATURAL
@@ -1228,18 +1503,6 @@ type Query implements Node {
     offset: Int
     search: String
   ): GetCategoriesForAutocompleteConnection
-  ghstoreCompress(arg0: String!): String
-  ghstoreConsistent(arg0: String!, arg1: String!, arg2: Int!, arg3: Float!, arg4: String!): Boolean
-  ghstoreDecompress(arg0: String!): String
-  ghstoreIn(arg0: String!): String
-  ghstoreOut(arg0: String!): String
-  ghstorePenalty(arg0: String!, arg1: String!, arg2: String!): String
-  ghstorePicksplit(arg0: String!, arg1: String!): String
-  ghstoreSame(arg0: String!, arg1: String!, arg2: String!): String
-  ghstoreUnion(arg0: String!, arg1: String!): String
-  ginConsistentHstore(arg0: String!, arg1: Int!, arg2: String!, arg3: Int!, arg4: String!, arg5: String!): Boolean
-  ginExtractHstore(arg0: String!, arg1: String!): String
-  ginExtractHstoreQuery(arg0: String!, arg1: String!, arg2: Int!, arg3: String!, arg4: String!): String
   ginExtractQueryTrgm(arg0: String!, arg1: String!, arg2: Int!, arg3: String!, arg4: String!, arg5: String!, arg6: String!): String
   ginExtractValueTrgm(arg0: String!, arg1: String!): String
   ginTrgmConsistent(arg0: String!, arg1: Int!, arg2: String!, arg3: Int!, arg4: String!, arg5: String!, arg6: String!, arg7: String!): Boolean
@@ -1254,86 +1517,12 @@ type Query implements Node {
   gtrgmPicksplit(arg0: String!, arg1: String!): String
   gtrgmSame(arg0: String!, arg1: String!, arg2: String!): String
   gtrgmUnion(arg0: String!, arg1: String!): String
-  hsConcat(arg0: String!, arg1: String!): String
-  hsContained(arg0: String!, arg1: String!): Boolean
-  hsContains(arg0: String!, arg1: String!): Boolean
-  hstoreCmp(arg0: String!, arg1: String!): Int
-  hstoreEq(arg0: String!, arg1: String!): Boolean
-  hstoreGe(arg0: String!, arg1: String!): Boolean
-  hstoreGt(arg0: String!, arg1: String!): Boolean
-  hstoreHash(arg0: String!): Int
-  hstoreIn(arg0: String!): String
-  hstoreLe(arg0: String!, arg1: String!): Boolean
-  hstoreLt(arg0: String!, arg1: String!): Boolean
-  hstoreNe(arg0: String!, arg1: String!): Boolean
-  hstoreOut(arg0: String!): String
-  hstoreRecv(arg0: String!): String
-  hstoreSend(arg0: String!): String
-  hstoreToArray(arg0: String!): [String]
-  hstoreToJson(arg0: String!): Json
-  hstoreToJsonLoose(arg0: String!): Json
-  hstoreToJsonb(arg0: String!): Json
-  hstoreToJsonbLoose(arg0: String!): Json
-  hstoreToMatrix(arg0: String!): [String]
-  hstoreVersionDiag(arg0: String!): Int
-  isdefined(arg0: String!, arg1: String!): Boolean
-  isexists(arg0: String!, arg1: String!): Boolean
   pgpKeyId(arg0: String!): String
-  populateRecord(arg0: String, arg1: String): String
   showLimit: Float
   showTrgm(arg0: String!): [String]
   similarity(arg0: String!, arg1: String!): Float
   similarityDist(arg0: String!, arg1: String!): Float
   similarityOp(arg0: String!, arg1: String!): Boolean
-
-  # Reads and enables paginatation through a set of `String`.
-  skeys(
-    # The method to use when ordering `String`.
-    orderBy: SkeysOrderBy = NATURAL
-
-    # Read all values in the set before (above) this cursor.
-    before: Cursor
-
-    # Read all values in the set after (below) this cursor.
-    after: Cursor
-
-    # Only read the first `n` values of the set.
-    first: Int
-
-    # Only read the last `n` values of the set.
-    last: Int
-
-    # Skip the first `n` values from our `after` cursor, an alternative to cursor
-    # based pagination. May not be used with `last`.
-    offset: Int
-    arg0: String!
-  ): SkeysConnection
-  slice(arg0: String!, arg1: [String]!): String
-  sliceArray(arg0: String!, arg1: [String]!): [String]
-
-  # Reads and enables paginatation through a set of `String`.
-  svals(
-    # The method to use when ordering `String`.
-    orderBy: SvalsOrderBy = NATURAL
-
-    # Read all values in the set before (above) this cursor.
-    before: Cursor
-
-    # Read all values in the set after (below) this cursor.
-    after: Cursor
-
-    # Only read the first `n` values of the set.
-    first: Int
-
-    # Only read the last `n` values of the set.
-    last: Int
-
-    # Skip the first `n` values from our `after` cursor, an alternative to cursor
-    # based pagination. May not be used with `last`.
-    offset: Int
-    arg0: String!
-  ): SvalsConnection
-  tconvert(arg0: String, arg1: String): String
   wordSimilarity(arg0: String!, arg1: String!): Float
   wordSimilarityCommutatorOp(arg0: String!, arg1: String!): Boolean
   wordSimilarityDistCommutatorOp(arg0: String!, arg1: String!): Float
@@ -1370,8 +1559,14 @@ type Query implements Node {
     # The globally unique `ID` to be used in selecting a single `Brand`.
     id: ID!
   ): Brand
-  brandByUuid(uuid: Uuid!): Brand
-  brandByName(name: String!): Brand
+  brandByUuid(
+    # The unique identifier of the brand
+    uuid: Uuid!
+  ): Brand
+  brandByName(
+    # The name of the brand
+    name: String!
+  ): Brand
 
   # Reads and enables paginatation through a set of `Category`.
   allCategories(
@@ -1403,13 +1598,19 @@ type Query implements Node {
     # The globally unique `ID` to be used in selecting a single `Category`.
     id: ID!
   ): Category
-  categoryByUuid(uuid: Uuid!): Category
-  categoryByName(name: String!): Category
+  categoryByUuid(
+    # The unique identifier of the category
+    uuid: Uuid!
+  ): Category
+  categoryByName(
+    # The name of the category
+    name: String!
+  ): Category
 
   # Reads and enables paginatation through a set of `Label`.
   allLabels(
     # The method to use when ordering `Label`.
-    orderBy: LabelsOrderBy = NATURAL
+    orderBy: LabelsOrderBy = PRIMARY_KEY_ASC
 
     # Read all values in the set before (above) this cursor.
     before: Cursor
@@ -1430,6 +1631,20 @@ type Query implements Node {
     # A condition to be used in determining which values should be returned by the collection.
     condition: LabelCondition
   ): LabelsConnection
+
+  # Reads a single `Label` using its globally unique `ID`.
+  label(
+    # The globally unique `ID` to be used in selecting a single `Label`.
+    id: ID!
+  ): Label
+  labelByUuid(
+    # The unique identifier of the label template
+    uuid: Uuid!
+  ): Label
+  labelByName(
+    # The name of the label template
+    name: String!
+  ): Label
 
   # Reads and enables paginatation through a set of `Price`.
   allPrices(
@@ -1461,7 +1676,17 @@ type Query implements Node {
     # The globally unique `ID` to be used in selecting a single `Price`.
     id: ID!
   ): Price
-  priceByUuid(uuid: Uuid!): Price
+  priceByUuid(
+    # The unique identifier of the price
+    uuid: Uuid!
+  ): Price
+  priceByAmountAndTeaUuid(
+    # The amount of tea you get for this price, in grams
+    amount: Int!
+
+    # The unique identifier of the tea that this price is for
+    teaUuid: Uuid!
+  ): Price
 
   # Reads and enables paginatation through a set of `SteepAdvice`.
   allSteepAdvices(
@@ -1493,7 +1718,17 @@ type Query implements Node {
     # The globally unique `ID` to be used in selecting a single `SteepAdvice`.
     id: ID!
   ): SteepAdvice
-  steepAdviceByUuid(uuid: Uuid!): SteepAdvice
+  steepAdviceByUuid(
+    # The unique identifier of the steep advice
+    uuid: Uuid!
+  ): SteepAdvice
+  steepAdviceByNameAndTeaUuid(
+    # The name of the steep advice
+    name: String!
+
+    # The unique identifier of the tea that this steep advice is for
+    teaUuid: Uuid!
+  ): SteepAdvice
 
   # Reads and enables paginatation through a set of `Tea`.
   allTeas(
@@ -1525,8 +1760,17 @@ type Query implements Node {
     # The globally unique `ID` to be used in selecting a single `Tea`.
     id: ID!
   ): Tea
-  teaByUuid(uuid: Uuid!): Tea
-  teaByNameAndBrandUuid(name: String!, brandUuid: Uuid!): Tea
+  teaByUuid(
+    # The unique identifier of the tea
+    uuid: Uuid!
+  ): Tea
+  teaByNameAndBrandUuid(
+    # The name of the tea
+    name: String!
+
+    # The unique identifier of the brand of the tea
+    brandUuid: Uuid!
+  ): Tea
 
   # Exposes the root query type nested one level down. This is helpful for Relay 1
   # which can only query top level fields if they are in a particular form.
@@ -1555,45 +1799,37 @@ type SetLimitPayload {
   query: Query
 }
 
-# A connection to a list of `String` values.
-type SkeysConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # The count of *all* `String` you could get from the connection.
-  totalCount: Int
-
-  # A list of edges which contains the `String` and cursor to aid in pagination.
-  edges: [SkeysEdge]
-
-  # A list of `String` objects.
-  nodes: [String]
-}
-
-# A `String` edge in the connection.
-type SkeysEdge {
-  # A cursor for use in pagination.
-  cursor: Cursor
-
-  # The `String` at the end of the edge.
-  node: String
-}
-
-# Methods to use when ordering `String`.
-enum SkeysOrderBy {
-  NATURAL
-}
-
+# The steep advices of the teas
 type SteepAdvice implements Node {
   # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   id: ID!
+
+  # The unique identifier of the steep advice
   uuid: Uuid!
+
+  # The name of the steep advice
+  name: String!
+
+  # The detailed description of the steep advice, if applicable
+  description: String
+
+  # The advised amount of tea, in grams
   amount: FloatRange!
-  time: IntegerRange!
+
+  # The advised steeping duration, in seconds
+  duration: IntegerRange!
+
+  # The advised temperature, in celcius
   temperature: IntegerRange!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+
+  # The unique identifier of the tea that this steep advice is for
   teaUuid: Uuid!
+
+  # When the steep advice was added to the database
+  createdAt: Datetime!
+
+  # When the steep advice was last modified in the database
+  updatedAt: Datetime!
 
   # Reads a single `Tea` that is related to this `SteepAdvice`.
   teaByTeaUuid: Tea
@@ -1605,44 +1841,89 @@ input SteepAdviceCondition {
   # Checks for equality with the object’s `uuid` field.
   uuid: Uuid
 
+  # Checks for equality with the object’s `name` field.
+  name: String
+
+  # Checks for equality with the object’s `description` field.
+  description: String
+
   # Checks for equality with the object’s `amount` field.
   amount: FloatRangeInput
 
-  # Checks for equality with the object’s `time` field.
-  time: IntegerRangeInput
+  # Checks for equality with the object’s `duration` field.
+  duration: IntegerRangeInput
 
   # Checks for equality with the object’s `temperature` field.
   temperature: IntegerRangeInput
+
+  # Checks for equality with the object’s `teaUuid` field.
+  teaUuid: Uuid
 
   # Checks for equality with the object’s `createdAt` field.
   createdAt: Datetime
 
   # Checks for equality with the object’s `updatedAt` field.
   updatedAt: Datetime
-
-  # Checks for equality with the object’s `teaUuid` field.
-  teaUuid: Uuid
 }
 
+# The steep advices of the teas
 input SteepAdviceInput {
-  uuid: Uuid!
+  # The unique identifier of the steep advice
+  uuid: Uuid
+
+  # The name of the steep advice
+  name: String!
+
+  # The detailed description of the steep advice, if applicable
+  description: String
+
+  # The advised amount of tea, in grams
   amount: FloatRangeInput!
-  time: IntegerRangeInput!
+
+  # The advised steeping duration, in seconds
+  duration: IntegerRangeInput!
+
+  # The advised temperature, in celcius
   temperature: IntegerRangeInput!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+
+  # The unique identifier of the tea that this steep advice is for
   teaUuid: Uuid!
+
+  # When the steep advice was added to the database
+  createdAt: Datetime
+
+  # When the steep advice was last modified in the database
+  updatedAt: Datetime
 }
 
 # Represents an update to a `SteepAdvice`. Fields that are set will be updated.
 input SteepAdvicePatch {
+  # The unique identifier of the steep advice
   uuid: Uuid
+
+  # The name of the steep advice
+  name: String
+
+  # The detailed description of the steep advice, if applicable
+  description: String
+
+  # The advised amount of tea, in grams
   amount: FloatRangeInput
-  time: IntegerRangeInput
+
+  # The advised steeping duration, in seconds
+  duration: IntegerRangeInput
+
+  # The advised temperature, in celcius
   temperature: IntegerRangeInput
-  createdAt: Datetime
-  updatedAt: Datetime
+
+  # The unique identifier of the tea that this steep advice is for
   teaUuid: Uuid
+
+  # When the steep advice was added to the database
+  createdAt: Datetime
+
+  # When the steep advice was last modified in the database
+  updatedAt: Datetime
 }
 
 # A connection to a list of `SteepAdvice` values.
@@ -1676,58 +1957,46 @@ enum SteepAdvicesOrderBy {
   NATURAL
   UUID_ASC
   UUID_DESC
+  NAME_ASC
+  NAME_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
   AMOUNT_ASC
   AMOUNT_DESC
-  TIME_ASC
-  TIME_DESC
+  DURATION_ASC
+  DURATION_DESC
   TEMPERATURE_ASC
   TEMPERATURE_DESC
+  TEA_UUID_ASC
+  TEA_UUID_DESC
   CREATED_AT_ASC
   CREATED_AT_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
-  TEA_UUID_ASC
-  TEA_UUID_DESC
 }
 
-# A connection to a list of `String` values.
-type SvalsConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-
-  # The count of *all* `String` you could get from the connection.
-  totalCount: Int
-
-  # A list of edges which contains the `String` and cursor to aid in pagination.
-  edges: [SvalsEdge]
-
-  # A list of `String` objects.
-  nodes: [String]
-}
-
-# A `String` edge in the connection.
-type SvalsEdge {
-  # A cursor for use in pagination.
-  cursor: Cursor
-
-  # The `String` at the end of the edge.
-  node: String
-}
-
-# Methods to use when ordering `String`.
-enum SvalsOrderBy {
-  NATURAL
-}
-
+# The teas
 type Tea implements Node {
   # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   id: ID!
+
+  # The unique identifier of the tea
   uuid: Uuid!
+
+  # The name of the tea
   name: String!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+
+  # The unique identifier of the brand of the tea
   brandUuid: Uuid!
+
+  # The unique identifier of the category of the tea
   categoryUuid: Uuid!
+
+  # When the tea was added to the database
+  createdAt: Datetime!
+
+  # When the tea was last modified in the database
+  updatedAt: Datetime!
 
   # Reads a single `Brand` that is related to this `Tea`.
   brandByBrandUuid: Brand
@@ -1794,36 +2063,59 @@ input TeaCondition {
   # Checks for equality with the object’s `name` field.
   name: String
 
-  # Checks for equality with the object’s `createdAt` field.
-  createdAt: Datetime
-
-  # Checks for equality with the object’s `updatedAt` field.
-  updatedAt: Datetime
-
   # Checks for equality with the object’s `brandUuid` field.
   brandUuid: Uuid
 
   # Checks for equality with the object’s `categoryUuid` field.
   categoryUuid: Uuid
+
+  # Checks for equality with the object’s `createdAt` field.
+  createdAt: Datetime
+
+  # Checks for equality with the object’s `updatedAt` field.
+  updatedAt: Datetime
 }
 
+# The teas
 input TeaInput {
-  uuid: Uuid!
+  # The unique identifier of the tea
+  uuid: Uuid
+
+  # The name of the tea
   name: String!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+
+  # The unique identifier of the brand of the tea
   brandUuid: Uuid!
+
+  # The unique identifier of the category of the tea
   categoryUuid: Uuid!
+
+  # When the tea was added to the database
+  createdAt: Datetime
+
+  # When the tea was last modified in the database
+  updatedAt: Datetime
 }
 
 # Represents an update to a `Tea`. Fields that are set will be updated.
 input TeaPatch {
+  # The unique identifier of the tea
   uuid: Uuid
+
+  # The name of the tea
   name: String
-  createdAt: Datetime
-  updatedAt: Datetime
+
+  # The unique identifier of the brand of the tea
   brandUuid: Uuid
+
+  # The unique identifier of the category of the tea
   categoryUuid: Uuid
+
+  # When the tea was added to the database
+  createdAt: Datetime
+
+  # When the tea was last modified in the database
+  updatedAt: Datetime
 }
 
 # A connection to a list of `Tea` values.
@@ -1859,14 +2151,14 @@ enum TeasOrderBy {
   UUID_DESC
   NAME_ASC
   NAME_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
   BRAND_UUID_ASC
   BRAND_UUID_DESC
   CATEGORY_UUID_ASC
   CATEGORY_UUID_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
 }
 
 # All input for the `updateBrandByName` mutation.
@@ -1874,6 +2166,8 @@ input UpdateBrandByNameInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The name of the brand
   name: String!
 
   # An object where the defined keys will be set on the `Brand` identified by our unique key.
@@ -1885,6 +2179,8 @@ input UpdateBrandByUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The unique identifier of the brand
   uuid: Uuid!
 
   # An object where the defined keys will be set on the `Brand` identified by our unique key.
@@ -1920,6 +2216,8 @@ input UpdateCategoryByNameInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The name of the category
   name: String!
 
   # An object where the defined keys will be set on the `Category` identified by our unique key.
@@ -1931,6 +2229,8 @@ input UpdateCategoryByUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The unique identifier of the category
   uuid: Uuid!
 
   # An object where the defined keys will be set on the `Category` identified by our unique key.
@@ -1961,11 +2261,79 @@ type UpdateCategoryPayload {
   query: Query
 }
 
+# All input for the `updateLabelByName` mutation.
+input UpdateLabelByNameInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The name of the label template
+  name: String!
+
+  # An object where the defined keys will be set on the `Label` identified by our unique key.
+  labelPatch: LabelPatch!
+}
+
+# All input for the `updateLabelByUuid` mutation.
+input UpdateLabelByUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The unique identifier of the label template
+  uuid: Uuid!
+
+  # An object where the defined keys will be set on the `Label` identified by our unique key.
+  labelPatch: LabelPatch!
+}
+
+# All input for the `updateLabel` mutation.
+input UpdateLabelInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Label` to be updated.
+  id: ID!
+
+  # An object where the defined keys will be set on the `Label` identified by our globally unique `ID`.
+  labelPatch: LabelPatch!
+}
+
+# The output of our `updateLabel` mutation.
+type UpdateLabelPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  label: Label
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `updatePriceByAmountAndTeaUuid` mutation.
+input UpdatePriceByAmountAndTeaUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The amount of tea you get for this price, in grams
+  amount: Int!
+
+  # The unique identifier of the tea that this price is for
+  teaUuid: Uuid!
+
+  # An object where the defined keys will be set on the `Price` identified by our unique key.
+  pricePatch: PricePatch!
+}
+
 # All input for the `updatePriceByUuid` mutation.
 input UpdatePriceByUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The unique identifier of the price
   uuid: Uuid!
 
   # An object where the defined keys will be set on the `Price` identified by our unique key.
@@ -1999,11 +2367,29 @@ type UpdatePricePayload {
   query: Query
 }
 
+# All input for the `updateSteepAdviceByNameAndTeaUuid` mutation.
+input UpdateSteepAdviceByNameAndTeaUuidInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The name of the steep advice
+  name: String!
+
+  # The unique identifier of the tea that this steep advice is for
+  teaUuid: Uuid!
+
+  # An object where the defined keys will be set on the `SteepAdvice` identified by our unique key.
+  steepAdvicePatch: SteepAdvicePatch!
+}
+
 # All input for the `updateSteepAdviceByUuid` mutation.
 input UpdateSteepAdviceByUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The unique identifier of the steep advice
   uuid: Uuid!
 
   # An object where the defined keys will be set on the `SteepAdvice` identified by our unique key.
@@ -2042,7 +2428,11 @@ input UpdateTeaByNameAndBrandUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The name of the tea
   name: String!
+
+  # The unique identifier of the brand of the tea
   brandUuid: Uuid!
 
   # An object where the defined keys will be set on the `Tea` identified by our unique key.
@@ -2054,6 +2444,8 @@ input UpdateTeaByUuidInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The unique identifier of the tea
   uuid: Uuid!
 
   # An object where the defined keys will be set on the `Tea` identified by our unique key.
@@ -2085,6 +2477,24 @@ type UpdateTeaPayload {
 
   # Reads a single `Category` that is related to this `Tea`.
   categoryByCategoryUuid: Category
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+}
+
+# All input for the `updateUpdatedAt` mutation.
+input UpdateUpdatedAtInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+}
+
+# The output of our `updateUpdatedAt` mutation.
+type UpdateUpdatedAtPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  string: String
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
