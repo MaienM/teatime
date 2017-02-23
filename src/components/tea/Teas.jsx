@@ -51,7 +51,7 @@ export default Relay.createContainer(Teas, {
 	fragments: {
 		viewer: () => Relay.QL`
 			fragment on Query {
-				allTeas(first: $pageSize, offset: $offset) {
+				allTeas(first: $pageSize, offset: $offset, orderBy: CREATED_AT_DESC) {
 					edges {
 						node {
 							id,
