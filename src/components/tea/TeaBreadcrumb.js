@@ -1,13 +1,30 @@
+import React from 'react';
 import Relay from 'react-relay';
 import { withRouter } from 'react-router';
 
-function TeaBreadcrumb(props) {
-	const tea = props.viewer.tea;
-	const route = props.route;
-	route.name = tea.name;
+class TeaBreadcrumb extends React.Component {
+	constructor(props) {
+		super(props);
 
-	return props.children;
+		this.componentDidMount = this.updateBreadcrumb;
+		this.componentDidUpdate = this.updateBreadcrumb;
+	}
+
+	updateBreadcrumb() {
+		// Set the route name
+		const { route, router, viewer } = this.props;
+		route.name = viewer.tea.name;
+		router.updateBreadcrumb();
+	}
+
+	render() {
+		return this.props.children;
+	}
 }
+
+TeaBreadcrumb.propTypes = {
+	children: React.PropTypes.element.isRequired,
+};
 
 export default Relay.createContainer(withRouter(TeaBreadcrumb), {
 	initialVariables: {

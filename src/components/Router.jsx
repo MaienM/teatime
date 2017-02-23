@@ -6,6 +6,7 @@ import useRelay from 'react-router-relay';
 import App from './App';
 import Teas from './tea/Teas';
 import Tea from './tea/Tea';
+import TeaBreadcrumb from './tea/TeaBreadcrumb';
 import TeaForm from './tea/TeaForm';
 import TeaDelete from './tea/TeaDelete';
 import TeaPrint from './tea/TeaPrint';
@@ -26,9 +27,9 @@ const routes = (
 		<Route path="tea" name="Tea">
 			<IndexRoute component={Teas} queries={RootQuery} breadcrumbIgnore />
 			<Route path="new" name="New" component={TeaForm} queries={RootQuery} />
-			<Route path=":uuid" name="Unknown" component={Tea} queries={RootQuery}>
-				<IndexRoute breadcrumbIgnore />
-				<Route path="edit" name="Edit" components={{ body: TeaForm }} queries={{ body: RootQuery }} />
+			<Route path=":uuid" name="Unknown" component={TeaBreadcrumb} queries={RootQuery}>
+				<IndexRoute breadcrumbIgnore component={Tea} queries={RootQuery} />
+				<Route path="edit" name="Edit" component={TeaForm} queries={RootQuery} />
 				<Route path="delete" name="Delete" component={TeaDelete} queries={RootQuery} />
 				<Route path="print" name="Print" component={TeaPrint} queries={RootQuery} />
 			</Route>
