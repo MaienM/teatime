@@ -4,36 +4,47 @@ import { Link } from 'react-router';
 import { PageHeader } from 'react-bootstrap';
 import HeaderButtons, { HeaderButton } from 'components/HeaderButtons';
 
-function Tea(props) {
-	const tea = props.viewer.tea;
+class Tea extends React.Component {
+	constructor(props) {
+		super(props);
 
-	// Set the route name
-	const route = props.route;
-	route.name = tea.name;
+		this.componentDidMount = this.updateBreadcrumb;
+		this.componentDidUpdate = this.updateBreadcrumb;
+	}
 
-	return (
-		<div>
-			{props.body ? props.body : (
-				<PageHeader>
-					{tea.name}&nbsp;
-					<small>
-						by <Link to={`/brand/${tea.brand.uuid}`}>
-							{tea.brand.name}
-						</Link>
-					</small>
-					{props.children == null &&
-						<HeaderButtons
-							update={`/tea/${tea.uuid}/edit`}
-							delete={`/tea/${tea.uuid}/delete`}
-						>
-							<HeaderButton action={`/tea/${tea.uuid}/print`} glyph="print">Print</HeaderButton>
-						</HeaderButtons>
-					}
-				</PageHeader>
-			)}
-			{props.children}
-		</div>
-	);
+	updateBreadcrumb() {
+		// Set the route name
+		const { route, router, viewer } = this.props;
+		route.name = viewer.tea.name;
+		router.updateBreadcrumb();
+	}
+
+	render() {
+		const tea = this.props.viewer.tea;
+		return (
+			<div>
+				{this.props.body ? this.props.body : (
+					<PageHeader>
+						{tea.name}&nbsp;
+						<small>
+							by <Link to={`/brand/${tea.brand.uuid}`}>
+								{tea.brand.name}
+							</Link>
+						</small>
+						{this.props.children == null &&
+							<HeaderButtons
+								update={`/tea/${tea.uuid}/edit`}
+								delete={`/tea/${tea.uuid}/delete`}
+							>
+								<HeaderButton action={`/tea/${tea.uuid}/print`} glyph="print">Print</HeaderButton>
+							</HeaderButtons>
+						}
+					</PageHeader>
+				)}
+				{this.props.children}
+			</div>
+		);
+	}
 }
 
 Tea.propTypes = {

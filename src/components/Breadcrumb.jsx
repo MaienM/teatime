@@ -19,6 +19,13 @@ class Breadcrumb extends React.Component {
 		);
 	}
 
+	constructor(props) {
+		super(props);
+
+		// Add a method to the router to force-update the breadcrumb
+		this.props.router.updateBreadcrumb = this.forceUpdate.bind(this);
+	}
+
 	render() {
 		return (
 			<Breadcrumbs
