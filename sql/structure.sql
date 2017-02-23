@@ -237,6 +237,12 @@ GRANT
 	UPDATE(name, description, amount, duration, temperature, tea_uuid),
 	DELETE
 ON TABLE steep_advices TO application;
+GRANT
+	SELECT,
+	INSERT(name, xml),
+	UPDATE(name, xml),
+	DELETE
+ON TABLE labels TO application;
 GRANT EXECUTE ON FUNCTION get_brands_for_autocomplete(varchar) TO application;
 GRANT EXECUTE ON FUNCTION get_categories_for_autocomplete(varchar) TO application;
 -- }}}
