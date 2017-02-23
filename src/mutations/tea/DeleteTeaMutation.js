@@ -1,6 +1,6 @@
 import Relay from 'react-relay';
 
-export default class TeaDeleteMutation extends Relay.Mutation {
+export default class DeleteTeaMutation extends Relay.Mutation {
 	static fragments = {
 		tea: () => Relay.QL`
 			fragment on Tea {

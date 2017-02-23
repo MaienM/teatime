@@ -2,9 +2,9 @@ import React from 'react';
 import Relay from 'react-relay';
 import { Button, Modal } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
-import TeaDeleteMutation from 'mutations/TeaDeleteMutation';
+import DeleteTeaMutation from 'mutations/tea/DeleteTeaMutation';
 
-class TeaDelete extends React.Component {
+class DeleteTea extends React.Component {
 	static doCancel() {
 		browserHistory.goBack();
 	}
@@ -12,12 +12,12 @@ class TeaDelete extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.doCancel = TeaDelete.doCancel;
+		this.doCancel = DeleteTea.doCancel;
 		this.doDelete = this.doDelete.bind(this);
 	}
 
 	doDelete() {
-		Relay.Store.commitUpdate(new TeaDeleteMutation({ tea: this.props.viewer.tea }));
+		Relay.Store.commitUpdate(new DeleteTeaMutation({ tea: this.props.viewer.tea }));
 		browserHistory.replace('/tea');
 	}
 
@@ -51,7 +51,7 @@ class TeaDelete extends React.Component {
 	}
 }
 
-export default Relay.createContainer(TeaDelete, {
+export default Relay.createContainer(DeleteTea, {
 	initialVariables: {
 		uuid: null,
 	},
@@ -60,7 +60,7 @@ export default Relay.createContainer(TeaDelete, {
 			fragment on Query {
 				tea: teaByUuid(uuid: $uuid) {
 					name,
-					${TeaDeleteMutation.getFragment('tea')},
+					${DeleteTeaMutation.getFragment('tea')},
 				},
 			}
 		`,
