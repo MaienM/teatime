@@ -4,7 +4,6 @@ import Relay from 'react-relay';
 import { Col, ControlLabel, Button, Form, FormGroup, FormControl } from 'react-bootstrap';
 import wrap from 'wrap-ansi';
 import Select from 'components/Select';
-import RelaySelect from 'components/RelaySelect';
 import Dymo, { DymoStatus, DymoLabel, DymoLabelPreview } from 'helpers/dymo';
 
 function getDimensions(text) {
@@ -132,12 +131,11 @@ class TeaPrint extends React.Component {
 						<FormGroup controlId="formControlsLabel">
 							<Col componentClass={ControlLabel} sm={2}>Label</Col>
 							<Col sm={10}>
-								<RelaySelect
-									relay={this.props.relay}
-									connection={this.props.viewer.labels}
+								<Select
+									options={this.props.viewer.labels}
 									value={this.state.currentLabel}
-									searchVariable="label"
 									onChange={this.onLabelChange}
+									onSearch={(s) => this.props.relay.setVariables({ label: s })}
 								/>
 							</Col>
 						</FormGroup>

@@ -25,7 +25,7 @@ class Teas extends React.Component {
 					<HeaderButtons create="/tea/new" />
 				</PageHeader>
 				<Table
-					data={_.map(this.props.viewer.allTeas.edges, 'node')}
+					rows={this.props.viewer.allTeas}
 					columns={{
 						Name: 'name',
 						Brand: 'brand.name',
@@ -54,7 +54,6 @@ export default Relay.createContainer(Teas, {
 				allTeas(first: $pageSize, offset: $offset, orderBy: CREATED_AT_DESC) {
 					edges {
 						node {
-							id,
 							uuid,
 							name,
 							brand: brandByBrandUuid {

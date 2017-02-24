@@ -2,9 +2,11 @@ import _ from 'lodash';
 import React from 'react';
 import { browserHistory } from 'react-router';
 import { Table as BootstrapTable } from 'react-bootstrap';
+import { arrayOrConnection, nestedShape } from 'helpers/react/propTypes';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 function Table(props) {
+	const { keyProp } = props; // When using it directly, eslint claims it's unused?
 	return (
 		<BootstrapTable striped hover={props.rowLink !== undefined}>
 			<thead>
@@ -13,9 +15,9 @@ function Table(props) {
 				</tr>
 			</thead>
 			<tbody>
-				{_.map(props.data, (rowData) => (
+				{_.map(arrayOrConnection.transform(props.rows), (rowData) => (
 					<tr
-						key={rowData.id}
+						key={rowData[keyProp]}
 						onClick={props.rowLink ? () => browserHistory.push(props.rowLink(rowData)) : null}
 					>
 						{_(props.columns).values().map((column) => {
@@ -36,7 +38,15 @@ const columnKeyDef = React.PropTypes.oneOfType([
 	React.PropTypes.string,
 ]);
 Table.propTypes = {
-	data: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+	rows: (props, ...args) => {
+		// Build the shape
+		const shape = {};
+		_(props.columns).values().map((c) => _.get(c, 'key', c)).each((k) => {
+			_.set(shape, k, React.PropTypes.any.isRequired);
+		});
+		// Verify it as a nested shape array/connection
+		return arrayOrConnection(nestedShape(shape).isRequired).isRequired(props, ...args);
+	},
 	columns: React.PropTypes.objectOf(
 		React.PropTypes.oneOfType([
 			columnKeyDef,
@@ -46,10 +56,13 @@ Table.propTypes = {
 			}),
 		]),
 	).isRequired,
+	keyProp: React.PropTypes.string,
 	rowLink: React.PropTypes.func,
 };
 
 Table.defaultProps = {
+	rows: null,
+	keyProp: 'uuid',
 	rowLink: null,
 };
 

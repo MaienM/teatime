@@ -53,11 +53,13 @@ class PageControl extends React.Component {
 					total={this.props.total}
 					onChange={this.onPageChange}
 				/>
-				<PageSize
-					initial={this.state.pageSize}
-					options={this.props.pageSizes}
-					onChange={this.onSizeChange}
-				/>
+				{this.props.total > this.props.pageSizes[0] && (
+					<PageSize
+						initial={this.state.pageSize}
+						options={this.props.pageSizes}
+						onChange={this.onSizeChange}
+					/>
+				)}
 			</div>
 		);
 	}
@@ -75,8 +77,8 @@ PageControl.propTypes = {
 PageControl.defaultProps = {
 	initialOffset: undefined,
 	initialPage: 1,
-	initialPageSize: 10,
-	pageSizes: undefined,
+	initialPageSize: PageSize.defaultProps.initial,
+	pageSizes: PageSize.defaultProps.options,
 };
 
 export default PageControl;

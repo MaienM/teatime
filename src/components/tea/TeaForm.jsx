@@ -4,7 +4,7 @@ import Relay from 'react-relay';
 import { browserHistory } from 'react-router';
 import { PageHeader, Form, FormControl, Button } from 'react-bootstrap';
 import FormItem from 'components/FormItem';
-import RelaySelect from 'components/RelaySelect';
+import Select from 'components/Select';
 import CreateTeaMutation from 'mutations/tea/CreateTeaMutation';
 import UpdateTeaMutation from 'mutations/tea/UpdateTeaMutation';
 
@@ -83,22 +83,20 @@ class TeaForm extends React.Component {
 					</FormItem>
 					{/* Brand */}
 					<FormItem label="Brand">
-						<RelaySelect
-							relay={this.props.relay}
-							connection={this.props.viewer.brands}
+						<Select
+							options={this.props.viewer.brands}
 							value={this.state.brand}
-							searchVariable="brandSearch"
 							onChange={this.onBrandChange}
+							onSearch={(s) => this.props.relay.setVariables({ brandSearch: s })}
 						/>
 					</FormItem>
 					{/* Category */}
 					<FormItem label="Category">
-						<RelaySelect
-							relay={this.props.relay}
-							connection={this.props.viewer.categories}
+						<Select
+							options={this.props.viewer.categories}
 							value={this.state.category}
-							searchVariable="categorySearch"
 							onChange={this.onCategoryChange}
+							onSearch={(s) => this.props.relay.setVariables({ categorySearch: s })}
 						/>
 					</FormItem>
 					{/* Save */}

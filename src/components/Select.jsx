@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import ReactSelect from 'react-select';
+import { arrayOrConnection } from 'helpers/react/propTypes';
 
 import 'react-select/dist/react-select.min.css';
 import './Select.scss';
@@ -78,7 +79,7 @@ class Select extends React.Component {
 	}
 
 	render() {
-		const options = _.clone(this.props.options || []);
+		const options = _.clone(arrayOrConnection.transform(this.props.options) || []);
 		if (this.props.allowEmpty || options.length === 0) {
 			options.shift(null);
 		}
@@ -108,7 +109,7 @@ class Select extends React.Component {
 
 Select.propTypes = {
 	options: (props, ...args) => (
-		React.PropTypes.arrayOf(React.PropTypes.shape({
+		arrayOrConnection(React.PropTypes.shape({
 			[props.keyProp]: React.PropTypes.string.isRequired,
 			[props.labelProp]: React.PropTypes.string.isRequired,
 		})).isRequired(props, ...args)
@@ -127,7 +128,7 @@ Select.propTypes = {
 };
 
 Select.defaultProps = {
-	options: null, // Is required, but eslint doesn't detect that because it's a custom validator
+	options: null,
 	value: null,
 	keyProp: 'uuid',
 	labelProp: 'name',
