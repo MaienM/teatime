@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import ReactSelect from 'react-select';
-import { arrayOrConnection } from 'helpers/react/propTypes';
+import { arrayOrConnection, buildPropType } from 'helpers/react/propTypes';
 
 import 'react-select/dist/react-select.min.css';
 import './Select.scss';
@@ -107,19 +107,15 @@ class Select extends React.Component {
 	}
 }
 
+const itemPropType = buildPropType((props) => (
+	React.PropTypes.shape({
+		[props.keyProp]: React.PropTypes.string.isRequired,
+		[props.labelProp]: React.PropTypes.string.isRequired,
+	})
+));
 Select.propTypes = {
-	options: (props, ...args) => (
-		arrayOrConnection(React.PropTypes.shape({
-			[props.keyProp]: React.PropTypes.string.isRequired,
-			[props.labelProp]: React.PropTypes.string.isRequired,
-		})).isRequired(props, ...args)
-	),
-	value: (props, ...args) => (
-		React.PropTypes.shape({
-			[props.keyProp]: React.PropTypes.string.isRequired,
-			[props.labelProp]: React.PropTypes.string.isRequired,
-		})(props, ...args)
-	),
+	options: arrayOrConnection(itemPropType).isRequired,
+	value: itemPropType,
 	keyProp: React.PropTypes.string,
 	labelProp: React.PropTypes.string,
 	onChange: React.PropTypes.func.isRequired,
@@ -128,7 +124,6 @@ Select.propTypes = {
 };
 
 Select.defaultProps = {
-	options: null,
 	value: null,
 	keyProp: 'uuid',
 	labelProp: 'name',
