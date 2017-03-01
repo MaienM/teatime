@@ -28,6 +28,7 @@
     "bootstrap": "^3.3.7",
     "debounce-promise": "^3.0.1",
     "express": "^4.14.1",
+    "indefinite-article": "0.0.2",
     "lodash": "^4.17.4",
     "postgraphql": "^3.0.0",
     "rc-pagination": "^1.6.9",
