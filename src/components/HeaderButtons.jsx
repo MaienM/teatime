@@ -4,7 +4,7 @@ import HeaderButton, { actionPropType } from './HeaderButton';
 
 function HeaderButtons(props) {
 	return (
-		<ButtonGroup className="pull-right">
+		<ButtonGroup>
 			{props.children}
 			{props.create && <HeaderButton action={props.create} glyph="plus">New</HeaderButton>}
 			{props.update && <HeaderButton action={props.update} glyph="edit">Edit</HeaderButton>}

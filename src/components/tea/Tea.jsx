@@ -2,8 +2,8 @@ import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
-import { PageHeader, Col, Clearfix } from 'react-bootstrap';
 import indefinite from 'indefinite-article';
+import PageHeader from 'components/PageHeader';
 import HeaderButtons, { HeaderButton } from 'components/HeaderButtons';
 import PricesTable from 'components/price/PricesTable';
 import SteepAdvicesTable from 'components/steep_advice/SteepAdvicesTable';
@@ -13,25 +13,21 @@ function Tea(props) {
 	return (
 		<div>
 			<PageHeader>
-				<Col sm={12} md={8}>
-					{tea.name}
-					<br />
-					<small>
-						{indefinite(tea.category.name)}&nbsp;
-						<Link to={`/category/${tea.category.uuid}`}>{tea.category.name}</Link>
-						&nbsp;tea by&nbsp;
-						<Link to={`/brand/${tea.brand.uuid}`}>{tea.brand.name}</Link>
-					</small>
-				</Col>
-				<Col sm={12} md={4}>
-					<HeaderButtons
-						update={`/tea/${tea.uuid}/edit`}
-						delete={`/tea/${tea.uuid}/delete`}
-					>
-						<HeaderButton action={`/tea/${tea.uuid}/print`} glyph="print">Print</HeaderButton>
-					</HeaderButtons>
-				</Col>
-				<Clearfix />
+				{tea.name}
+				<br />
+				<small>
+					{indefinite(tea.category.name)}&nbsp;
+					<Link to={`/category/${tea.category.uuid}`}>{tea.category.name}</Link>
+					&nbsp;tea by&nbsp;
+					<Link to={`/brand/${tea.brand.uuid}`}>{tea.brand.name}</Link>
+				</small>
+
+				<HeaderButtons
+					update={`/tea/${tea.uuid}/edit`}
+					delete={`/tea/${tea.uuid}/delete`}
+				>
+					<HeaderButton action={`/tea/${tea.uuid}/print`} glyph="print">Print</HeaderButton>
+				</HeaderButtons>
 			</PageHeader>
 
 			<h3>Prices</h3>

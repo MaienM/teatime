@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
-import { PageHeader, Col, Clearfix } from 'react-bootstrap';
+import PageHeader from 'components/PageHeader';
 import HeaderButtons from 'components/HeaderButtons';
 import TeasTable from 'components/tea/TeasTable';
 
@@ -10,14 +10,11 @@ function Brand(props) {
 	return (
 		<div>
 			<PageHeader>
-				<Col sm={12} md={8}>{brand.name}</Col>
-				<Col sm={12} md={4}>
-					<HeaderButtons
-						update={`/brand/${brand.uuid}/edit`}
-						delete={`/brand/${brand.uuid}/delete`}
-					/>
-				</Col>
-				<Clearfix />
+				{brand.name}
+				<HeaderButtons
+					update={`/brand/${brand.uuid}/edit`}
+					delete={`/brand/${brand.uuid}/delete`}
+				/>
 			</PageHeader>
 
 			<h3>Teas</h3>

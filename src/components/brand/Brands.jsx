@@ -1,6 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
-import { PageHeader } from 'react-bootstrap';
+import PageHeader from 'components/PageHeader';
 import HeaderButtons from 'components/HeaderButtons';
 import BrandsTable from 'components/brand/BrandsTable';
 
