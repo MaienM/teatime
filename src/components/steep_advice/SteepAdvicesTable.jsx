@@ -2,28 +2,36 @@ import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
 import Table from 'components/Table';
+import TableControl from 'components/TableControl';
 
 function SteepAdvicesTable(props) {
 	return (
-		<Table
-			rows={props.viewer.steepAdvices}
-			columns={{
-				Name: 'name',
-				Amount: {
-					key: 'amount',
-					format: (v) => `${_.uniq([v.start.v, v.end.v]).join('-')} gram`,
-				},
-				Temperature: {
-					key: 'temperature',
-					format: (v) => `${_.uniq([v.start.v, v.end.v]).join('-')}°`,
-				},
-				Duration: {
-					key: 'duration',
-					format: (v) => `${_.uniq([v.start.v, v.end.v]).join('-')} seconds`,
-				},
-			}}
-			rowLink={(steepAdvice) => `/steepAdvice/${steepAdvice.uuid}`}
-		/>
+		<div>
+			<Table
+				rows={props.viewer.steepAdvices}
+				columns={{
+					Name: 'name',
+					Amount: {
+						key: 'amount',
+						format: (v) => `${_.uniq([v.start.v, v.end.v]).join('-')} gram`,
+					},
+					Temperature: {
+						key: 'temperature',
+						format: (v) => `${_.uniq([v.start.v, v.end.v]).join('-')}°`,
+					},
+					Duration: {
+						key: 'duration',
+						format: (v) => `${_.uniq([v.start.v, v.end.v]).join('-')} seconds`,
+					},
+				}}
+				rowLink={(steepAdvice) => `/steepAdvice/${steepAdvice.uuid}`}
+			/>
+			<TableControl
+				totalCount={props.viewer.steepAdvices.totalCount}
+				variables={props.relay.variables}
+				onChange={props.relay.setVariables}
+			/>
+		</div>
 	);
 }
 

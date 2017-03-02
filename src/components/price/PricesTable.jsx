@@ -1,23 +1,31 @@
 import React from 'react';
 import Relay from 'react-relay';
 import Table from 'components/Table';
+import TableControl from 'components/TableControl';
 
 function PricesTable(props) {
 	return (
-		<Table
-			rows={props.viewer.prices}
-			columns={{
-				Amount: {
-					key: 'amount',
-					format: (v) => `${v} gram`,
-				},
-				Price: {
-					key: 'price',
-					format: (v) => `€${v}`,
-				},
-			}}
-			rowLink={(price) => `/price/${price.uuid}`}
-		/>
+		<div>
+			<Table
+				rows={props.viewer.prices}
+				columns={{
+					Amount: {
+						key: 'amount',
+						format: (v) => `${v} gram`,
+					},
+					Price: {
+						key: 'price',
+						format: (v) => `€${v}`,
+					},
+				}}
+				rowLink={(price) => `/price/${price.uuid}`}
+			/>
+			<TableControl
+				totalCount={props.viewer.prices.totalCount}
+				variables={props.relay.variables}
+				onChange={props.relay.setVariables}
+			/>
+		</div>
 	);
 }
 

@@ -1,17 +1,25 @@
 import React from 'react';
 import Relay from 'react-relay';
 import Table from 'components/Table';
+import TableControl from 'components/TableControl';
 
 function TeasTable(props) {
 	return (
-		<Table
-			rows={props.viewer.teas}
-			columns={{
-				Name: 'name',
-				Brand: 'brand.name',
-			}}
-			rowLink={(tea) => `/tea/${tea.uuid}`}
-		/>
+		<div>
+			<Table
+				rows={props.viewer.teas}
+				columns={{
+					Name: 'name',
+					Brand: 'brand.name',
+				}}
+				rowLink={(tea) => `/tea/${tea.uuid}`}
+			/>
+			<TableControl
+				totalCount={props.viewer.teas.totalCount}
+				variables={props.relay.variables}
+				onChange={props.relay.setVariables}
+			/>
+		</div>
 	);
 }
 
