@@ -1,6 +1,7 @@
 import React from 'react';
 import Relay from 'react-relay';
 import { withRouter } from 'react-router';
+import { element } from 'helpers/react/propTypes';
 
 class TeaBreadcrumb extends React.Component {
 	constructor(props) {
@@ -23,7 +24,7 @@ class TeaBreadcrumb extends React.Component {
 }
 
 TeaBreadcrumb.propTypes = {
-	children: React.PropTypes.element.isRequired,
+	children: element.isRequired,
 };
 
 export default Relay.createContainer(withRouter(TeaBreadcrumb), {

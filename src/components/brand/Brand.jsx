@@ -11,6 +11,8 @@ function Brand(props) {
 		<div>
 			<PageHeader>
 				{brand.name}
+				<small>{brand.url}</small>
+
 				<HeaderButtons
 					update={`/brand/${brand.uuid}/edit`}
 					delete={`/brand/${brand.uuid}/delete`}

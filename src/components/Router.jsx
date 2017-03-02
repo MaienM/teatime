@@ -13,6 +13,7 @@ import TeaPrint from './tea/TeaPrint';
 import Brands from './brand/Brands';
 import Brand from './brand/Brand';
 import BrandBreadcrumb from './brand/BrandBreadcrumb';
+import BrandDelete from './brand/BrandDelete';
 
 const RootQuery = {
 	viewer: () => Relay.QL`
@@ -43,6 +44,7 @@ const routes = (
 			<IndexRoute component={Brands} queries={RootQuery} breadcrumbIgnore />
 			<Route path=":uuid" name="Unknown" component={BrandBreadcrumb} queries={RootQuery}>
 				<IndexRoute breadcrumbIgnore component={Brand} queries={RootQuery} />
+				<Route path="delete" name="Delete" component={BrandDelete} queries={RootQuery} />
 			</Route>
 		</Route>
 

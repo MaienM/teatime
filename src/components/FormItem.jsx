@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, FormGroup, ControlLabel } from 'react-bootstrap';
+import { element } from 'helpers/react/propTypes';
 
 function FormItem(props) {
 	return (
@@ -14,7 +15,7 @@ function FormItem(props) {
 
 FormItem.propTypes = {
 	label: React.PropTypes.string,
-	children: React.PropTypes.element.isRequired,
+	children: element.isRequired,
 };
 
 FormItem.defaultProps = {

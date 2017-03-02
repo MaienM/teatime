@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { PageHeader as BootstrapPageHeader, Clearfix } from 'react-bootstrap';
 import HeaderButtons from 'components/HeaderButtons';
+import { element } from 'helpers/react/propTypes';
 
 function PageHeader(props) {
 	const children = _.groupBy(props.children, (v) => v.type === HeaderButtons);
@@ -22,10 +23,7 @@ function PageHeader(props) {
 }
 
 PageHeader.propTypes = {
-	children: React.PropTypes.arrayOf(React.PropTypes.oneOfType([
-		React.PropTypes.element,
-		React.PropTypes.string,
-	])).isRequired,
+	children: element.isRequired,
 };
 
 export default PageHeader;

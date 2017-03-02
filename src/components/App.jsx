@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
+import { element } from 'helpers/react/propTypes';
 import Breadcrumb from './Breadcrumb';
 import Navbar from './Navbar';
 
@@ -24,7 +25,7 @@ function App(props) {
 }
 
 App.propTypes = {
-	children: React.PropTypes.element,
+	children: element,
 };
 
 App.defaultProps = {

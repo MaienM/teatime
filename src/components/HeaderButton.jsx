@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
+import { element } from 'helpers/react/propTypes';
 
 const actionPropType = React.PropTypes.oneOfType([
 	React.PropTypes.func,
@@ -28,7 +29,7 @@ function HeaderButton(props) {
 HeaderButton.propTypes = {
 	action: actionPropType.isRequired,
 	glyph: React.PropTypes.string,
-	children: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.element]),
+	children: element,
 };
 
 HeaderButton.defaultProps = {

@@ -1,5 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
+import { element } from 'helpers/react/propTypes';
 import { withRouter } from 'react-router';
 
 class BrandBreadcrumb extends React.Component {
@@ -23,7 +24,7 @@ class BrandBreadcrumb extends React.Component {
 }
 
 BrandBreadcrumb.propTypes = {
-	children: React.PropTypes.element.isRequired,
+	children: element.isRequired,
 };
 
 export default Relay.createContainer(withRouter(BrandBreadcrumb), {

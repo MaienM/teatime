@@ -1,5 +1,6 @@
 import React from 'react';
 import { ButtonGroup } from 'react-bootstrap';
+import { element } from 'helpers/react/propTypes';
 import HeaderButton, { actionPropType } from './HeaderButton';
 
 function HeaderButtons(props) {
@@ -17,7 +18,7 @@ HeaderButtons.propTypes = {
 	create: actionPropType,
 	update: actionPropType,
 	delete: actionPropType,
-	children: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.element]),
+	children: element,
 };
 
 HeaderButtons.defaultProps = {
