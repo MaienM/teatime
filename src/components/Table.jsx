@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { browserHistory } from 'react-router';
 import { Table as BootstrapTable } from 'react-bootstrap';
-import { arrayOrConnection, buildPropType, nestedShape } from 'helpers/react/propTypes';
+import { allowNull, arrayOrConnection, buildPropType, nestedShape } from 'helpers/react/propTypes';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 function Table(props) {
@@ -42,7 +42,7 @@ Table.propTypes = {
 		// Build the shape
 		const shape = {};
 		_(props.columns).values().map((c) => _.get(c, 'key', c)).each((k) => {
-			_.set(shape, k, React.PropTypes.any.isRequired);
+			_.set(shape, k, allowNull(React.PropTypes.any).isRequired);
 		});
 		// Verify it as a nested shape array/connection
 		return arrayOrConnection(nestedShape(shape).isRequired);
