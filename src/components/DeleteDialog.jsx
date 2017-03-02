@@ -12,6 +12,11 @@ class DeleteDialog extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			isEnabled: false,
+		};
+		setTimeout(() => this.setState({ isEnabled: true }), 2500);
+
 		this.doDelete = this.doDelete.bind(this);
 	}
 
@@ -29,18 +34,22 @@ class DeleteDialog extends React.Component {
 			>
 				<Modal.Header>
 					<Modal.Title>
-						Are you sure you want to delete {this.props.name}?
+						Are you sure you want to delete this?
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					{this.props.children && <p>{this.props.children}</p>}
-					<p>This action is irreversible.</p>
+					{this.props.children}
+					<p><strong>This action is irreversible.</strong></p>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={DeleteDialog.doCancel}>
 						Cancel
 					</Button>
-					<Button bsStyle="danger" onClick={this.doDelete}>
+					<Button
+						onClick={this.doDelete}
+						bsStyle={this.state.isEnabled ? 'danger' : 'default'}
+						disabled={!this.state.isEnabled}
+					>
 						Delete
 					</Button>
 				</Modal.Footer>
@@ -51,7 +60,6 @@ class DeleteDialog extends React.Component {
 
 DeleteDialog.propTypes = {
 	mutation: React.PropTypes.instanceOf(Relay.Mutation).isRequired,
-	name: React.PropTypes.string.isRequired,
 	landingPage: React.PropTypes.string,
 	children: element,
 };
