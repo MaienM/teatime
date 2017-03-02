@@ -2,6 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import { Button, Modal } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
+import { element } from 'helpers/react/propTypes';
 
 class DeleteDialog extends React.Component {
 	static doCancel() {
@@ -32,7 +33,8 @@ class DeleteDialog extends React.Component {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					This action is irreversible.
+					{this.props.children && <p>{this.props.children}</p>}
+					<p>This action is irreversible.</p>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button onClick={DeleteDialog.doCancel}>
@@ -51,10 +53,12 @@ DeleteDialog.propTypes = {
 	mutation: React.PropTypes.instanceOf(Relay.Mutation).isRequired,
 	name: React.PropTypes.string.isRequired,
 	landingPage: React.PropTypes.string,
+	children: element,
 };
 
 DeleteDialog.defaultProps = {
 	landingPage: '/',
+	children: null,
 };
 
 export default DeleteDialog;
