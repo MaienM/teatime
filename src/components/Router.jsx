@@ -4,13 +4,15 @@ import { Router, Route, IndexRoute, browserHistory, applyRouterMiddleware } from
 import useRelay from 'react-router-relay';
 
 import App from './App';
-import Brands from './brand/Brands';
 import Teas from './tea/Teas';
 import Tea from './tea/Tea';
 import TeaBreadcrumb from './tea/TeaBreadcrumb';
 import TeaForm from './tea/TeaForm';
 import TeaDelete from './tea/TeaDelete';
 import TeaPrint from './tea/TeaPrint';
+import Brands from './brand/Brands';
+import Brand from './brand/Brand';
+import BrandBreadcrumb from './brand/BrandBreadcrumb';
 
 const RootQuery = {
 	viewer: () => Relay.QL`
@@ -39,7 +41,9 @@ const routes = (
 		{/* Brand */}
 		<Route path="brand" name="Brand">
 			<IndexRoute component={Brands} queries={RootQuery} breadcrumbIgnore />
-			<Route path=":uuid" name="Unknown" />
+			<Route path=":uuid" name="Unknown" component={BrandBreadcrumb} queries={RootQuery}>
+				<IndexRoute breadcrumbIgnore component={Brand} queries={RootQuery} />
+			</Route>
 		</Route>
 
 		{/* Categories */}
