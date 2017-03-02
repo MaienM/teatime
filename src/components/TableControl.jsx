@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import PageControl from 'components/PageControl';
 
@@ -7,7 +8,7 @@ function TableControl(props) {
 			initialOffset={props.variables.offset}
 			initialPageSize={props.variables.pageSize}
 			total={props.totalCount}
-			onChange={props.onChange}
+			onChange={(v) => props.onChange(_.pick(v, ['offset', 'pageSize']))}
 		/>
 	);
 }
