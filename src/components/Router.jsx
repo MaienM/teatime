@@ -4,6 +4,7 @@ import { Router, Route, IndexRoute, browserHistory, applyRouterMiddleware } from
 import useRelay from 'react-router-relay';
 
 import App from './App';
+import Brands from './brand/Brands';
 import Teas from './tea/Teas';
 import Tea from './tea/Tea';
 import TeaBreadcrumb from './tea/TeaBreadcrumb';
@@ -37,7 +38,7 @@ const routes = (
 
 		{/* Brand */}
 		<Route path="brand" name="Brand">
-			<IndexRoute breadcrumbIgnore />
+			<IndexRoute component={Brands} queries={RootQuery} breadcrumbIgnore />
 			<Route path=":uuid" name="Unknown" />
 		</Route>
 
