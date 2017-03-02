@@ -1,68 +1,26 @@
-import _ from 'lodash';
 import React from 'react';
 import Relay from 'react-relay';
 import { PageHeader } from 'react-bootstrap';
 import HeaderButtons from 'components/HeaderButtons';
-import PageControl from 'components/PageControl';
-import Table from 'components/Table';
+import TeasTable from 'components/tea/TeasTable';
 
-class Teas extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.onPageChange = this.onPageChange.bind(this);
-	}
-
-	onPageChange(state) {
-		this.props.relay.setVariables(_.pick(state, ['offset', 'pageSize']));
-	}
-
-	render() {
-		return (
-			<div className="teas">
-				<PageHeader>
-					Tea
-					<HeaderButtons create="/tea/new" />
-				</PageHeader>
-				<Table
-					rows={this.props.viewer.allTeas}
-					columns={{
-						Name: 'name',
-						Brand: 'brand.name',
-					}}
-					rowLink={(tea) => `/tea/${tea.uuid}`}
-				/>
-				<PageControl
-					initialOffset={this.props.relay.variables.offset}
-					initialPageSize={this.props.relay.variables.pageSize}
-					total={this.props.viewer.allTeas.totalCount}
-					onChange={this.onPageChange}
-				/>
-			</div>
-		);
-	}
+function Teas(props) {
+	return (
+		<div>
+			<PageHeader>
+				Tea
+				<HeaderButtons create="/tea/new" />
+			</PageHeader>
+			<TeasTable viewer={props.viewer} />
+		</div>
+	);
 }
 
 export default Relay.createContainer(Teas, {
-	initialVariables: {
-		offset: 0,
-		pageSize: 10,
-	},
 	fragments: {
 		viewer: () => Relay.QL`
 			fragment on Query {
-				allTeas(first: $pageSize, offset: $offset, orderBy: CREATED_AT_DESC) {
-					edges {
-						node {
-							uuid,
-							name,
-							brand: brandByBrandUuid {
-								name,
-							},
-						},
-					},
-					totalCount,
-				},
+				${TeasTable.getFragment('viewer')},
 			}
 		`,
 	},
