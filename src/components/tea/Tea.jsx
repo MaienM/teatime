@@ -35,10 +35,10 @@ function Tea(props) {
 			</PageHeader>
 
 			<h3>Prices</h3>
-			<PricesTable rows={props.viewer} condition={props.relay.variables.pricesCondition} />
+			<PricesTable viewer={props.viewer} condition={props.relay.variables.pricesCondition} />
 
 			<h3>Steep advices</h3>
-			<SteepAdvicesTable rows={props.viewer} condition={props.relay.variables.steepAdvicesCondition} />
+			<SteepAdvicesTable viewer={props.viewer} condition={props.relay.variables.steepAdvicesCondition} />
 		</div>
 	);
 }
@@ -69,8 +69,8 @@ export default Relay.createContainer(Tea, {
 						name,
 					},
 				},
-				${PricesTable.getFragment('rows', { condition: variables.pricesCondition })},
-				${SteepAdvicesTable.getFragment('rows', { condition: variables.steepAdvicesCondition })},
+				${PricesTable.getFragment('viewer', { condition: variables.pricesCondition })},
+				${SteepAdvicesTable.getFragment('viewer', { condition: variables.steepAdvicesCondition })},
 			}
 		`,
 	},

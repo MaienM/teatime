@@ -6,7 +6,7 @@ import Table from 'components/Table';
 function SteepAdvicesTable(props) {
 	return (
 		<Table
-			rows={props.rows.steepAdvices}
+			rows={props.viewer.steepAdvices}
 			columns={{
 				Name: 'name',
 				Amount: {
@@ -27,12 +27,6 @@ function SteepAdvicesTable(props) {
 	);
 }
 
-SteepAdvicesTable.propTypes = {
-	rows: React.PropTypes.shape({
-		steepAdvices: Table.propTypes.rows.isRequired,
-	}).isRequired,
-};
-
 export default Relay.createContainer(SteepAdvicesTable, {
 	initialVariables: {
 		pageSize: 10,
@@ -41,7 +35,7 @@ export default Relay.createContainer(SteepAdvicesTable, {
 		condition: {},
 	},
 	fragments: {
-		rows: () => Relay.QL`
+		viewer: () => Relay.QL`
 			fragment on Query {
 				steepAdvices: allSteepAdvices(
 					first: $pageSize,

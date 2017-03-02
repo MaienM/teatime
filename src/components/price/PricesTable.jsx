@@ -5,7 +5,7 @@ import Table from 'components/Table';
 function PricesTable(props) {
 	return (
 		<Table
-			rows={props.rows.prices}
+			rows={props.viewer.prices}
 			columns={{
 				Amount: {
 					key: 'amount',
@@ -21,12 +21,6 @@ function PricesTable(props) {
 	);
 }
 
-PricesTable.propTypes = {
-	rows: React.PropTypes.shape({
-		prices: Table.propTypes.rows.isRequired,
-	}).isRequired,
-};
-
 export default Relay.createContainer(PricesTable, {
 	initialVariables: {
 		pageSize: 10,
@@ -35,7 +29,7 @@ export default Relay.createContainer(PricesTable, {
 		condition: {},
 	},
 	fragments: {
-		rows: () => Relay.QL`
+		viewer: () => Relay.QL`
 			fragment on Query {
 				prices: allPrices(
 					first: $pageSize,
