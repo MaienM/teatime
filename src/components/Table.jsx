@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { browserHistory } from 'react-router';
 import { Table as BootstrapTable } from 'react-bootstrap';
-import { allowNull, arrayOrConnection, buildPropType, nestedShape } from 'helpers/react/propTypes';
+import { allowNull, arrayOrConnection, buildPropType, nestedShape, oneOfType } from 'helpers/react/propTypes';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 function Table(props) {
@@ -33,7 +33,7 @@ function Table(props) {
 }
 /* eslint-enable jsx-a11y/no-static-element-interactions */
 
-const columnKeyDef = React.PropTypes.oneOfType([
+const columnKeyDef = oneOfType([
 	React.PropTypes.arrayOf(React.PropTypes.string),
 	React.PropTypes.string,
 ]);
@@ -48,7 +48,7 @@ Table.propTypes = {
 		return arrayOrConnection(nestedShape(shape).isRequired);
 	}).isRequired,
 	columns: React.PropTypes.objectOf(
-		React.PropTypes.oneOfType([
+		oneOfType([
 			columnKeyDef,
 			React.PropTypes.shape({
 				key: columnKeyDef.isRequired,

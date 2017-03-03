@@ -2,9 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
-import { element } from 'helpers/react/propTypes';
+import { element, oneOfType } from 'helpers/react/propTypes';
 
-const actionPropType = React.PropTypes.oneOfType([
+const actionPropType = oneOfType([
 	React.PropTypes.func,
 	React.PropTypes.string,
 ]);
