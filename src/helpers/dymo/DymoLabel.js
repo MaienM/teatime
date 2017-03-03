@@ -47,7 +47,7 @@ class DymoLabel {
 	}
 
 	isSet() {
-		return !!this.label;
+		return !!this.xml && !!this.label;
 	}
 
 	isValid() {
