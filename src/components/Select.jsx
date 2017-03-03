@@ -79,7 +79,7 @@ class Select extends React.Component {
 	}
 
 	render() {
-		const options = _.clone(arrayOrConnection.transform(this.props.options) || []);
+		const options = _.clone(arrayOrConnection.transform(this.props.options || []));
 		if (this.props.allowEmpty || options.length === 0) {
 			options.shift(null);
 		}
@@ -107,15 +107,15 @@ class Select extends React.Component {
 	}
 }
 
-const itemPropType = buildPropType((props) => (
+const itemPropTypeBuilder = (props) => (
 	React.PropTypes.shape({
 		[props.keyProp]: React.PropTypes.string.isRequired,
 		[props.labelProp]: React.PropTypes.string.isRequired,
 	})
-));
+);
 Select.propTypes = {
-	options: arrayOrConnection(itemPropType).isRequired,
-	value: itemPropType,
+	options: buildPropType((...args) => arrayOrConnection(itemPropTypeBuilder(...args))).isRequired,
+	value: buildPropType(itemPropTypeBuilder),
 	keyProp: React.PropTypes.string,
 	labelProp: React.PropTypes.string,
 	onChange: React.PropTypes.func.isRequired,
